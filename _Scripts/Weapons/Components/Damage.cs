@@ -12,11 +12,7 @@ namespace Ginko.Weapons.Components
         {
             foreach (Collider2D collider in colliders)
             {
-                DamageReceiver damageble =
-                    collider.name == "HitBox" 
-                    ? collider.transform.parent.GetComponentInChildren<DamageReceiver>() 
-                    : collider.GetComponentInChildren<DamageReceiver>();
-                Debug.Log(damageble);
+                DamageReceiver damageble = collider.transform.parent.GetComponent<DamageReceiver>();
                 if (damageble != null)
                 {
                     damageble.Damage(damageble.IsDesctructableItem ? currentAttackData.DestructionAmount : currentAttackData.Amount);

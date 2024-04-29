@@ -100,7 +100,7 @@ MonoBehaviour:
             height: 2.2
         <DetectableLayers>k__BackingField:
           serializedVersion: 2
-          m_Bits: 2304
+          m_Bits: 6144
     - rid: 6961545183761793026
       type: {class: DamageData, ns: Ginko.Weapons.Components, asm: Assembly-CSharp}
       data:

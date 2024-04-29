@@ -34,12 +34,12 @@ namespace Ginko.CoreSystem
             SoundManager.Instance.PlaySound(deathAudioClip);
 
             GameObject GO = Core.transform.parent.gameObject;
-            Entity obj = GO.GetComponent<Enemy>();
+            Entity obj = GO.GetComponent<Entity>();
 
-            // 如果是 enemy， 使用对象池
             if (obj)
             {
-                if (obj.pool != null)
+                // 如果是 enemy， 使用对象池
+                if (GO.GetComponent<Enemy>())
                 {
                     obj.pool.Release(obj.gameObject);
                 }
@@ -47,7 +47,6 @@ namespace Ginko.CoreSystem
                 else
                 {
                     GO.SetActive(false);
-
                 }
             } 
 

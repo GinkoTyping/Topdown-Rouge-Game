@@ -37,7 +37,7 @@ namespace Ginko.CoreSystem
 
             foreach (var collider in colliders)
             {
-                IDamageable damageble = collider.transform.parent.GetComponentInChildren<IDamageable>();
+                IDamageable damageble = collider.transform.parent.GetComponent<IDamageable>();
                 if (damageble != null)
                 {
                     damageble.Damage(currentAttack.damageAmount);

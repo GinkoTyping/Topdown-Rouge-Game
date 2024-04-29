@@ -14,8 +14,6 @@ namespace Ginko.CoreSystem
         {
             Core = transform.parent.GetComponent<Core>();
             Core.AddComponent(this);
-
-            //entityData = GetComponentInParent<Entity>().EntityData;
         }
     }
 }

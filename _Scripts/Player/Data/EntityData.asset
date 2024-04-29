@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2e219fdcadfa344fa54fbc5998811c1, type: 3}
   m_Name: EntityData
   m_EditorClassIdentifier: 
-  moveVelocity: 10
+  moveVelocity: 6
