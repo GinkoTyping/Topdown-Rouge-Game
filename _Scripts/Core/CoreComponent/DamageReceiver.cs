@@ -12,14 +12,18 @@ namespace Ginko.CoreSystem
         private GameObject damageParticles;
         [SerializeField]
         private AudioClip damageClip;
+        [SerializeField]
+        private Color damageColor;
 
         private Stats stats;
         private ParticleManager particleManager;
+        private PerspecrtiveSprite spriteHandler;
 
         public void Damage(float amount)
         {
             stats.Health.Decrease(amount);
             particleManager.StartParticlesWithRandomRotation(damageParticles);
+            spriteHandler?.ChangeSpriteColor(damageColor, 0.2f);
             SoundManager.Instance.PlaySound(damageClip);
         }
 
@@ -29,6 +33,7 @@ namespace Ginko.CoreSystem
 
             stats = Core.GetCoreComponent<Stats>();
             particleManager = Core.GetCoreComponent<ParticleManager>();
+            spriteHandler = Core.GetCoreComponent<PerspecrtiveSprite>();
         }
     }
 }

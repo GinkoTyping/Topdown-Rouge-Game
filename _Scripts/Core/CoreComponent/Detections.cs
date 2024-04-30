@@ -51,6 +51,7 @@ namespace Ginko.CoreSystem
         {
             if (IsDebug)
             {
+                Gizmos.color = Color.green;
                 Gizmos.DrawWireSphere(transform.position, hostileDetectionRadius);
                 Gizmos.DrawWireSphere(transform.position, closeRangeAttackRadius);
                 Gizmos.DrawLine(transform.position + (Vector3)rayCastOffset, transform.position + (Vector3)rayCastOffset + new Vector3(0, rayCastDistance, 0));

@@ -75,7 +75,7 @@ MonoBehaviour:
         name: ActionHitBoxData
         attackData:
         - name: Attack 1
-          debug: 1
+          debug: 0
           <HitBox>k__BackingField:
             serializedVersion: 2
             x: 0

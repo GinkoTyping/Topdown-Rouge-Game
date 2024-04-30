@@ -1126,7 +1126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e4833524457f2143bcdb0f0bf436563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsDebug: 1
+  IsDebug: 0
   hostileDetectionRadius: 0
   closeRangeAttackRadius: 0
   hostileLayer:
@@ -17138,6 +17138,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: e067d232-95c2-475d-89cb-2057864939b5
     m_ActionName: Gameplay/PrimaryAttack[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1986595663}
+        m_TargetAssemblyTypeName: PlayerInputEventHandler, Assembly-CSharp
+        m_MethodName: OnDash
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 96718540-50fc-42a6-9a9f-f6e878b0aec5
+    m_ActionName: Gameplay/New action
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
@@ -17157,6 +17173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Direction: {x: 0, y: 0}
   PrimaryAttack: 0
+  Dash: 0
 --- !u!61 &1986595664
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -17906,6 +17923,7 @@ MonoBehaviour:
   damageParticles: {fileID: 2629989054506311817, guid: 60dca40fcec24844ca0fc3f541745aeb,
     type: 3}
   damageClip: {fileID: 8300000, guid: a37f44cbf8c2a7443a3c361efa2f233a, type: 3}
+  damageColor: {r: 1, g: 0.35686275, b: 0.35686275, a: 1}
 --- !u!4 &2135344790 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2577585254963922481, guid: 63ee4b6a40c55fd429759b807832ded1,

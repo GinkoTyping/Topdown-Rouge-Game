@@ -12,5 +12,8 @@ namespace Ginko.Data
     {
         [SerializeField]
         public float moveVelocity;
+
+        public float dashVelocity;
+        public float dashDuaration;
     }
 }

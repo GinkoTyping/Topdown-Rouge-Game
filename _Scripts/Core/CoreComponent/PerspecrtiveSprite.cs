@@ -6,26 +6,32 @@ using UnityEngine;
 
 namespace Ginko.CoreSystem
 {
-    public class SpritesHandler : CoreComponent
+    public class PerspecrtiveSprite : CoreComponent
     {
-        private SpriteRenderer entitySpriteRenderer;
-        private SpriteRenderer baseWeaponSpriteRenderer;
-        private SpriteRenderer weaponSpriteRenderer;
         public Detections Detections
         {
             get => detections ??= Core.GetCoreComponent<Detections>();
         }
         private Detections detections;
 
-        private bool HasAddedSortingOrder;
+        private SpriteRenderer entitySpriteRenderer;
+        private SpriteRenderer baseWeaponSpriteRenderer;
+        private SpriteRenderer weaponSpriteRenderer;
+
+        private GameObject primaryWeapon;
+        private bool hasAddedSortingOrder;
+
+        private bool hasChangedColor;
+        private float resetColorTime;
 
         protected override void Awake()
         {
             base.Awake();
 
-            HasAddedSortingOrder = false;
+            hasAddedSortingOrder = false;
             entitySpriteRenderer = transform.parent.parent.GetComponent<SpriteRenderer>();
-            GameObject primaryWeapon = transform.parent.parent.Find("PrimaryWeapon")?.gameObject;
+            primaryWeapon = transform.parent.parent.Find("PrimaryWeapon")?.gameObject;
+
             if (primaryWeapon != null)
             {
                 baseWeaponSpriteRenderer = primaryWeapon.transform.Find("Base").GetComponent<SpriteRenderer>();
@@ -36,25 +42,56 @@ namespace Ginko.CoreSystem
         {
             base.LogicUpdate();
 
-            if (Detections.IsCollidingUpper && !HasAddedSortingOrder)
+            SetSpriteRenderOrder();
+            SetSpriteColor();
+        }
+
+        private void SetSpriteRenderOrder()
+        {
+            if (Detections.IsCollidingUpper && !hasAddedSortingOrder)
             {
-                HasAddedSortingOrder = true;
+                hasAddedSortingOrder = true;
                 entitySpriteRenderer.sortingOrder++;
-                if (baseWeaponSpriteRenderer != null && weaponSpriteRenderer != null)
+                if (primaryWeapon != null)
                 {
                     baseWeaponSpriteRenderer.sortingOrder++;
                     weaponSpriteRenderer.sortingOrder++;
                 }
             }
-            else if (!Detections.IsCollidingUpper && HasAddedSortingOrder)
+            else if (!Detections.IsCollidingUpper && hasAddedSortingOrder)
             {
-                HasAddedSortingOrder = false;
+                hasAddedSortingOrder = false;
                 entitySpriteRenderer.sortingOrder--;
-                if (baseWeaponSpriteRenderer != null && weaponSpriteRenderer != null)
+                if (primaryWeapon != null)
                 {
                     baseWeaponSpriteRenderer.sortingOrder--;
                     weaponSpriteRenderer.sortingOrder--;
                 }
+            }
+        }
+
+        private void SetSpriteColor()
+        {
+            if (hasChangedColor && Time.time >= resetColorTime)
+            {
+                entitySpriteRenderer.color = Color.white;
+                if (primaryWeapon != null)
+                {
+                    baseWeaponSpriteRenderer.color = Color.white;
+                    weaponSpriteRenderer.color = Color.white;
+                }
+            }
+        }
+        public void ChangeSpriteColor(Color color, float time)
+        {
+            hasChangedColor = true;
+            resetColorTime = Time.time + time;
+
+            entitySpriteRenderer.color = color;
+            if (primaryWeapon != null)
+            {
+                baseWeaponSpriteRenderer.color = color;
+                weaponSpriteRenderer.color = color;
             }
         }
     }

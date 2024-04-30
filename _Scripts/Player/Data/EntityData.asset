@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: EntityData
   m_EditorClassIdentifier: 
   moveVelocity: 6
+  dashVelocity: 20
+  dashDuaration: 0.5
