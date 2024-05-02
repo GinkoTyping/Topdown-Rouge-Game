@@ -20,17 +20,21 @@ namespace Ginko.CoreSystem
 
         [Header("Sprite Render")]
         [SerializeField] float rayCastDistance;
+        [SerializeField] float hidingDetectionDistance;
         [SerializeField] Vector2 rayCastOffset;
         [SerializeField] LayerMask obstableLayer;
+        [SerializeField] LayerMask bigObjectLayer;
 
 
         public bool IsHostileDetected {  get; private set; }
         public bool IsInMeleeAttackRange { get; private set; }
         public bool IsCollidingUpper { get; private set; }
 
-        public bool SetDetections(float radius)
+        public Action<Collider2D[]> OnHidingBehind;
+
+        public bool SetDetections(float radius, LayerMask layerMask)
         {
-            Collider2D[] detections = Physics2D.OverlapCircleAll(transform.position, radius, hostileLayer);
+            Collider2D[] detections = Physics2D.OverlapCircleAll(transform.position, radius, layerMask);
             return detections.Length > 0;
         }
 
@@ -42,9 +46,18 @@ namespace Ginko.CoreSystem
 
         private void Update()
         {
-            IsHostileDetected = SetDetections(hostileDetectionRadius);
-            IsInMeleeAttackRange = SetDetections(closeRangeAttackRadius);
+            IsHostileDetected = SetDetections(hostileDetectionRadius, hostileLayer);
+            IsInMeleeAttackRange = SetDetections(closeRangeAttackRadius, hostileLayer);
+
             IsCollidingUpper = SetRayCastDetection(rayCastOffset, rayCastDistance);
+
+            EmitHidingBehindEvent();
+        }
+
+        private void EmitHidingBehindEvent()
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, hidingDetectionDistance, bigObjectLayer);
+            OnHidingBehind.Invoke(colliders);
         }
 
         private void OnDrawGizmos()

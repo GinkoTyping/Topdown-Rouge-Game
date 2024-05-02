@@ -24,6 +24,8 @@ namespace Ginko.CoreSystem
         private bool hasChangedColor;
         private float resetColorTime;
 
+        private Collider2D[] lastHidingObjects;
+
         protected override void Awake()
         {
             base.Awake();
@@ -44,6 +46,15 @@ namespace Ginko.CoreSystem
 
             SetSpriteRenderOrder();
             SetSpriteColor();
+        }
+        private void OnEnable()
+        {
+            Detections.OnHidingBehind += HidingBehindSprite;
+        }
+
+        private void OnDisable()
+        {
+            Detections.OnHidingBehind -= HidingBehindSprite;
         }
 
         private void SetSpriteRenderOrder()
@@ -92,6 +103,24 @@ namespace Ginko.CoreSystem
             {
                 baseWeaponSpriteRenderer.color = color;
                 weaponSpriteRenderer.color = color;
+            }
+        }
+        public void HidingBehindSprite(Collider2D[] colliders)
+        {
+            if (colliders.Length > 0)
+            {
+                lastHidingObjects = colliders;
+                foreach (Collider2D collider in lastHidingObjects)
+                {
+                    collider.GetComponent<SpriteHandler>().HideSprite(true);
+                }
+            } else if (lastHidingObjects?.Length > 0)
+            {
+                foreach (Collider2D collider in lastHidingObjects)
+                {
+                    collider.GetComponent<SpriteHandler>().HideSprite(false);
+                }
+                lastHidingObjects = null;
             }
         }
     }

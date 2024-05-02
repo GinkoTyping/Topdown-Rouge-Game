@@ -6,7 +6,8 @@ public class EnemySpawn : MonoBehaviour
 {
     [SerializeField]
     public GameObject skeleton;
-
+    [SerializeField]
+    public bool isSpawning;
     [SerializeField]
     public bool isDebug;
     [SerializeField]
@@ -14,7 +15,7 @@ public class EnemySpawn : MonoBehaviour
 
     private void Start()
     {
-        if (spawnPositions.Length > 0)
+        if (spawnPositions.Length > 0 && isSpawning)
         {
             PoolManager.Instance.SetCurrrentObject(skeleton);
             foreach (Vector2 pos in spawnPositions)
