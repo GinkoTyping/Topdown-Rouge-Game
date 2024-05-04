@@ -392,7 +392,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 90b79a938a074aa4a86928e50972746c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -589,11 +589,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Grass D (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4331307297609962461, guid: fd980c817c63af4458df40a61e529e93,
-        type: 3}
-      propertyPath: m_Layer
-      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9132832536761082797, guid: fd980c817c63af4458df40a61e529e93,
         type: 3}
@@ -811,11 +806,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Bush T1 (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 2055102311959635369, guid: a0a71fda412ad0941ab44f1732ea4c1e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: a0a71fda412ad0941ab44f1732ea4c1e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -865,11 +855,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2055102312182832482, guid: a0a71fda412ad0941ab44f1732ea4c1e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -968,11 +953,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Bush T2 (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 2055102311959635369, guid: 5b94bf9107369684a8153921f763da38,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 5b94bf9107369684a8153921f763da38,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1022,11 +1002,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2055102312182832482, guid: 5b94bf9107369684a8153921f763da38,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2173,7 +2148,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.17, y: 13.59, z: -10}
+  m_LocalPosition: {x: 14, y: 13.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2233,11 +2208,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Bush T6
       objectReference: {fileID: 0}
-    - target: {fileID: 2055102311959635369, guid: 39562e88b536753438a3153c5fbdf7b8,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 39562e88b536753438a3153c5fbdf7b8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2288,11 +2258,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2055102312182832482, guid: 39562e88b536753438a3153c5fbdf7b8,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2322,11 +2287,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Bush T2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2055102311959635369, guid: 5b94bf9107369684a8153921f763da38,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 5b94bf9107369684a8153921f763da38,
         type: 3}
@@ -2377,11 +2337,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2055102312182832482, guid: 5b94bf9107369684a8153921f763da38,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8895,7 +8850,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 90b79a938a074aa4a86928e50972746c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9074,11 +9029,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Bush T2 (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 2055102311959635369, guid: 5b94bf9107369684a8153921f763da38,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 5b94bf9107369684a8153921f763da38,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9128,11 +9078,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2055102312182832482, guid: 5b94bf9107369684a8153921f763da38,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12262,7 +12207,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skeleton: {fileID: 5617566462948286229, guid: 55c9b8844851ff243bf53491aad7797f,
     type: 3}
-  isSpawning: 0
+  isSpawning: 1
   isDebug: 0
   spawnPositions:
   - {x: 7, y: 3}
@@ -12644,11 +12589,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Bush T4
       objectReference: {fileID: 0}
-    - target: {fileID: 2055102311959635369, guid: 4bd7b41600416b54395bf9936a05dc8e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 4bd7b41600416b54395bf9936a05dc8e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12698,11 +12638,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2055102312182832482, guid: 4bd7b41600416b54395bf9936a05dc8e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13404,11 +13339,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Bush T4 (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 2055102311959635369, guid: 4bd7b41600416b54395bf9936a05dc8e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 4bd7b41600416b54395bf9936a05dc8e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13458,11 +13388,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2055102312182832482, guid: 4bd7b41600416b54395bf9936a05dc8e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13533,25 +13458,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750450, guid: 41ea6afb203377e42995d7d016ea5907,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 7947911505737750455, guid: 41ea6afb203377e42995d7d016ea5907,
         type: 3}
       propertyPath: m_Name
       value: PF Props Pillar
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750455, guid: 41ea6afb203377e42995d7d016ea5907,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505844789836, guid: 41ea6afb203377e42995d7d016ea5907,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15400,11 +15310,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Bush T1 (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 2055102311959635369, guid: a0a71fda412ad0941ab44f1732ea4c1e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: a0a71fda412ad0941ab44f1732ea4c1e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -15455,11 +15360,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2055102312182832482, guid: a0a71fda412ad0941ab44f1732ea4c1e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15494,7 +15394,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8116278}
   - {fileID: 1908873919}
   - {fileID: 3016693506960020626}
   - {fileID: 463920094}
@@ -15509,6 +15408,7 @@ Transform:
   - {fileID: 2135344790}
   - {fileID: 296143007}
   - {fileID: 4890839265911449746}
+  - {fileID: 8116278}
   m_Father: {fileID: 593774944}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1587425181
@@ -15598,11 +15498,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Bush T2 (4)
       objectReference: {fileID: 0}
-    - target: {fileID: 2055102311959635369, guid: 5b94bf9107369684a8153921f763da38,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 5b94bf9107369684a8153921f763da38,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -15652,11 +15547,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2055102312182832482, guid: 5b94bf9107369684a8153921f763da38,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16028,11 +15918,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Bush T1 (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 2055102311959635369, guid: a0a71fda412ad0941ab44f1732ea4c1e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: a0a71fda412ad0941ab44f1732ea4c1e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16083,11 +15968,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2055102312182832482, guid: a0a71fda412ad0941ab44f1732ea4c1e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16105,11 +15985,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Bush T1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2055102311959635369, guid: a0a71fda412ad0941ab44f1732ea4c1e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: a0a71fda412ad0941ab44f1732ea4c1e,
         type: 3}
@@ -16160,11 +16035,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2055102312182832482, guid: a0a71fda412ad0941ab44f1732ea4c1e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16411,11 +16281,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Bush T1 (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 2055102311959635369, guid: a0a71fda412ad0941ab44f1732ea4c1e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: a0a71fda412ad0941ab44f1732ea4c1e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16465,11 +16330,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2055102312182832482, guid: a0a71fda412ad0941ab44f1732ea4c1e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16697,11 +16557,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Bush T2 (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 2055102311959635369, guid: 5b94bf9107369684a8153921f763da38,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 5b94bf9107369684a8153921f763da38,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16751,11 +16606,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2055102312182832482, guid: 5b94bf9107369684a8153921f763da38,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16812,6 +16662,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2788393608b31e344a4632722379458a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tintFadeSpeed: 5
 --- !u!1001 &1966273409
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17002,7 +16853,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 90b79a938a074aa4a86928e50972746c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -17043,7 +16894,7 @@ Transform:
   m_GameObject: {fileID: 1986595657}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.17, y: 13.59, z: 0}
+  m_LocalPosition: {x: 14, y: 13.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -17282,20 +17133,20 @@ Transform:
   m_Children:
   - {fileID: 1136260236}
   - {fileID: 373990875}
-  - {fileID: 294089002}
-  - {fileID: 1524434820}
-  - {fileID: 1728458806}
   - {fileID: 2125030037}
+  - {fileID: 120668944}
+  - {fileID: 1866249791}
+  - {fileID: 1728458806}
+  - {fileID: 294089002}
   - {fileID: 1724252525856910681}
   - {fileID: 132115172}
   - {fileID: 798099617}
   - {fileID: 1609946892}
   - {fileID: 1949200829}
+  - {fileID: 1524434820}
   - {fileID: 1514526920}
   - {fileID: 7316910663394427522}
   - {fileID: 1284575465}
-  - {fileID: 1866249791}
-  - {fileID: 120668944}
   - {fileID: 535201682}
   m_Father: {fileID: 593774944}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -17520,11 +17371,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Bush T1
       objectReference: {fileID: 0}
-    - target: {fileID: 2055102311959635369, guid: a0a71fda412ad0941ab44f1732ea4c1e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: a0a71fda412ad0941ab44f1732ea4c1e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -17574,11 +17420,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2055102312182832482, guid: a0a71fda412ad0941ab44f1732ea4c1e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17752,25 +17593,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750450, guid: cfa0a5ef94fb05d4f97d095a05dc55c5,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 7947911505737750455, guid: cfa0a5ef94fb05d4f97d095a05dc55c5,
         type: 3}
       propertyPath: m_Name
       value: PF Props Pillar Broken
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750455, guid: cfa0a5ef94fb05d4f97d095a05dc55c5,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505844789836, guid: cfa0a5ef94fb05d4f97d095a05dc55c5,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17899,7 +17725,7 @@ MonoBehaviour:
   damageParticles: {fileID: 2629989054506311817, guid: 60dca40fcec24844ca0fc3f541745aeb,
     type: 3}
   damageClip: {fileID: 8300000, guid: a37f44cbf8c2a7443a3c361efa2f233a, type: 3}
-  damageColor: {r: 1, g: 0.35686275, b: 0.35686275, a: 1}
+  damageColor: {r: 1, g: 0.1254902, b: 0, a: 1}
 --- !u!4 &2135344790 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2577585254963922481, guid: 63ee4b6a40c55fd429759b807832ded1,
@@ -18287,11 +18113,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Bush T2
       objectReference: {fileID: 0}
-    - target: {fileID: 2055102311959635369, guid: 5b94bf9107369684a8153921f763da38,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 5b94bf9107369684a8153921f763da38,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18341,11 +18162,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2055102312182832482, guid: 5b94bf9107369684a8153921f763da38,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19367,25 +19183,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750450, guid: 41ea6afb203377e42995d7d016ea5907,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 7947911505737750455, guid: 41ea6afb203377e42995d7d016ea5907,
         type: 3}
       propertyPath: m_Name
       value: PF Props Pillar
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750455, guid: 41ea6afb203377e42995d7d016ea5907,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505844789836, guid: 41ea6afb203377e42995d7d016ea5907,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19658,30 +19459,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1996238589}
     m_Modifications:
-    - target: {fileID: 2055102311959635368, guid: 0505844a909d2ea4996c19b67b2a40b9,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635369, guid: 0505844a909d2ea4996c19b67b2a40b9,
         type: 3}
       propertyPath: m_Name
       value: PF Props Bush T3
       objectReference: {fileID: 0}
-    - target: {fileID: 2055102311959635369, guid: 0505844a909d2ea4996c19b67b2a40b9,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 0505844a909d2ea4996c19b67b2a40b9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.97
+      value: 14.999
       objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 0505844a909d2ea4996c19b67b2a40b9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.56
+      value: 7.648
       objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 0505844a909d2ea4996c19b67b2a40b9,
         type: 3}
@@ -19723,11 +19514,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2055102312182832482, guid: 0505844a909d2ea4996c19b67b2a40b9,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -19751,11 +19537,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Bush T5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2055102311959635369, guid: 9fb66d8c9d3b5194a82e9eed65a54afb,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 9fb66d8c9d3b5194a82e9eed65a54afb,
         type: 3}
@@ -19806,11 +19587,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2055102312182832482, guid: 9fb66d8c9d3b5194a82e9eed65a54afb,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19875,25 +19651,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750450, guid: cfa0a5ef94fb05d4f97d095a05dc55c5,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 7947911505737750455, guid: cfa0a5ef94fb05d4f97d095a05dc55c5,
         type: 3}
       propertyPath: m_Name
       value: PF Props Pillar Broken
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750455, guid: cfa0a5ef94fb05d4f97d095a05dc55c5,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505844789836, guid: cfa0a5ef94fb05d4f97d095a05dc55c5,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -1,13 +1,11 @@
-using Ginko.StateMachineSystem;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Ginko.CoreSystem
 {
     public class PerspecrtiveSprite : CoreComponent
     {
+        [SerializeField]
+        private float tintFadeSpeed;
         public Detections Detections
         {
             get => detections ??= Core.GetCoreComponent<Detections>();
@@ -45,10 +43,11 @@ namespace Ginko.CoreSystem
             base.LogicUpdate();
 
             SetSpriteRenderOrder();
-            SetSpriteColor();
+            UpdateSprite();
         }
         private void OnEnable()
         {
+            ChangeSpritesColor(Color.clear);
             Detections.OnHidingBehind += HidingBehindSprite;
         }
 
@@ -81,29 +80,34 @@ namespace Ginko.CoreSystem
             }
         }
 
-        private void SetSpriteColor()
+        private void UpdateSprite()
         {
-            if (hasChangedColor && Time.time >= resetColorTime)
+            if (hasChangedColor)
             {
-                entitySpriteRenderer.color = Color.white;
-                if (primaryWeapon != null)
+                Color currentColor = entitySpriteRenderer.material.GetColor("_Tint");
+                if (currentColor.a > 0)
                 {
-                    baseWeaponSpriteRenderer.color = Color.white;
-                    weaponSpriteRenderer.color = Color.white;
+                    currentColor.a = Mathf.Clamp01(currentColor.a - tintFadeSpeed * Time.deltaTime);
+                    ChangeSpritesColor(currentColor);
+                }
+                else
+                {
+                    hasChangedColor = false;
                 }
             }
         }
-        public void ChangeSpriteColor(Color color, float time)
+
+        public void TintSprite(Color color)
         {
             hasChangedColor = true;
-            resetColorTime = Time.time + time;
+            ChangeSpritesColor(color);
+        }
 
-            entitySpriteRenderer.color = color;
-            if (primaryWeapon != null)
-            {
-                baseWeaponSpriteRenderer.color = color;
-                weaponSpriteRenderer.color = color;
-            }
+        private void ChangeSpritesColor(Color color)
+        {
+            entitySpriteRenderer.material.SetColor("_Tint", color);
+            baseWeaponSpriteRenderer?.material.SetColor("_Tint", color);
+            weaponSpriteRenderer?.material.SetColor("_Tint", color);
         }
         public void HidingBehindSprite(Collider2D[] colliders)
         {

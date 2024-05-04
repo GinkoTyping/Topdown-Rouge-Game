@@ -348,7 +348,7 @@ MonoBehaviour:
   damageParticles: {fileID: 2629989054506311817, guid: 60dca40fcec24844ca0fc3f541745aeb,
     type: 3}
   damageClip: {fileID: 8300000, guid: a37f44cbf8c2a7443a3c361efa2f233a, type: 3}
-  damageColor: {r: 1, g: 0.3537736, b: 0.3537736, a: 1}
+  damageColor: {r: 1, g: 0.1254902, b: 0, a: 1}
 --- !u!1 &5143338600575468917
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,7 +523,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 90b79a938a074aa4a86928e50972746c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1031,6 +1031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2788393608b31e344a4632722379458a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tintFadeSpeed: 5
 --- !u!1 &8543728829367535400
 GameObject:
   m_ObjectHideFlags: 0
@@ -1082,7 +1083,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   rayCastDistance: 1
+  hidingDetectionDistance: 0
   rayCastOffset: {x: 0, y: 0}
   obstableLayer:
     serializedVersion: 2
     m_Bits: 2048
+  bigObjectLayer:
+    serializedVersion: 2
+    m_Bits: 0

@@ -23,7 +23,7 @@ namespace Ginko.CoreSystem
         {
             stats.Health.Decrease(amount);
             particleManager.StartParticlesWithRandomRotation(damageParticles);
-            spriteHandler?.ChangeSpriteColor(damageColor, 0.2f);
+            spriteHandler?.TintSprite(damageColor);
             SoundManager.Instance.PlaySound(damageClip);
         }
 
