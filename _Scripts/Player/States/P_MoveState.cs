@@ -1,5 +1,7 @@
-﻿using Ginko.PlayerSystem;
+﻿using Ginko.CoreSystem;
+using Ginko.PlayerSystem;
 using Ginko.StateMachineSystem;
+using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 
 namespace Ginko.StateMachineSystem
@@ -7,11 +9,14 @@ namespace Ginko.StateMachineSystem
     public class P_MoveState : MoveState
     {
         private Player player;
+        public Interaction interaction;
+
         private float dashEndTime;
 
         public P_MoveState(Entity entity, FiniteStateMachine stateMachine) : base(entity, stateMachine)
         {
             player = (Player)entity;
+            interaction = entity.Core.GetCoreComponent<Interaction>();
         }
 
         public override void LogicUpdate()
@@ -22,6 +27,8 @@ namespace Ginko.StateMachineSystem
             {
                 dashEndTime = Time.time + Entity.EntityData.dashDuaration;
             }
+
+            interaction.CheckIfShowInteractHint();
         }
 
         protected override bool IsToIdleState()
