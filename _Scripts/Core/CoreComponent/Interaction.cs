@@ -79,14 +79,23 @@ namespace Ginko.CoreSystem
             }
         }
 
+        private void OnInteractEnd()
+        {
+            isInteracting = false;
+            loopBar.OnLoadingEnd -= OnInteractEnd;
+        }
         public void InteractItem()
         {
-            isInteracting = true;
+            if (!isInteracting && currentInteractingItem.isInteractive)
+            {
+                isInteracting = true;
 
-            SwitchInteractHint(false);
-            InitLoopBar();
+                SwitchInteractHint(false);
+                InitLoopBar();
 
-            currentInteractingItem.Interact(this);
+                loopBar.OnLoadingEnd += OnInteractEnd;
+                currentInteractingItem.Interact(this);
+            }
         }
     }
 }

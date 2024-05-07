@@ -12,12 +12,16 @@ public class Chest : MonoBehaviour, IInteract
     public Vector3 interactionIconOffset;
     [SerializeField]
     public Sprite openedChectSprite;
+    [SerializeField]
+    public AudioClip seachingAudio;
 
     public Vector2 interactionIconPos { get; private set; }
     public float loadingTime { get; private set; }
+    public bool isInteractive { get; private set; }
 
     private Interaction interactionComp;
     private SpriteRenderer spriteRenderer;
+
 
     void Awake()
     {
@@ -25,6 +29,7 @@ public class Chest : MonoBehaviour, IInteract
         loadingTime = openingTime;
 
         spriteRenderer = GetComponent<SpriteRenderer>();
+        isInteractive = true;
     }
 
     // Update is called once per frame
@@ -35,13 +40,20 @@ public class Chest : MonoBehaviour, IInteract
 
     private void OpenChest()
     {
+        isInteractive = false;
+
         spriteRenderer.sprite = openedChectSprite;
+        SoundManager.Instance.StopSound();
         interactionComp.loopBar.OnLoadingEnd -= OpenChest;
     }
 
     public void Interact(Interaction comp)
     {
-        interactionComp = comp;
-        comp.loopBar.OnLoadingEnd += OpenChest;
+        if (isInteractive)
+        {
+            interactionComp = comp;
+            comp.loopBar.OnLoadingEnd += OpenChest;
+            SoundManager.Instance.PlaySound(seachingAudio);
+        }
     }
 }

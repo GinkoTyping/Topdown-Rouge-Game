@@ -7,5 +7,6 @@ public interface IInteract
 {
     Vector2 interactionIconPos {  get; }
     float loadingTime {  get; }
+    bool isInteractive {  get; }
     void Interact(Interaction interactionComp);
 }

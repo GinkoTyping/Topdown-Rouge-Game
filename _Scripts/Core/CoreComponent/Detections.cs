@@ -47,9 +47,11 @@ namespace Ginko.CoreSystem
             return detections.Length > 0;
         }
 
-        public bool GetDetections(float radius, LayerMask layerMask, string tagName, out Collider2D[] detections)
+        public bool GetInteractions(out Collider2D[] detections)
         {
-            detections = Physics2D.OverlapCircleAll(transform.position, radius, layerMask).Where(x => x.tag == tagName).ToArray();
+            detections = Physics2D.OverlapCircleAll(transform.position, interactionDistance, interactionLayer)
+                .Where(x => x.tag == "Interactive" && x.GetComponent<IInteract>().isInteractive)
+                .ToArray();
             return detections.Length > 0;
         }
 
@@ -64,7 +66,7 @@ namespace Ginko.CoreSystem
         {
             IsHostileDetected = GetDetections(hostileDetectionRadius, hostileLayer);
             IsInMeleeAttackRange = GetDetections(closeRangeAttackRadius, hostileLayer);
-            IsAbleToInteract = GetDetections(interactionDistance, interactionLayer, "Interactive",out interactiveObjects);
+            IsAbleToInteract = GetInteractions(out interactiveObjects);
 
             IsCollidingUpper = SetRayCastDetection(rayCastOffset, rayCastDistance);
 
