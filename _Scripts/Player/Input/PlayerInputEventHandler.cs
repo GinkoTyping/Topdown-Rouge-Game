@@ -7,10 +7,10 @@ using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PlayerInputEventHandler : MonoBehaviour
 {
-    public Vector2 Direction;
-    public bool PrimaryAttack;
-    public bool Dash;
-    public bool Interact;
+    public Vector2 Direction { get; private set; }
+    public bool PrimaryAttack {  get; private set; }
+    public bool Dash { get; private set; }
+    public bool Interact { get; private set; }
 
     public void OnMovement(InputAction.CallbackContext context)
     {
@@ -59,6 +59,14 @@ public class PlayerInputEventHandler : MonoBehaviour
 
         }
         else if (context.canceled)
+        {
+            Interact = false;
+        }
+    }
+
+    public void UseInteractSignal()
+    {
+        if (Interact)
         {
             Interact = false;
         }

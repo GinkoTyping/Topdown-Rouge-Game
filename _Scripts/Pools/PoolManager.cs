@@ -8,10 +8,10 @@ using UnityEngine.Pool;
 
 public class PoolManager : MonoBehaviour
 {
-    public GameObject currentObject;
+    public static PoolManager Instance { get; private set; }
+    public ObjectPool<GameObject> Pool { get; private set; }
 
-    public static PoolManager Instance {  get; private set; }
-    public ObjectPool<GameObject> Pool {  get; private set; }
+    private GameObject currentObject;
     private GameObject EnemiesHolder;
 
     private void Awake()

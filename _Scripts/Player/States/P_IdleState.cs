@@ -34,6 +34,12 @@ namespace Ginko.StateMachineSystem
             IsToMoveState = player.MoveDirection != Vector2.zero;
 
             interaction.CheckIfShowInteractHint();
+
+            if (player.InputHandler.Interact)
+            {
+                player.InputHandler.UseInteractSignal();
+                interaction.InteractItem();
+            }
         }
     }
 }

@@ -1,3 +1,4 @@
+using Ginko.CoreSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,5 +6,6 @@ using UnityEngine;
 public interface IInteract
 {
     Vector2 interactionIconPos {  get; }
-    void Interact();
+    float loadingTime {  get; }
+    void Interact(Interaction interactionComp);
 }
