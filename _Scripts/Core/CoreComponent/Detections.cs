@@ -15,18 +15,21 @@ namespace Ginko.CoreSystem
         [SerializeField] bool IsDebug;
 
         [Header("Hostile Detection")]
+        [SerializeField] public bool ActiveHostileDetection;
         [SerializeField] public float hostileDetectionRadius;
         [SerializeField] public float closeRangeAttackRadius;
         [SerializeField] public LayerMask hostileLayer;
 
         [Header("Sprite Render")]
-        [SerializeField] public float rayCastDistance;
+        [SerializeField] public bool ActiveSpriteRenderDetection;
         [SerializeField] public float hidingDetectionDistance;
-        [SerializeField] public Vector2 rayCastOffset;
+        [SerializeField] public Vector3 upperDetectionOffset;
+        [SerializeField] public Vector3 upperDetectionSize;
         [SerializeField] public LayerMask obstableLayer;
         [SerializeField] public LayerMask bigObjectLayer;
 
         [Header("Interaction")]
+        [SerializeField] public bool ActiveInteractionDetection;
         [SerializeField] public float interactionDistance;
         [SerializeField] public LayerMask interactionLayer;
         [SerializeField] public string tagName;
@@ -56,19 +59,29 @@ namespace Ginko.CoreSystem
         }
 
 
-        public bool SetRayCastDetection(Vector2 offset, float distance)
+        public bool GetBoxDetections(Vector2 offset, Vector2 size)
         {
-            RaycastHit2D detection = Physics2D.Raycast(transform.position + (Vector3)offset, Vector2.up, distance, obstableLayer);
-            return detection.collider != null;
+            Collider2D[] colliders = Physics2D.OverlapBoxAll(offset, size, 0, obstableLayer);
+            return colliders.Length > 0;
         }
 
         private void Update()
         {
-            IsHostileDetected = GetDetections(hostileDetectionRadius, hostileLayer);
-            IsInMeleeAttackRange = GetDetections(closeRangeAttackRadius, hostileLayer);
-            IsAbleToInteract = GetInteractions(out interactiveObjects);
+            if (ActiveHostileDetection)
+            {
+                IsHostileDetected = GetDetections(hostileDetectionRadius, hostileLayer);
+                IsInMeleeAttackRange = GetDetections(closeRangeAttackRadius, hostileLayer);
+            }
 
-            IsCollidingUpper = SetRayCastDetection(rayCastOffset, rayCastDistance);
+            if (ActiveSpriteRenderDetection)
+            {
+                IsCollidingUpper = GetBoxDetections(upperDetectionOffset, upperDetectionSize);
+            }
+
+            if (ActiveInteractionDetection)
+            {
+                IsAbleToInteract = GetInteractions(out interactiveObjects);
+            }
 
             EmitHidingBehindEvent();
         }
@@ -87,7 +100,7 @@ namespace Ginko.CoreSystem
                 Gizmos.DrawWireSphere(transform.position, hostileDetectionRadius);
                 Gizmos.DrawWireSphere(transform.position, closeRangeAttackRadius);
                 Gizmos.DrawWireSphere(transform.position, interactionDistance);
-                Gizmos.DrawLine(transform.position + (Vector3)rayCastOffset, transform.position + (Vector3)rayCastOffset + new Vector3(0, rayCastDistance, 0));
+                Gizmos.DrawWireCube(transform.position + upperDetectionOffset, upperDetectionSize);
             }
         }
     }

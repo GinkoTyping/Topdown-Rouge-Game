@@ -10,17 +10,17 @@ namespace Ginko.Weapons.Components
         {
             base.Start();
 
-            EventHandler.OnEnterAttackPhase += PlayAttackAudio;
+            EventHandler.OnAttackAction += PlayAttackAudio;
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
 
-            EventHandler.OnEnterAttackPhase -= PlayAttackAudio;
+            EventHandler.OnAttackAction -= PlayAttackAudio;
         }
 
-        private void PlayAttackAudio(AttackPhases attackPhases)
+        private void PlayAttackAudio()
         {
             SoundManager.Instance.PlaySound(currentAttackData.attackAudio);
         }

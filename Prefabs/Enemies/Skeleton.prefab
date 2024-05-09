@@ -1077,17 +1077,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDebug: 0
+  ActiveHostileDetection: 1
   hostileDetectionRadius: 5
   closeRangeAttackRadius: 1.5
   hostileLayer:
     serializedVersion: 2
     m_Bits: 512
-  rayCastDistance: 1
+  ActiveSpriteRenderDetection: 0
   hidingDetectionDistance: 0
-  rayCastOffset: {x: 0, y: 0}
+  upperDetectionOffset: {x: 0, y: 0, z: 0}
+  upperDetectionSize: {x: 0, y: 0, z: 0}
   obstableLayer:
     serializedVersion: 2
     m_Bits: 2048
   bigObjectLayer:
     serializedVersion: 2
     m_Bits: 0
+  ActiveInteractionDetection: 0
+  interactionDistance: 0
+  interactionLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  tagName: 
+  interactiveObjects: []

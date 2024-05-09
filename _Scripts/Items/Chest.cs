@@ -13,7 +13,10 @@ public class Chest : MonoBehaviour, IInteract
     [SerializeField]
     public Sprite openedChectSprite;
     [SerializeField]
-    public AudioClip seachingAudio;
+    public AudioClip audioOnSearch;
+    [SerializeField]
+    public AudioClip audioOnOpen;
+
 
     public Vector2 interactionIconPos { get; private set; }
     public float loadingTime { get; private set; }
@@ -43,8 +46,10 @@ public class Chest : MonoBehaviour, IInteract
         isInteractive = false;
 
         spriteRenderer.sprite = openedChectSprite;
-        SoundManager.Instance.StopSound();
         interactionComp.loopBar.OnLoadingEnd -= OpenChest;
+
+        SoundManager.Instance.StopSound();
+        SoundManager.Instance.PlaySound(audioOnOpen);
     }
 
     public void Interact(Interaction comp)
@@ -53,7 +58,7 @@ public class Chest : MonoBehaviour, IInteract
         {
             interactionComp = comp;
             comp.loopBar.OnLoadingEnd += OpenChest;
-            SoundManager.Instance.PlaySound(seachingAudio);
+            SoundManager.Instance.PlaySound(audioOnSearch);
         }
     }
 }
