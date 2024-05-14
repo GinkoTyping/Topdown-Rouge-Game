@@ -12,6 +12,10 @@ public class PlayerInputEventHandler : MonoBehaviour
     public bool Dash { get; private set; }
     public bool Interact { get; private set; }
 
+    public Vector2 MousePosition { get; private set; }
+    public bool Select { get; private set; }
+    public bool Test {  get; private set; }
+
     public void OnMovement(InputAction.CallbackContext context)
     {
         Direction = context.ReadValue<Vector2>();
@@ -70,5 +74,51 @@ public class PlayerInputEventHandler : MonoBehaviour
         {
             Interact = false;
         }
+    }
+
+    public void OnMouseMove(InputAction.CallbackContext context)
+    {
+        MousePosition = Camera.main.ScreenToWorldPoint((Vector3)context.ReadValue<Vector2>());
+    }
+
+    public void OnSelect(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            Select = true;
+        }
+        else if (context.performed)
+        {
+
+        }
+        else if (context.canceled)
+        {
+            Select = false;
+        }
+    }
+
+    public void useSelectSignal()
+    {
+        Select = false;
+    }
+
+    public void OnTest(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            Test = true;
+        }
+        else if (context.performed)
+        {
+
+        }
+        else if (context.canceled)
+        {
+            Test = false;
+        }
+    }
+    public void useTestSignal()
+    {
+        Test = false;
     }
 }
