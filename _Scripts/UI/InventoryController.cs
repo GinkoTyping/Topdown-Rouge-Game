@@ -13,19 +13,24 @@ public class InventoryController : MonoBehaviour
     public InventoryItemSO[] inventoryItemsData;
 
     public event Action onInventoryChange;
+    public Grid selectedInventory;
+    public InventoryItem selectedItem;
+    public float scaleParam;
 
     private PlayerInputEventHandler playerInputEventHandler;
-    public Grid selectedInventory;
-
-    public InventoryItem selectedItem;
     private RectTransform selectedItemTransform;
+    private RectTransform canvasTransform;
+
     private void Start()
     {
         playerInputEventHandler = Player.Instance.InputHandler;
+        canvasTransform = GetComponent<RectTransform>();
     }
 
     private void Update()
     {
+        scaleParam = canvasTransform.localScale.x;
+
         UpdateSelectedItem();
         HandleSelectItem();
 
@@ -86,11 +91,11 @@ public class InventoryController : MonoBehaviour
     {
         Vector2 mousePosition = playerInputEventHandler.MousePosition;
 
-        Vector2 relativePostion = item == null 
-            ? mousePosition 
+        Vector2 relativePostion = item == null
+            ? mousePosition
             : new Vector2(
-                mousePosition.x - (float)(item.data.size.x - 1) * selectedInventory.tileSize / 2, 
-                mousePosition.y + (float)(item.data.size.y - 1) * selectedInventory.tileSize / 2);
+                mousePosition.x - (float)(item.data.size.x - 1) * (selectedInventory.tileSize * scaleParam) / 2,
+                mousePosition.y + (float)(item.data.size.y - 1) * (selectedInventory.tileSize * scaleParam) / 2);
 
         return selectedInventory.GetGridRelativePosition(relativePostion);
     }

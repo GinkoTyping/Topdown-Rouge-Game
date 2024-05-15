@@ -26,7 +26,9 @@ public class InventoryItem : MonoBehaviour
         Vector2 size = new Vector2(0, 0);
         size.x = data.size.x * tileSize;
         size.y = data.size.y * tileSize;
-        GetComponent<RectTransform>().sizeDelta = size;
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        rectTransform.sizeDelta = size;
+        rectTransform.localScale = Vector3.one;
         GetComponent<Image>().sprite = itemSO.sprite;
 
         // …Ë÷√±≥æ∞

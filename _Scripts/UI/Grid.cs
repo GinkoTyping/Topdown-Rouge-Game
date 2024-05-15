@@ -63,11 +63,11 @@ public class Grid : MonoBehaviour
     }
     public Vector2Int GetGridRelativePosition(Vector2 mousePosition)
     {
-        positionOnGrid.x = mousePosition.x - inventoryRectTransform.position.x;
-        positionOnGrid.y = mousePosition.y - inventoryRectTransform.position.y;
+        positionOnGrid.x = mousePosition.x - gridRectTransform.position.x;
+        positionOnGrid.y = mousePosition.y - gridRectTransform.position.y;
 
-        tileGridPosition.x = Mathf.FloorToInt(positionOnGrid.x / tileSize);
-        tileGridPosition.y = -Mathf.FloorToInt(positionOnGrid.y / tileSize) - 1;
+        tileGridPosition.x = (int)Math.Floor(positionOnGrid.x / (inventoryController.scaleParam * tileSize));
+        tileGridPosition.y = (int)-Math.Floor(positionOnGrid.y / (inventoryController.scaleParam * tileSize)) - 1;
 
         return tileGridPosition;
     }
@@ -183,5 +183,25 @@ public class Grid : MonoBehaviour
         }
 
         return true;
+    }
+
+    private Vector2Int? GetSpaceForItem(InventoryItem item)
+    {
+        int maxWidth = inventorySize.x - item.data.size.x + 1;
+        int maxHeight = inventorySize.y - item.data.size.y + 1;
+        
+        for (int x = 0; x < maxWidth; x++)
+        {
+            for (int y = 0; y < maxHeight; y++)
+            {
+                Vector2Int output = new Vector2Int(x, y);
+                if (CheckItemOverlap(item, output))
+                {
+                    return output;
+                }
+            }
+        }
+
+        return null;
     }
 }
