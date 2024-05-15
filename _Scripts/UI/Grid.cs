@@ -9,6 +9,7 @@ using static UnityEditor.Progress;
 public class Grid : MonoBehaviour
 {
     private PlayerInputEventHandler inputHandler;
+    private InventoryController inventoryController;
 
     [SerializeField]
     public int tileSize;
@@ -27,19 +28,28 @@ public class Grid : MonoBehaviour
     {
         inventoryRectTransform = GetComponentInParent<RectTransform>();
         gridRectTransform = GetComponent<RectTransform>();
+        inventoryController = GetComponentInParent<InventoryController>();
+
         Init(inventorySize.x, inventorySize.y);
     }
 
     private void Start()
     {
         inputHandler = Player.Instance.InputHandler;
+        inventoryController.onInventoryChange += HandleInventoryChange;
     }
 
-    private void Update()
+    private void OnDestroy()
     {
-        if (inputHandler.Select)
+        inventoryController.onInventoryChange -= HandleInventoryChange;
+    }
+    private void HandleInventoryChange()
+    {
+        if (inventoryController.selectedItem != null)
         {
-
+            RectTransform itemTransform = inventoryController.selectedItem.GetComponent<RectTransform>();
+            RectTransform gridTransform = inventoryController.selectedInventory.GetComponent<RectTransform>();
+            itemTransform.SetParent(gridTransform);
         }
     }
 
@@ -76,6 +86,8 @@ public class Grid : MonoBehaviour
 
     public bool PlaceItem(InventoryItem item, Vector2Int pos)
     {
+        item.pivotPositionOnGrid = pos;
+
         if (!CheckItemInBoundary(item))
         {
             Debug.Log("No room to place item.");
@@ -99,7 +111,6 @@ public class Grid : MonoBehaviour
         RectTransform itemTransform = item.GetComponent<RectTransform>();
         itemTransform.SetParent(gridRectTransform);
 
-        item.pivotPositionOnGrid = pos;
         itemTransform.localPosition = GetGridObsolutePosition(item);
 
         return true;

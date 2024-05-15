@@ -89,6 +89,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fef36dcd1adcbf5459dc0cb8a168c80a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rarityMaterials:
+  - {fileID: 2100000, guid: 6924497466075cc41b121f69c4227c55, type: 2}
+  - {fileID: 2100000, guid: 0d7496f53de180b46b31e90ecae519b6, type: 2}
+  - {fileID: 2100000, guid: 36f447c533614644e9a03ea1c34475b4, type: 2}
   data: {fileID: 0}
   pivotPositionOnGrid: {x: 0, y: 0}
 --- !u!1 &5755991916677328789
@@ -150,13 +154,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 6924497466075cc41b121f69c4227c55, type: 2}
   m_Color: {r: 0.20686786, g: 1, b: 0.08962262, a: 0.53333336}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 108ca3e7dda90d945b0914bf9259ec94, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

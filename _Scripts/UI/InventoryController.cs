@@ -1,4 +1,5 @@
 using Ginko.PlayerSystem;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,15 +12,16 @@ public class InventoryController : MonoBehaviour
     [SerializeField]
     public InventoryItemSO[] inventoryItemsData;
 
-    private PlayerInputEventHandler playerInputEventHandler;
-    private Grid selectedInventory;
+    public event Action onInventoryChange;
 
-    private InventoryItem selectedItem;
+    private PlayerInputEventHandler playerInputEventHandler;
+    public Grid selectedInventory;
+
+    public InventoryItem selectedItem;
     private RectTransform selectedItemTransform;
     private void Start()
     {
         playerInputEventHandler = Player.Instance.InputHandler;
-
     }
 
     private void Update()
@@ -32,6 +34,11 @@ public class InventoryController : MonoBehaviour
     public void SetSelectedInventory(Grid inventory)
     {
         selectedInventory = inventory;
+
+        if (inventory != null)
+        {
+            onInventoryChange?.Invoke();
+        }
     }
 
     private void UpdateSelectedItem()
@@ -90,7 +97,12 @@ public class InventoryController : MonoBehaviour
 
     private void CreateItemOnMouse(InventoryItemSO[] items)
     {
-        InventoryItemSO itemData = items[Random.Range(0,2)];
+        if (selectedInventory == null)
+        {
+            return;
+        }
+
+        InventoryItemSO itemData = items[UnityEngine.Random.Range(0,2)];
 
         GameObject itemGO = Instantiate(inventoryItemPrefab);
         selectedItem = itemGO.GetComponent<InventoryItem>();
