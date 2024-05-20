@@ -78,8 +78,8 @@ public class Grid : MonoBehaviour
         Vector2Int position = item.pivotPositionOnGrid;
 
         // int的除法不会保留小数部分
-        output.x = position.x * tileSize + (float)tileSize * item.data.size.x / 2;
-        output.y = -position.y * tileSize - (float)tileSize * item.data.size.y / 2;
+        output.x = position.x * tileSize + (float)tileSize * item.width / 2;
+        output.y = -position.y * tileSize - (float)tileSize * item.height / 2;
 
         return output;
     }
@@ -100,9 +100,9 @@ public class Grid : MonoBehaviour
             return false;
         }
 
-        for (int x = 0; x < item.data.size.x; x++)
+        for (int x = 0; x < item.width; x++)
         {
-            for(int y = 0; y < item.data.size.y; y++)
+            for(int y = 0; y < item.height; y++)
             {
                 inventoryItemSlot[pos.x + x, pos.y + y] = item;
             }
@@ -118,9 +118,9 @@ public class Grid : MonoBehaviour
 
     private bool CheckItemOverlap(InventoryItem item, Vector2Int pos)
     {
-        for (int x = 0; x < item.data.size.x; x++)
+        for (int x = 0; x < item.width; x++)
         {
-            for (int y = 0; y < item.data.size.y; y++)
+            for (int y = 0; y < item.height; y++)
             {
                 InventoryItem currentItem = inventoryItemSlot[pos.x + x, pos.y + y];
                 if (currentItem != null)
@@ -148,9 +148,9 @@ public class Grid : MonoBehaviour
 
     private void RemoveItem(InventoryItem item)
     {
-        for (int x = 0; x < item.data.size.x; x++)
+        for (int x = 0; x < item.width; x++)
         {
-            for (int y = 0; y < item.data.size.y; y++)
+            for (int y = 0; y < item.height; y++)
             {
                 inventoryItemSlot[item.pivotPositionOnGrid.x + x, item.pivotPositionOnGrid.y + y] = null;
             }
@@ -185,14 +185,14 @@ public class Grid : MonoBehaviour
         return true;
     }
 
-    private Vector2Int? GetSpaceForItem(InventoryItem item)
+    public Vector2Int? GetSpaceForItem(InventoryItem item)
     {
-        int maxWidth = inventorySize.x - item.data.size.x + 1;
-        int maxHeight = inventorySize.y - item.data.size.y + 1;
+        int maxWidth = inventorySize.x - item.width + 1;
+        int maxHeight = inventorySize.y - item.height + 1;
         
-        for (int x = 0; x < maxWidth; x++)
+        for (int y = 0; y < maxHeight; y++)
         {
-            for (int y = 0; y < maxHeight; y++)
+            for (int x = 0; x < maxWidth; x++)
             {
                 Vector2Int output = new Vector2Int(x, y);
                 if (CheckItemOverlap(item, output))

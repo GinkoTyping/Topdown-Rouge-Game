@@ -10,12 +10,28 @@ public class InventoryItem : MonoBehaviour
 
     public InventoryItemSO data;
     public Vector2Int pivotPositionOnGrid;
+    public int width
+    {
+        get => isRotated ? data.size.y : data.size.x;
+    }
+    public int height
+    {
+        get => isRotated ? data.size.x : data.size.y;
+    }
 
     private Transform shaderTransform;
+    private RectTransform rectTransform;
+    private bool isRotated;
 
     private void Awake()
     {
         shaderTransform = transform.Find("BackgroundColor");
+        rectTransform = GetComponent<RectTransform>();
+    }
+
+    private void OnEnable()
+    {
+        isRotated = false;
     }
 
     public void Set(InventoryItemSO itemSO, int tileSize)
@@ -24,9 +40,8 @@ public class InventoryItem : MonoBehaviour
 
         // …Ë÷√◊‘…Ì
         Vector2 size = new Vector2(0, 0);
-        size.x = data.size.x * tileSize;
-        size.y = data.size.y * tileSize;
-        RectTransform rectTransform = GetComponent<RectTransform>();
+        size.x = width * tileSize;
+        size.y = height * tileSize;
         rectTransform.sizeDelta = size;
         rectTransform.localScale = Vector3.one;
         GetComponent<Image>().sprite = itemSO.sprite;
@@ -44,5 +59,11 @@ public class InventoryItem : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public void Rotate()
+    {
+        isRotated = !isRotated;
+        rectTransform.rotation = Quaternion.Euler(0, 0, isRotated ? 90f : 0f);
     }
 }

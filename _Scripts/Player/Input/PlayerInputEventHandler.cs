@@ -15,6 +15,7 @@ public class PlayerInputEventHandler : MonoBehaviour
     public Vector2 MousePosition { get; private set; }
     public bool Select { get; private set; }
     public bool Test {  get; private set; }
+    public bool RotateItem {  get; private set; }
 
     public void OnMovement(InputAction.CallbackContext context)
     {
@@ -120,5 +121,26 @@ public class PlayerInputEventHandler : MonoBehaviour
     public void useTestSignal()
     {
         Test = false;
+    }
+
+    public void OnRotateItem(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            RotateItem = true;
+        }
+        else if (context.performed)
+        {
+
+        }
+        else if (context.canceled)
+        {
+            RotateItem = false;
+        }
+    }
+
+    public void UseRotateItemSignal()
+    {
+        RotateItem = false;
     }
 }

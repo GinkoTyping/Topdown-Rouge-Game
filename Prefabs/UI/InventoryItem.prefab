@@ -93,6 +93,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 6924497466075cc41b121f69c4227c55, type: 2}
   - {fileID: 2100000, guid: 0d7496f53de180b46b31e90ecae519b6, type: 2}
   - {fileID: 2100000, guid: 36f447c533614644e9a03ea1c34475b4, type: 2}
+  - {fileID: 2100000, guid: a0c556f5bd754e04f844217a2bc022e5, type: 2}
   data: {fileID: 0}
   pivotPositionOnGrid: {x: 0, y: 0}
 --- !u!1 &5755991916677328789

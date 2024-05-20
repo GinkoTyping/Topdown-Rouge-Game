@@ -33,6 +33,7 @@ public class InventoryController : MonoBehaviour
 
         UpdateSelectedItem();
         HandleSelectItem();
+        HandleRotateItem();
 
         Test();
     }
@@ -87,6 +88,21 @@ public class InventoryController : MonoBehaviour
         }
     }
 
+    private void HandleRotateItem()
+    {
+        if (selectedItem == null)
+        {
+            return;
+        }
+
+        if (playerInputEventHandler.RotateItem)
+        {
+            playerInputEventHandler.UseRotateItemSignal();
+
+            selectedItem.Rotate();
+        }
+    }
+
     private Vector2Int GetInventoryPosition(InventoryItem item)
     {
         Vector2 mousePosition = playerInputEventHandler.MousePosition;
@@ -94,20 +110,20 @@ public class InventoryController : MonoBehaviour
         Vector2 relativePostion = item == null
             ? mousePosition
             : new Vector2(
-                mousePosition.x - (float)(item.data.size.x - 1) * (selectedInventory.tileSize * scaleParam) / 2,
-                mousePosition.y + (float)(item.data.size.y - 1) * (selectedInventory.tileSize * scaleParam) / 2);
+                mousePosition.x - (float)(item.width - 1) * (selectedInventory.tileSize * scaleParam) / 2,
+                mousePosition.y + (float)(item.height - 1) * (selectedInventory.tileSize * scaleParam) / 2);
 
         return selectedInventory.GetGridRelativePosition(relativePostion);
     }
 
-    private void CreateItemOnMouse(InventoryItemSO[] items)
+    private InventoryItem CreateItemOnMouse(InventoryItemSO[] items)
     {
         if (selectedInventory == null)
         {
-            return;
+            return null;
         }
 
-        InventoryItemSO itemData = items[UnityEngine.Random.Range(0,2)];
+        InventoryItemSO itemData = items[UnityEngine.Random.Range(0,3)];
 
         GameObject itemGO = Instantiate(inventoryItemPrefab);
         selectedItem = itemGO.GetComponent<InventoryItem>();
@@ -117,6 +133,7 @@ public class InventoryController : MonoBehaviour
 
         itemGO.GetComponent<InventoryItem>().Set(itemData, selectedInventory.tileSize);
 
+        return selectedItem;
     }
     public void Test()
     {
@@ -126,7 +143,15 @@ public class InventoryController : MonoBehaviour
             selectedItem = null;
             selectedItemTransform = null;
 
-            CreateItemOnMouse(inventoryItemsData);
+            InventoryItem item =  CreateItemOnMouse(inventoryItemsData);
+
+            selectedItem = null;
+
+            Vector2Int? pos = selectedInventory.GetSpaceForItem(item);
+            if (pos != null)
+            {
+                selectedInventory.PlaceItem(item, pos.Value);
+            }
         }
     }
 }
