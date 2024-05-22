@@ -8,6 +8,7 @@ public class InventoryItemSO : ScriptableObject
     public Sprite sprite;
     public Vector2Int size;
     public Rarity defaultRarity;
+    public LootPriceDataSO priceSetting; 
 }
 
 public enum Rarity

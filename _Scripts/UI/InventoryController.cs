@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class InventoryController : MonoBehaviour
 {
@@ -18,13 +19,17 @@ public class InventoryController : MonoBehaviour
     public float scaleParam;
 
     private PlayerInputEventHandler playerInputEventHandler;
+    private PlayerInput inputAction;
     private RectTransform selectedItemTransform;
     private RectTransform canvasTransform;
 
     private void Start()
     {
         playerInputEventHandler = Player.Instance.InputHandler;
+        inputAction = Player.Instance.InputAction;
         canvasTransform = GetComponent<RectTransform>();
+
+        gameObject.SetActive(false);
     }
 
     private void Update()
@@ -36,6 +41,8 @@ public class InventoryController : MonoBehaviour
         HandleRotateItem();
 
         Test();
+
+        HandleCloseInventory();
     }
     public void SetSelectedInventory(Grid inventory)
     {
@@ -152,6 +159,16 @@ public class InventoryController : MonoBehaviour
             {
                 selectedInventory.PlaceItem(item, pos.Value);
             }
+        }
+    }
+
+    public void HandleCloseInventory()
+    {
+        if (playerInputEventHandler.PressEsc)
+        {
+            playerInputEventHandler.UseEscSignal();
+            inputAction.SwitchCurrentActionMap("Gameplay");
+            gameObject.SetActive(false);
         }
     }
 }

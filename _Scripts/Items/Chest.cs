@@ -16,11 +16,14 @@ public class Chest : MonoBehaviour, IInteract
     public AudioClip audioOnSearch;
     [SerializeField]
     public AudioClip audioOnOpen;
+    [SerializeField]
+    public InteractType InteractType;
 
 
     public Vector2 interactionIconPos { get; private set; }
     public float loadingTime { get; private set; }
     public bool isInteractive { get; private set; }
+    public InteractType interactType { get; private set; }
 
     private Interaction interactionComp;
     private SpriteRenderer spriteRenderer;
@@ -33,12 +36,6 @@ public class Chest : MonoBehaviour, IInteract
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         isInteractive = true;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void OpenChest()

@@ -25,6 +25,8 @@ namespace Ginko.CoreSystem
         private bool isShowInteractHint;
         private bool isInteracting;
 
+        private GameObject InventoryUI;
+
         protected override void Awake()
         {
             base.Awake();
@@ -34,6 +36,7 @@ namespace Ginko.CoreSystem
 
             loopBar = GameObject.FindGameObjectWithTag("HintContainer").GetComponentInChildren<LoopBar>();
             detections = Core.GetCoreComponent<Detections>();
+            InventoryUI = GameObject.Find("Inventory").gameObject;
         }
 
         public override void LogicUpdate()
@@ -83,6 +86,8 @@ namespace Ginko.CoreSystem
         {
             isInteracting = false;
             loopBar.OnLoadingEnd -= OnInteractEnd;
+
+            HandleLootable();
         }
         public void InteractItem()
         {
@@ -95,6 +100,15 @@ namespace Ginko.CoreSystem
 
                 loopBar.OnLoadingEnd += OnInteractEnd;
                 currentInteractingItem.Interact(this);
+            }
+        }
+
+        public void HandleLootable()
+        {
+            if (currentInteractingItem.interactType == InteractType.Lootable)
+            {
+                InventoryUI.SetActive(true);
+                Player.Instance.InputAction.SwitchCurrentActionMap("UI");
             }
         }
     }

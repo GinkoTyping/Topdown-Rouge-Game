@@ -58,7 +58,7 @@ Material:
     - _BUILTIN_ZWriteControl: 0
     - _Float: 1
     - _Opacity: 0.5
-    - _Rarity: 1
+    - _Rarity: 3
     m_Colors:
-    - _Color: {r: 0, g: 0.5781703, b: 1, a: 0}
+    - _Color: {r: 1, g: 0.5817201, b: 0.0047169924, a: 0}
   m_BuildTextureStacks: []

@@ -9904,7 +9904,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileSize: 64
-  inventorySize: {x: 5, y: 8}
+  inventorySize: {x: 5, y: 5}
   testItem: {fileID: 335937374205450573, guid: 955c618e3ce8201418aa9a8a1e9171b2, type: 3}
 --- !u!114 &868860416
 MonoBehaviour:
@@ -18085,9 +18085,25 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 36717d59-55fc-4c08-a482-900f295addcf
     m_ActionName: UI/New action
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1986595663}
+        m_TargetAssemblyTypeName: PlayerInputEventHandler, Assembly-CSharp
+        m_MethodName: OnPressEsc
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bcfa06c9-2914-4641-b77f-aa06f4742186
+    m_ActionName: UI/New action
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: UI
+  m_DefaultActionMap: Gameplay
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &1986595663
@@ -18208,6 +18224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EntityData: {fileID: 11400000, guid: 6835a6bfdf7dd354db36d27116e4c658, type: 2}
+  InputAction: {fileID: 0}
 --- !u!1 &1996238588
 GameObject:
   m_ObjectHideFlags: 0

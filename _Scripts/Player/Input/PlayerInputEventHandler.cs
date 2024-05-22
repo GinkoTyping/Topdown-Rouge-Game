@@ -7,15 +7,12 @@ using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PlayerInputEventHandler : MonoBehaviour
 {
+    #region GamePlay
     public Vector2 Direction { get; private set; }
     public bool PrimaryAttack {  get; private set; }
     public bool Dash { get; private set; }
     public bool Interact { get; private set; }
 
-    public Vector2 MousePosition { get; private set; }
-    public bool Select { get; private set; }
-    public bool Test {  get; private set; }
-    public bool RotateItem {  get; private set; }
 
     public void OnMovement(InputAction.CallbackContext context)
     {
@@ -77,6 +74,14 @@ public class PlayerInputEventHandler : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region UI
+    public Vector2 MousePosition { get; private set; }
+    public bool Select { get; private set; }
+    public bool Test { get; private set; }
+    public bool RotateItem { get; private set; }
+    public bool PressEsc { get; private set; }
     public void OnMouseMove(InputAction.CallbackContext context)
     {
         MousePosition = Camera.main.ScreenToWorldPoint((Vector3)context.ReadValue<Vector2>());
@@ -143,4 +148,26 @@ public class PlayerInputEventHandler : MonoBehaviour
     {
         RotateItem = false;
     }
+
+    public void OnPressEsc(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            PressEsc = true;
+        }
+        else if (context.performed)
+        {
+
+        }
+        else if (context.canceled)
+        {
+            PressEsc = false;
+        }
+    }
+
+    public void UseEscSignal()
+    {
+        PressEsc = false;
+    }
+    #endregion
 }
