@@ -34,7 +34,7 @@ public class InventoryItem : MonoBehaviour
         isRotated = false;
     }
 
-    public void Set(InventoryItemSO itemSO, int tileSize)
+    public void Set(InventoryItemSO itemSO, Rarity rarity, int tileSize)
     {
         data = itemSO;
 
@@ -53,7 +53,7 @@ public class InventoryItem : MonoBehaviour
         // …Ë÷√shader material
         foreach (Material mat in rarityMaterials)
         {
-            if (mat.GetFloat("_Rarity") == (float)itemSO.defaultRarity)
+            if (mat.GetFloat("_Rarity") == (float)rarity)
             {
                 shaderTransform.GetComponent<Image>().material = mat;
                 break;

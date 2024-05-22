@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IInteract
+public interface IInteractable
 {
     Vector2 interactionIconPos {  get; }
     float loadingTime {  get; }

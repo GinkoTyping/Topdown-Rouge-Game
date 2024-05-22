@@ -21,7 +21,7 @@ public class LootDetail
 {
     public InventoryItemSO itemData;
     public Rarity rarity;
-    [Range(0,1)]public float posibility;
+    [Range(0,1)]public float possibility;
 }
 
 public enum LootType

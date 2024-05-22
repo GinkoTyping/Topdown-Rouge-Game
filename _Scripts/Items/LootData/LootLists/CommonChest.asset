@@ -17,41 +17,41 @@ MonoBehaviour:
     loots:
     - itemData: {fileID: 11400000, guid: e2d4324de2971e44fb313023630672ea, type: 2}
       rarity: 0
-      posibility: 0.5
+      possibility: 0.5
     - itemData: {fileID: 11400000, guid: e2d4324de2971e44fb313023630672ea, type: 2}
       rarity: 1
-      posibility: 0.2
+      possibility: 0.2
     - itemData: {fileID: 11400000, guid: e2d4324de2971e44fb313023630672ea, type: 2}
       rarity: 3
-      posibility: 0.01
+      possibility: 0.05
   - lootType: 1
     loots:
     - itemData: {fileID: 11400000, guid: aa36d2abfff33a74190b3e803a0d7b9b, type: 2}
       rarity: 0
-      posibility: 0.2
+      possibility: 0.5
     - itemData: {fileID: 11400000, guid: aa36d2abfff33a74190b3e803a0d7b9b, type: 2}
       rarity: 1
-      posibility: 0.05
+      possibility: 0.2
     - itemData: {fileID: 11400000, guid: aa36d2abfff33a74190b3e803a0d7b9b, type: 2}
       rarity: 2
-      posibility: 0.01
+      possibility: 0.05
   - lootType: 2
     loots:
     - itemData: {fileID: 11400000, guid: 14820b7b64620384f8faeaf71064a4cf, type: 2}
       rarity: 0
-      posibility: 0.5
+      possibility: 0.5
     - itemData: {fileID: 11400000, guid: 14820b7b64620384f8faeaf71064a4cf, type: 2}
       rarity: 1
-      posibility: 0.2
+      possibility: 0.2
     - itemData: {fileID: 11400000, guid: 14820b7b64620384f8faeaf71064a4cf, type: 2}
       rarity: 2
-      posibility: 0.05
+      possibility: 0.05
     - itemData: {fileID: 11400000, guid: 33750fba7d36bbd4582121ecdd95f56a, type: 2}
       rarity: 0
-      posibility: 0.5
+      possibility: 0.5
     - itemData: {fileID: 11400000, guid: 33750fba7d36bbd4582121ecdd95f56a, type: 2}
       rarity: 1
-      posibility: 0.2
+      possibility: 0.2
     - itemData: {fileID: 11400000, guid: 33750fba7d36bbd4582121ecdd95f56a, type: 2}
       rarity: 2
-      posibility: 0.01
+      possibility: 0.05

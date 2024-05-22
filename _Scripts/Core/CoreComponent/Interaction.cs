@@ -19,9 +19,10 @@ namespace Ginko.CoreSystem
         [SerializeField]
         public string interactionText;
 
+        public IInteractable currentInteractingItem;
+
         private Detections detections;
         private GameObject interactTextGO;
-        private IInteract currentInteractingItem;
         private bool isShowInteractHint;
         private bool isInteracting;
 
@@ -52,7 +53,7 @@ namespace Ginko.CoreSystem
                 // TODO: 同时检测到多个可交互物品时，怎么处理？
                 if (detections.interactiveObjects?.Length == 1)
                 {
-                    currentInteractingItem = detections.interactiveObjects[0].GetComponent<IInteract>();
+                    currentInteractingItem = detections.interactiveObjects[0].GetComponentInChildren<IInteractable>();
                     interactTextGO = Instantiate(textMesh, currentInteractingItem.interactionIconPos, Quaternion.identity);
                     TextMeshProUGUI meshGO = interactTextGO.GetComponentInChildren<TextMeshProUGUI>();
                     meshGO.text = interactionText;
@@ -86,8 +87,6 @@ namespace Ginko.CoreSystem
         {
             isInteracting = false;
             loopBar.OnLoadingEnd -= OnInteractEnd;
-
-            HandleLootable();
         }
         public void InteractItem()
         {
@@ -99,6 +98,7 @@ namespace Ginko.CoreSystem
                 InitLoopBar();
 
                 loopBar.OnLoadingEnd += OnInteractEnd;
+
                 currentInteractingItem.Interact(this);
             }
         }

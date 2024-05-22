@@ -53,7 +53,7 @@ namespace Ginko.CoreSystem
         public bool GetInteractions(out Collider2D[] detections)
         {
             detections = Physics2D.OverlapCircleAll(transform.position, interactionDistance, interactionLayer)
-                .Where(x => x.tag == "Interactive" && x.GetComponent<IInteract>().isInteractive)
+                .Where(x => x.tag == "Interactive" && x.GetComponentInChildren<IInteractable>().isInteractive)
                 .ToArray();
             return detections.Length > 0;
         }

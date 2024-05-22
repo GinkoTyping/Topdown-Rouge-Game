@@ -138,7 +138,7 @@ public class InventoryController : MonoBehaviour
         RectTransform rectTransform = itemGO.GetComponent<RectTransform>();
         rectTransform?.SetParent(selectedInventory.GetComponent<RectTransform>());
 
-        itemGO.GetComponent<InventoryItem>().Set(itemData, selectedInventory.tileSize);
+        itemGO.GetComponent<InventoryItem>().Set(itemData, Rarity.Common, selectedInventory.tileSize);
 
         return selectedItem;
     }
@@ -170,5 +170,17 @@ public class InventoryController : MonoBehaviour
             inputAction.SwitchCurrentActionMap("Gameplay");
             gameObject.SetActive(false);
         }
+    }
+
+    public InventoryItem CreateItemInInventory(InventoryItemSO itemData, Rarity rarity,  Grid inventory)
+    {
+        GameObject itemGO = Instantiate(inventoryItemPrefab);
+
+        RectTransform rectTransform = itemGO.GetComponent<RectTransform>();
+        rectTransform?.SetParent(inventory.GetComponent<RectTransform>());
+
+        itemGO.GetComponent<InventoryItem>().Set(itemData, rarity, inventory.tileSize);
+
+        return itemGO.GetComponent<InventoryItem>();
     }
 }
