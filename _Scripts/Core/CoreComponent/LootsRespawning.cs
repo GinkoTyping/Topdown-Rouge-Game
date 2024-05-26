@@ -16,11 +16,13 @@ namespace Ginko.CoreSystem
         private InventoryController inventoryController;
         private Interactable interactable;
         private GameObject inventoryUI;
+        private UIManager UIManager;
 
         protected override void Awake()
         {
             base.Awake();
 
+            UIManager = GameObject.Find("UI").GetComponent<UIManager>();
             lootInventory = GameObject.Find("Loot").GetComponentInChildren<Grid>();
             inventoryUI = GameObject.Find("Inventory");
             inventoryController = inventoryUI.GetComponent<InventoryController>();
@@ -38,8 +40,7 @@ namespace Ginko.CoreSystem
 
         private void OpenInventoryMenu()
         {
-            inventoryUI.SetActive(true);
-            Player.Instance.InputAction.SwitchCurrentActionMap("UI");
+            UIManager.SwitchInventory(true, showLoot:true);
         }
 
         private void SpawnLoots()
@@ -51,7 +52,6 @@ namespace Ginko.CoreSystem
                     foreach (LootDetail lootDetail in lootGroup.loots)
                     {
                         float possibility = Random.Range(0.0f, 1.0f);
-                        Debug.Log(possibility);
                         if (possibility <= lootDetail.possibility)
                         {
                             InventoryItem item =  inventoryController.CreateItemInInventory(lootDetail.itemData, lootDetail.rarity, lootInventory);

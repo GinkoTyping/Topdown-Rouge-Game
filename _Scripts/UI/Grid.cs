@@ -143,8 +143,18 @@ public class Grid : MonoBehaviour
 
         return item;
     }
+    public InventoryItem RemoveItem(Vector2Int pos)
+    {
+        InventoryItem item = inventoryItemSlot[pos.x, pos.y];
+        if (item != null)
+        {
+            RemoveItem(item);
+        }
 
-    private void RemoveItem(InventoryItem item)
+        return item;
+    }
+
+    public InventoryItem RemoveItem(InventoryItem item)
     {
         for (int x = 0; x < item.width; x++)
         {
@@ -153,6 +163,8 @@ public class Grid : MonoBehaviour
                 inventoryItemSlot[item.pivotPositionOnGrid.x + x, item.pivotPositionOnGrid.y + y] = null;
             }
         }
+
+        return item;
     }
 
     private bool CheckPositionInGrid(Vector2 position)

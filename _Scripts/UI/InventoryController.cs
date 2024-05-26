@@ -13,20 +13,28 @@ public class InventoryController : MonoBehaviour
     [SerializeField]
     public InventoryItemSO[] inventoryItemsData;
 
+    [Header("Audios")]
+    [SerializeField]
+    public AudioClip equipmentAudio;
+    [SerializeField]
+    public AudioClip treasureAudio;
+    [SerializeField]
+    public AudioClip consumableAudio;
+    [SerializeField]
+    public AudioClip removeAudio;
+
     public event Action onInventoryChange;
     public Grid selectedInventory;
     public InventoryItem selectedItem;
     public float scaleParam;
 
     private PlayerInputEventHandler playerInputEventHandler;
-    private PlayerInput inputAction;
     private RectTransform selectedItemTransform;
     private RectTransform canvasTransform;
 
     private void Start()
     {
         playerInputEventHandler = Player.Instance.InputHandler;
-        inputAction = Player.Instance.InputAction;
         canvasTransform = GetComponent<RectTransform>();
 
         gameObject.SetActive(false);
@@ -39,10 +47,9 @@ public class InventoryController : MonoBehaviour
         UpdateSelectedItem();
         HandleSelectItem();
         HandleRotateItem();
+        HandleRemoveItem();
 
         Test();
-
-        HandleCloseInventory();
     }
     public void SetSelectedInventory(Grid inventory)
     {
@@ -71,7 +78,7 @@ public class InventoryController : MonoBehaviour
         {
             return;
         }
-        if (playerInputEventHandler.Select)
+        if (playerInputEventHandler.Select && !playerInputEventHandler.HoldCombineKey)
         {
             playerInputEventHandler.useSelectSignal();
 
@@ -90,6 +97,10 @@ public class InventoryController : MonoBehaviour
                 if (hasPlacedItem)
                 {
                     selectedItem = null;
+                    SoundManager.Instance.PlaySound(equipmentAudio);
+                } else
+                {
+                    SoundManager.Instance.Warning();
                 }
             }
         }
@@ -107,6 +118,20 @@ public class InventoryController : MonoBehaviour
             playerInputEventHandler.UseRotateItemSignal();
 
             selectedItem.Rotate();
+        }
+    }
+
+    private void HandleRemoveItem()
+    {
+        if (playerInputEventHandler.HoldCombineKey && playerInputEventHandler.Select)
+        {
+            playerInputEventHandler.useSelectSignal();
+
+            Vector2Int inventoryPosition = GetInventoryPosition(null);
+            InventoryItem item = selectedInventory.RemoveItem(inventoryPosition);
+            Destroy(item.gameObject);
+
+            SoundManager.Instance.PlaySound(removeAudio);
         }
     }
 
@@ -159,16 +184,6 @@ public class InventoryController : MonoBehaviour
             {
                 selectedInventory.PlaceItem(item, pos.Value);
             }
-        }
-    }
-
-    public void HandleCloseInventory()
-    {
-        if (playerInputEventHandler.PressEsc)
-        {
-            playerInputEventHandler.UseEscSignal();
-            inputAction.SwitchCurrentActionMap("Gameplay");
-            gameObject.SetActive(false);
         }
     }
 

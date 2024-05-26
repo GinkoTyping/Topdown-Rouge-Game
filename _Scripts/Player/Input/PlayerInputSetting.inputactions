@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Inventory",
+                    "type": "Button",
+                    "id": "ee98bb48-24d8-48d3-b995-5e63f0237c41",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -130,6 +139,17 @@
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2f914349-5f1d-48a7-9c0c-97b46e195155",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyborad",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -177,6 +197,24 @@
                     "name": "CloseMenu",
                     "type": "Button",
                     "id": "bcfa06c9-2914-4641-b77f-aa06f4742186",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Inventory",
+                    "type": "Button",
+                    "id": "4791440f-4247-433a-9dd4-49c3139de15c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Combine",
+                    "type": "Button",
+                    "id": "bfdb43a7-790b-49a9-8a21-11cb1d642d8e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -236,6 +274,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "CloseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cd37f185-ec5b-4335-8760-c2ddb38eceea",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f5a5ef17-ca6b-4705-863c-0f447a3dfa57",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyborad",
+                    "action": "Combine",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

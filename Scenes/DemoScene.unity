@@ -320,6 +320,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 60b6bdbacc471f042a55350428c8d570, type: 2}
   - {fileID: 11400000, guid: aa36d2abfff33a74190b3e803a0d7b9b, type: 2}
   - {fileID: 11400000, guid: cc56cc2c7e22983479e0750b28f833b0, type: 2}
+  equipmentAudio: {fileID: 8300000, guid: 2971bc3a7f512ae43aa1389c045c02b6, type: 3}
+  treasureAudio: {fileID: 8300000, guid: 4ef1c8202e5d28449899fc8e078278b0, type: 3}
+  consumableAudio: {fileID: 8300000, guid: 0d3cb27a8e23475458428a4e62800749, type: 3}
+  removeAudio: {fileID: 8300000, guid: 7a034c0123a1a71439b25cd35a119a5c, type: 3}
   selectedInventory: {fileID: 0}
   selectedItem: {fileID: 0}
   scaleParam: 0
@@ -687,7 +691,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 321.99997, y: -12}
+  m_AnchoredPosition: {x: 391, y: -12}
   m_SizeDelta: {x: 360, y: 552}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &84034381
@@ -9367,6 +9371,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 786875312}
+  - component: {fileID: 786875313}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -9390,6 +9395,21 @@ Transform:
   - {fileID: 22688785}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &786875313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 786875311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77cbaa6cf4385584abfc15816fab510f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  border: 10
+  inventoryUI: {fileID: 22688784}
+  menuHoldTime: 0.3
 --- !u!4 &789473368 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5100217437599595380, guid: 8d15c39fd3e3cab47ab96fbaf6dc2f92,
@@ -9793,8 +9813,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 692, y: -12}
-  m_SizeDelta: {x: 360, y: 360}
+  m_AnchoredPosition: {x: 773, y: -12}
+  m_SizeDelta: {x: 296, y: 360}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &859430071
 MonoBehaviour:
@@ -9877,7 +9897,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 20, y: -20}
-  m_SizeDelta: {x: 320, y: 320}
+  m_SizeDelta: {x: 256, y: 320}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &868860414
 MonoBehaviour:
@@ -9904,7 +9924,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileSize: 64
-  inventorySize: {x: 5, y: 5}
+  inventorySize: {x: 4, y: 5}
   testItem: {fileID: 335937374205450573, guid: 955c618e3ce8201418aa9a8a1e9171b2, type: 3}
 --- !u!114 &868860416
 MonoBehaviour:
@@ -13822,7 +13842,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <color=red>Close </color>(Esc)
+  m_text: <color=red>Close </color><size=-10>(<U>Esc</U>)</size>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9b8a9e84803883d4483a020bd9aecec3, type: 2}
   m_sharedMaterial: {fileID: -8685982625448611527, guid: 9b8a9e84803883d4483a020bd9aecec3,
@@ -13850,8 +13870,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40.8
-  m_fontSizeBase: 40.8
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -18101,6 +18121,54 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: bcfa06c9-2914-4641-b77f-aa06f4742186
     m_ActionName: UI/New action
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1986595663}
+        m_TargetAssemblyTypeName: PlayerInputEventHandler, Assembly-CSharp
+        m_MethodName: OnSwitchInventory
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ee98bb48-24d8-48d3-b995-5e63f0237c41
+    m_ActionName: Gameplay/Inventory[/Keyboard/i]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1986595663}
+        m_TargetAssemblyTypeName: PlayerInputEventHandler, Assembly-CSharp
+        m_MethodName: OnSwitchInventory
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 4791440f-4247-433a-9dd4-49c3139de15c
+    m_ActionName: UI/Inventory[/Keyboard/i]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1986595663}
+        m_TargetAssemblyTypeName: PlayerInputEventHandler, Assembly-CSharp
+        m_MethodName: OnHoldCombineKey
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bfdb43a7-790b-49a9-8a21-11cb1d642d8e
+    m_ActionName: UI/Combine[/Keyboard/shift]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
@@ -18782,6 +18850,7 @@ MonoBehaviour:
   effectSource: {fileID: 1466500105}
   musicSource: {fileID: 773296273}
   volume: 0.5
+  errorHint: {fileID: 8300000, guid: c0c028f70edee1d4ab004edf0149b342, type: 3}
 --- !u!4 &2129321632
 Transform:
   m_ObjectHideFlags: 0

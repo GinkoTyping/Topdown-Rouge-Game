@@ -82,6 +82,9 @@ public class PlayerInputEventHandler : MonoBehaviour
     public bool Test { get; private set; }
     public bool RotateItem { get; private set; }
     public bool PressEsc { get; private set; }
+    public bool HoldCombineKey { get; private set; }
+
+    public bool SwitchInventory { get; private set; }
     public void OnMouseMove(InputAction.CallbackContext context)
     {
         MousePosition = Camera.main.ScreenToWorldPoint((Vector3)context.ReadValue<Vector2>());
@@ -168,6 +171,41 @@ public class PlayerInputEventHandler : MonoBehaviour
     public void UseEscSignal()
     {
         PressEsc = false;
+    }
+
+    public void OnSwitchInventory(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            SwitchInventory = true;
+        }
+        else if (context.performed)
+        {
+
+        }
+        else if (context.canceled)
+        {
+            SwitchInventory = false;
+        }
+    }
+    public void UseSwitchInventorySignal()
+    {
+        SwitchInventory = false;
+    }
+
+    public void OnHoldCombineKey(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+        }
+        else if (context.performed)
+        {
+            HoldCombineKey = true;
+        }
+        else if (context.canceled)
+        {
+            HoldCombineKey = false;
+        }
     }
     #endregion
 }
