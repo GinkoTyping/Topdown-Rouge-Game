@@ -11,16 +11,21 @@ namespace Ginko.CoreSystem
         [SerializeField]
         public LootListDataSO lootSetting;
 
-        private LoopBar loopBar;
         private Grid lootInventory;
         private InventoryController inventoryController;
         private Interactable interactable;
         private GameObject inventoryUI;
         private UIManager UIManager;
 
+        private bool looted;
+
+        private List<BaseLootData> lootStorage = new List<BaseLootData>();
+
         protected override void Awake()
         {
             base.Awake();
+
+            looted = false;
 
             UIManager = GameObject.Find("UI").GetComponent<UIManager>();
             lootInventory = GameObject.Find("Loot").GetComponentInChildren<Grid>();
@@ -29,18 +34,37 @@ namespace Ginko.CoreSystem
             interactable = Core.GetCoreComponent<Interactable>();
         }
 
+        private void OnEnable()
+        {
+            UIManager.onInventoryUIClose += HandleInventoryClose;
+        }
+
+        private void OnDisable()
+        {
+            UIManager.onInventoryUIClose -= HandleInventoryClose;
+        }
+
         public void OnLoots()
         {
             if (interactable.interactType == InteractType.Lootable)
             {
                 OpenInventoryMenu();
-                SpawnLoots();
+
+                if (looted)
+                {
+                    RestoreLoots();
+                }
+                else
+                {
+                    looted = true;
+                    SpawnLoots();
+                }
             }
         }
 
         private void OpenInventoryMenu()
         {
-            UIManager.SwitchInventory(true, showLoot:true);
+            UIManager.SwitchInventory(true, showLoot: true);
         }
 
         private void SpawnLoots()
@@ -54,16 +78,37 @@ namespace Ginko.CoreSystem
                         float possibility = Random.Range(0.0f, 1.0f);
                         if (possibility <= lootDetail.possibility)
                         {
-                            InventoryItem item =  inventoryController.CreateItemInInventory(lootDetail.itemData, lootDetail.rarity, lootInventory);
-                            Vector2Int? pos = lootInventory.GetSpaceForItem(item);
-                            if (pos != null)
-                            {
-                                lootInventory.PlaceItem(item, pos.Value);
-                            }
+                            inventoryController.CreateItemInInventory(lootDetail.itemData, lootDetail.rarity, lootInventory);
                         }
                     }
                 }
             }
         }
+        public void HandleInventoryClose()
+        {
+            if (looted)
+            {
+                looted = true;
+
+                InventoryItem[] items = lootInventory.GetComponentsInChildren<InventoryItem>();
+                foreach (InventoryItem item in items)
+                {
+                    lootStorage.Add(new BaseLootData(item));
+                }
+            }
+        }
+
+        private void RestoreLoots()
+        {
+            if (lootStorage.Count > 0)
+            {
+                foreach (BaseLootData item in lootStorage)
+                {
+                    inventoryController.CreateItemInInventory(item.data, item.rarity, lootInventory, item.pivotPositionOnGrid);
+                }
+            }
+        }
+
+
     }
 }

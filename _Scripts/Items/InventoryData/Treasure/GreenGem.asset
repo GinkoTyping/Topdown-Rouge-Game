@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: GreenGem
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: d5866a08d6cebbf4fa2b8eddda7e8797, type: 3}
+  itemType: 2
   size: {x: 1, y: 1}
   defaultRarity: 0
   priceSetting: {fileID: 11400000, guid: 8f6592c64ce70514294b85906f7046aa, type: 2}

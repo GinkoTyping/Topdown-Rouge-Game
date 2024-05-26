@@ -6,6 +6,7 @@ using UnityEngine;
 public class InventoryItemSO : ScriptableObject
 {
     public Sprite sprite;
+    public ItemType itemType;
     public Vector2Int size;
     public Rarity defaultRarity;
     public LootPriceDataSO priceSetting; 
@@ -17,4 +18,10 @@ public enum Rarity
     Uncommon,
     Rare,
     Legend,
+}
+public enum ItemType
+{
+    Equipment,
+    Consumable,
+    Treasure,
 }

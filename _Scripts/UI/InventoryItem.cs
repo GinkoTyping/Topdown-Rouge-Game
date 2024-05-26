@@ -10,6 +10,7 @@ public class InventoryItem : MonoBehaviour
 
     public InventoryItemSO data;
     public Vector2Int pivotPositionOnGrid;
+    public Rarity rarity;
     public int width
     {
         get => isRotated ? data.size.y : data.size.x;
@@ -37,6 +38,7 @@ public class InventoryItem : MonoBehaviour
     public void Set(InventoryItemSO itemSO, Rarity rarity, int tileSize)
     {
         data = itemSO;
+        this.rarity = rarity;
 
         // …Ë÷√◊‘…Ì
         Vector2 size = new Vector2(0, 0);
@@ -65,5 +67,19 @@ public class InventoryItem : MonoBehaviour
     {
         isRotated = !isRotated;
         rectTransform.rotation = Quaternion.Euler(0, 0, isRotated ? 90f : 0f);
+    }
+}
+
+public class BaseLootData
+{
+    public InventoryItemSO data;
+    public Vector2Int pivotPositionOnGrid;
+    public Rarity rarity;
+
+    public BaseLootData(InventoryItem item)
+    {
+        data = item.data;
+        pivotPositionOnGrid = item.pivotPositionOnGrid;
+        rarity = item.rarity;
     }
 }

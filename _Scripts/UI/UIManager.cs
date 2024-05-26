@@ -1,4 +1,5 @@
 using Ginko.PlayerSystem;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,12 @@ public class UIManager : MonoBehaviour
     private GameObject inventoryUI;
     [SerializeField]
     private float menuHoldTime;
+    [SerializeField]
+    private AudioClip openMenuAudio;
+    [SerializeField]
+    private AudioClip closeMenuAudio;
+
+    public event Action onInventoryUIClose;
 
     private PlayerInputEventHandler playerInputEventHandler;
     private PlayerInput inputAction;
@@ -71,13 +78,19 @@ public class UIManager : MonoBehaviour
             inventoryUI.SetActive(true);
 
             inventoryUI.transform.Find("Loot").gameObject.SetActive((bool)showLoot);
+
+            SoundManager.Instance.PlaySound(openMenuAudio);
         } else
         {
+            onInventoryUIClose?.Invoke();
+
             playerInputEventHandler.UseEscSignal();
             playerInputEventHandler.UseSwitchInventorySignal();
 
             inputAction.SwitchCurrentActionMap("Gameplay");
             inventoryUI.SetActive(false);
+
+            SoundManager.Instance.PlaySound(closeMenuAudio);
         }
     }
 

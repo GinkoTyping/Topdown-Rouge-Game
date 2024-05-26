@@ -29,6 +29,8 @@ namespace Ginko.CoreSystem
         private SpriteRenderer spriteRenderer;
         private LootsRespawning lootsRespawning;
 
+        private bool hasOpened;
+
         protected override void Awake()
         {
             base.Awake();
@@ -44,9 +46,14 @@ namespace Ginko.CoreSystem
 
         private void OpenChest()
         {
-            isInteractive = false;
+            if (hasOpened)
+            {
 
-            spriteRenderer.sprite = spriteOnInteractEnd;
+            } else
+            {
+                hasOpened = true;
+                spriteRenderer.sprite = spriteOnInteractEnd;
+            }
 
             interactionComp.loopBar.OnLoadingEnd -= OpenChest;
             interactionComp.loopBar.OnLoadingEnd -= lootsRespawning.OnLoots;

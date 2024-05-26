@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using static UnityEditor.Progress;
 
 public class InventoryController : MonoBehaviour
 {
+    [Header("Base")]
     [SerializeField]
     public GameObject inventoryItemPrefab;
     [SerializeField]
@@ -22,15 +24,26 @@ public class InventoryController : MonoBehaviour
     public AudioClip consumableAudio;
     [SerializeField]
     public AudioClip removeAudio;
+    [SerializeField]
+    public AudioClip selectAudio;
 
     public event Action onInventoryChange;
-    public Grid selectedInventory;
-    public InventoryItem selectedItem;
-    public float scaleParam;
+
+    public Grid selectedInventory {  get; private set; }
+    public InventoryItem selectedItem { get; private set; }
+    public float scaleParam { get; private set; }
 
     private PlayerInputEventHandler playerInputEventHandler;
     private RectTransform selectedItemTransform;
     private RectTransform canvasTransform;
+    private UIManager UIManager;
+    private Grid lootInventory;
+
+    private void Awake()
+    {
+        UIManager = GetComponentInParent<UIManager>();
+        lootInventory = transform.Find("Loot").GetComponentInChildren<Grid>();
+    }
 
     private void Start()
     {
@@ -51,6 +64,18 @@ public class InventoryController : MonoBehaviour
 
         Test();
     }
+
+    private void OnEnable()
+    {
+        UIManager.onInventoryUIClose += HandleInventoryClose;
+    }
+
+    private void OnDisable()
+    {
+        UIManager.onInventoryUIClose -= HandleInventoryClose;
+    }
+
+
     public void SetSelectedInventory(Grid inventory)
     {
         selectedInventory = inventory;
@@ -88,6 +113,7 @@ public class InventoryController : MonoBehaviour
                 selectedItem = selectedInventory.PickUpItem(inventoryPosition);
                 if (selectedItem != null)
                 {
+                    SoundManager.Instance.PlaySound(selectAudio);
                     selectedItemTransform = selectedItem.GetComponent<RectTransform>();
                 }
             }
@@ -96,8 +122,8 @@ public class InventoryController : MonoBehaviour
                 bool hasPlacedItem = selectedInventory.PlaceItem(selectedItem, inventoryPosition);
                 if (hasPlacedItem)
                 {
+                    PlayeInteractItemAudio(selectedItem);
                     selectedItem = null;
-                    SoundManager.Instance.PlaySound(equipmentAudio);
                 } else
                 {
                     SoundManager.Instance.Warning();
@@ -187,7 +213,21 @@ public class InventoryController : MonoBehaviour
         }
     }
 
-    public InventoryItem CreateItemInInventory(InventoryItemSO itemData, Rarity rarity,  Grid inventory)
+    private void PlayeInteractItemAudio(InventoryItem item)
+    {
+        ItemType itemType = item.data.itemType;
+        if (itemType == ItemType.Treasure)
+        {
+            SoundManager.Instance.PlaySound(treasureAudio);
+        } else if (itemType == ItemType.Consumable)
+        {
+            SoundManager.Instance.PlaySound(consumableAudio);
+        } else if (itemType == ItemType.Equipment)
+        {
+            SoundManager.Instance.PlaySound(equipmentAudio);
+        }
+    }
+    public InventoryItem CreateItemInInventory(InventoryItemSO itemData, Rarity rarity,  Grid inventory, Vector2Int? position = null)
     {
         GameObject itemGO = Instantiate(inventoryItemPrefab);
 
@@ -196,6 +236,30 @@ public class InventoryController : MonoBehaviour
 
         itemGO.GetComponent<InventoryItem>().Set(itemData, rarity, inventory.tileSize);
 
-        return itemGO.GetComponent<InventoryItem>();
+        InventoryItem newItem = itemGO.GetComponent<InventoryItem>();
+
+        if (position == null)
+        {
+            position = lootInventory.GetSpaceForItem(newItem);
+            
+        }
+
+        if (position != null)
+        {
+            lootInventory.PlaceItem(newItem, position.Value);
+        }
+
+        return newItem;
+    }
+
+    public void HandleInventoryClose()
+    {
+        InventoryItem[] items = lootInventory.GetComponentsInChildren<InventoryItem>();
+
+        foreach (InventoryItem item in items)
+        {
+            lootInventory.RemoveItem(item);
+            Destroy(item.gameObject);
+        }
     }
 }
