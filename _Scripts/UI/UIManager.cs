@@ -25,13 +25,15 @@ public class UIManager : MonoBehaviour
     private PlayerInput inputAction;
 
     private float menuOpenTime;
-    private RectTransform BackpackInventoryUI;
-    private RectTransform LootInventoryUI;
+    private RectTransform backpackInventoryUI;
+    private RectTransform lootInventoryUI;
+    private RectTransform equipmentInventoryUI;
 
     private void Awake()
     {
-        BackpackInventoryUI = inventoryUI.transform.Find("Backpack").GetComponent<RectTransform>();
-        LootInventoryUI = inventoryUI.transform.Find("Loot").GetComponent<RectTransform>();
+        backpackInventoryUI = inventoryUI.transform.Find("Backpack").GetComponent<RectTransform>();
+        lootInventoryUI = inventoryUI.transform.Find("Loot").GetComponent<RectTransform>();
+        equipmentInventoryUI = inventoryUI.transform.Find("Equipment").GetComponent<RectTransform>();
 
     }
     private void Start()
@@ -96,7 +98,11 @@ public class UIManager : MonoBehaviour
 
     public void SetInventoryUI()
     {
-        BackpackInventoryUI.anchoredPosition = new Vector2(Screen.width / 2 - BackpackInventoryUI.sizeDelta.x / 2, -border);
-        LootInventoryUI.anchoredPosition = new Vector2(Screen.width - LootInventoryUI.sizeDelta.x - border, -border);
+        lootInventoryUI.anchoredPosition = new Vector2(Screen.width - lootInventoryUI.sizeDelta.x - border, -border);
+        equipmentInventoryUI.anchoredPosition = new Vector2(border, -border);
+
+        // 装备栏和掠夺栏左右布局，物品栏在剩余宽度居中
+        float widthLeft = Screen.width - border * 2 - lootInventoryUI.sizeDelta.x - equipmentInventoryUI.sizeDelta.x; 
+        backpackInventoryUI.anchoredPosition = new Vector2(widthLeft / 2 - backpackInventoryUI.sizeDelta.x / 2 + equipmentInventoryUI.sizeDelta.x + border, -border);
     }
 }

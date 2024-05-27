@@ -9,10 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ceee09c0b2e3d146b730a21d4a3dd27, type: 3}
+  m_Script: {fileID: 11500000, guid: 70a5deff46a80494d8de5c7a54e22158, type: 3}
   m_Name: Nacklace
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 48dc16735313cb046831c21446749b67, type: 3}
+  sprite: {fileID: 21300000, guid: fedb36a8ba672a540a4ef57e09049a75, type: 3}
+  itemType: 0
   size: {x: 1, y: 1}
   defaultRarity: 0
   priceSetting: {fileID: 11400000, guid: 8f6592c64ce70514294b85906f7046aa, type: 2}
+  equipmentType: 5

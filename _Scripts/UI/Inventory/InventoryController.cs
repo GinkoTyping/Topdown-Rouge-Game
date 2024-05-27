@@ -2,6 +2,7 @@ using Ginko.PlayerSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -174,14 +175,12 @@ public class InventoryController : MonoBehaviour
         return selectedInventory.GetGridRelativePosition(relativePostion);
     }
 
-    private InventoryItem CreateItemOnMouse(InventoryItemSO[] items)
+    public InventoryItem CreateItemOnMouse(InventoryItemSO itemData, Rarity? rarity = null)
     {
         if (selectedInventory == null)
         {
             return null;
         }
-
-        InventoryItemSO itemData = items[UnityEngine.Random.Range(0,3)];
 
         GameObject itemGO = Instantiate(inventoryItemPrefab);
         selectedItem = itemGO.GetComponent<InventoryItem>();
@@ -189,7 +188,11 @@ public class InventoryController : MonoBehaviour
         RectTransform rectTransform = itemGO.GetComponent<RectTransform>();
         rectTransform?.SetParent(selectedInventory.GetComponent<RectTransform>());
 
-        itemGO.GetComponent<InventoryItem>().Set(itemData, Rarity.Common, selectedInventory.tileSize);
+        Rarity setRarity = rarity == null 
+            ? itemData.defaultRarity 
+            : (Rarity)rarity;
+
+        itemGO.GetComponent<InventoryItem>().Set(itemData, setRarity, selectedInventory.tileSize);
 
         return selectedItem;
     }
@@ -201,7 +204,9 @@ public class InventoryController : MonoBehaviour
             selectedItem = null;
             selectedItemTransform = null;
 
-            InventoryItem item =  CreateItemOnMouse(inventoryItemsData);
+            InventoryItemSO itemData = inventoryItemsData[UnityEngine.Random.Range(0, 3)];
+
+            InventoryItem item =  CreateItemOnMouse(itemData);
 
             selectedItem = null;
 
@@ -250,6 +255,30 @@ public class InventoryController : MonoBehaviour
         }
 
         return newItem;
+    }
+
+    public InventoryItem EquipSelectedItem(EquipmentSlot equipmentSlot)
+    {
+        GameObject itemGO = Instantiate(inventoryItemPrefab);
+        RectTransform rectTransform = itemGO.GetComponent<RectTransform>();
+        rectTransform.SetParent(equipmentSlot.GetComponent<RectTransform>());
+        InventoryItem newItem = itemGO.GetComponent<InventoryItem>();
+
+        newItem.Set(selectedItem.data, selectedItem.rarity, equipmentSlot.tileSize);
+
+        rectTransform.anchoredPosition = new Vector2(rectTransform.sizeDelta.x / 2, -rectTransform.sizeDelta.y / 2);
+
+        // 清楚物品栏中的装备
+        Grid fromInventory = selectedItem.GetComponentInParent<Grid>();
+        fromInventory.RemoveItem(selectedItem, isClear: true);
+        selectedItem = null;
+
+        return newItem;
+    }
+
+    public void SetSelectedItem(InventoryItem item)
+    {
+        selectedItem = item;
     }
 
     public void HandleInventoryClose()

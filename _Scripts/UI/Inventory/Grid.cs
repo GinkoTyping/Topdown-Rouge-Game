@@ -13,8 +13,6 @@ public class Grid : MonoBehaviour
     public int tileSize;
     [SerializeField]
     public Vector2Int inventorySize;
-    [SerializeField]
-    public GameObject testItem;
 
     private RectTransform inventoryRectTransform;
     private RectTransform gridRectTransform;
@@ -154,7 +152,7 @@ public class Grid : MonoBehaviour
         return item;
     }
 
-    public InventoryItem RemoveItem(InventoryItem item)
+    public InventoryItem RemoveItem(InventoryItem item, bool? isClear = false)
     {
         for (int x = 0; x < item.width; x++)
         {
@@ -162,6 +160,12 @@ public class Grid : MonoBehaviour
             {
                 inventoryItemSlot[item.pivotPositionOnGrid.x + x, item.pivotPositionOnGrid.y + y] = null;
             }
+        }
+
+        if ((bool)isClear)
+        {
+            // TODO: ¶ÔÏó³Ø
+            Destroy(item.gameObject);
         }
 
         return item;
