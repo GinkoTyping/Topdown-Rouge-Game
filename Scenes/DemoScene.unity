@@ -318,7 +318,7 @@ MonoBehaviour:
   inventoryItemPrefab: {fileID: 335937374205450573, guid: 955c618e3ce8201418aa9a8a1e9171b2,
     type: 3}
   inventoryItemsData:
-  - {fileID: 11400000, guid: 8d62b6f87406bdb45af0e0d102f78618, type: 2}
+  - {fileID: 11400000, guid: df0a87d68702abb4fae7aaa9540ad7d3, type: 2}
   - {fileID: 11400000, guid: dd9cde6a023398b4db6c37026c1614ce, type: 2}
   equipmentAudio: {fileID: 8300000, guid: 8539b7c24be610145a3acfa2ae76f0e9, type: 3}
   treasureAudio: {fileID: 8300000, guid: 9c9488e6c1912a240b5ddd98e3991ae9, type: 3}
@@ -326,7 +326,6 @@ MonoBehaviour:
   removeAudio: {fileID: 8300000, guid: 7a034c0123a1a71439b25cd35a119a5c, type: 3}
   selectAudio: {fileID: 8300000, guid: 0d4b3939317a8f84993a22757e1f2bb0, type: 3}
   equipAudio: {fileID: 8300000, guid: dd45cebe94562d94da5d7bb4f9e84d09, type: 3}
-  selectedEquipmentSlot: {fileID: 0}
 --- !u!224 &39305243 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 552863461737092114, guid: 3259ebf5cd549d94f9ca2a7d68174f7b,

@@ -23,12 +23,19 @@ public class InventoryItem : MonoBehaviour
 
     private Transform shaderTransform;
     private RectTransform rectTransform;
+    private InventoryController inventoryController;
     private bool isRotated;
 
     private void Awake()
     {
         shaderTransform = transform.Find("BackgroundColor");
         rectTransform = GetComponent<RectTransform>();
+
+    }
+
+    private void Start()
+    {
+        inventoryController = GetComponentInParent<InventoryController>();
     }
 
     private void OnEnable()
@@ -68,12 +75,6 @@ public class InventoryItem : MonoBehaviour
     {
         isRotated = !isRotated;
         rectTransform.rotation = Quaternion.Euler(0, 0, isRotated ? 90f : 0f);
-    }
-
-    public void Remove(bool isClear)
-    {
-        Grid fromInventory = GetComponentInParent<Grid>();
-        fromInventory.RemoveItem(this, isClear: isClear);
     }
 }
 

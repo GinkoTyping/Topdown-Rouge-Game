@@ -185,13 +185,24 @@ public class InventoryController : MonoBehaviour
         {
             playerInputEventHandler.useSelectSignal();
 
-            InventoryItem equipmentItem =  selectedEquipmentSlot.EquipItem(selectedItem);
+            InventoryItem cloneItem = selectedItem;
 
-            bool successEquipped = equipmentItem != null;
+            // 因为目标 EquipmentSlo t已经有 Item 时，会将该 Item 替换给 selectedItem ,所以需要清除当前的 selectedItem
+            if (selectedEquipmentSlot.currentEquipment != null)
+            {
+                RemoveItem(selectedItem);
+            }
+
+            InventoryItem[] equipItems =  selectedEquipmentSlot.EquipItem(cloneItem);
+
+            bool successEquipped = equipItems != null;
             if (successEquipped)
             {
-                selectedItem.Remove(true);
-                selectedItem = null;
+                bool isEmptySlotBeforeEquip = equipItems[1] == null;
+                if (isEmptySlotBeforeEquip)
+                {
+                    RemoveItem(selectedItem);
+                }
 
                 PlayEquipItemAudio();
             } else
@@ -345,9 +356,21 @@ public class InventoryController : MonoBehaviour
     public void SetSelectedItem(InventoryItem item)
     {
         selectedItem = item;
-        selectedItemTransform = selectedItem.GetComponent<RectTransform>();
+        if (selectedItem != null)
+        {
+            selectedItemTransform = selectedItem.GetComponent<RectTransform>();
+        }
     }
 
+    private void RemoveItem(InventoryItem item)
+    {
+        Grid fromInventory = item.GetComponentInParent<Grid>();
+        fromInventory.RemoveItem(item, isClear: true);
+        if (selectedItem == this)
+        {
+            SetSelectedItem(null);
+        }
+    }
     public void HandleInventoryClose()
     {
         InventoryItem[] items = lootInventory.GetComponentsInChildren<InventoryItem>();

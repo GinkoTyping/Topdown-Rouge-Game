@@ -63,32 +63,38 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
     }
 
-    public InventoryItem EquipItem(InventoryItem item)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns>[equippedItem, unequippedItem]</returns>
+    public InventoryItem[] EquipItem(InventoryItem item)
     {
         EquipmentItemSO data = (EquipmentItemSO)item.data;
+        InventoryItem unequippedItem = null;
         if (data.equipmentType != type)
         {
             return null;
         }
 
+        if (currentEquipment != null)
+        {
+            unequippedItem = UnequipItem();
+        }
+
         GameObject itemGO = Instantiate(equipmentPrefab);
         RectTransform rectTransform = itemGO.GetComponent<RectTransform>();
         rectTransform.SetParent(GetComponent<RectTransform>());
-        InventoryItem newItem = itemGO.GetComponent<InventoryItem>();
+        InventoryItem equippedItem = itemGO.GetComponent<InventoryItem>();
 
-        newItem.Set(item.data, item.rarity, tileSize);
+        equippedItem.Set(item.data, item.rarity, tileSize);
 
         rectTransform.anchoredPosition = new Vector2(rectTransform.sizeDelta.x / 2, -rectTransform.sizeDelta.y / 2);
 
-        if (currentEquipment == null)
-        {
-            SetEquipment(newItem);
-        } else
-        {
+        SetEquipment(equippedItem);
 
-        }
-
-        return newItem;
+        InventoryItem[] output = { equippedItem, unequippedItem };
+        return output;
     }
 
     public InventoryItem UnequipItem()
