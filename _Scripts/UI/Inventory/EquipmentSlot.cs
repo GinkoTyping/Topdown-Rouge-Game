@@ -7,22 +7,21 @@ using UnityEngine.UI;
 public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
-    private EquipmentType type;
+    public EquipmentType type;
     [SerializeField]
     public int tileSize;
+    [SerializeField]
+    private GameObject equipmentPrefab;
 
     private bool isEmpty;
     private bool isActive;
 
-    private InventoryItem currentEquipment;
     private InventoryController inventoryController;
     private Grid backpackInventory;
-    private PlayerInputEventHandler inputHandler;
     private Image backgroundImage;
     private Color defaultBackgroundColor;
 
-    public event Action OnEquip;
-    public event Action OnUnequip;
+    public InventoryItem currentEquipment { get; private set; }
 
     private void Awake()
     {
@@ -31,21 +30,11 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         backpackInventory = inventoryController.transform.Find("Backpack").GetComponentInChildren<Grid>();
         defaultBackgroundColor = backgroundImage.color;
     }
-
-    private void Start()
-    {
-        inputHandler = Player.Instance.InputHandler;
-    }
-
-    private void Update()
-    {
-        HandleEquipItem();
-        HandleUnequipItem();
-    }
     public void OnPointerEnter(PointerEventData eventData)
     {
         isActive = true;
         SwitchHighlight(true);
+        inventoryController.SetSelectedEquipmentSlot(this);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -56,6 +45,11 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
 
         isActive = false;
+        inventoryController.SetSelectedEquipmentSlot(null);
+    }
+    public void SetEquipment(InventoryItem item)
+    {
+        currentEquipment = item;
     }
 
     private void SwitchHighlight(bool isHighlight)
@@ -69,47 +63,42 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
     }
 
-    private void HandleEquipItem()
+    public InventoryItem EquipItem(InventoryItem item)
     {
-
-        if (isActive && 
-            inventoryController.selectedItem != null && 
-            inputHandler.Select
-            )
+        EquipmentItemSO data = (EquipmentItemSO)item.data;
+        if (data.equipmentType != type)
         {
-            inputHandler.useSelectSignal();
-
-
-            EquipmentItemSO data = (EquipmentItemSO)inventoryController.selectedItem.data;
-
-            if (data.equipmentType == type)
-            {
-                if (currentEquipment == null)
-                {
-                    currentEquipment = inventoryController.EquipSelectedItem(this);
-                } else
-                {
-                    // TODO: 切换装备
-                }
-            }
+            return null;
         }
+
+        GameObject itemGO = Instantiate(equipmentPrefab);
+        RectTransform rectTransform = itemGO.GetComponent<RectTransform>();
+        rectTransform.SetParent(GetComponent<RectTransform>());
+        InventoryItem newItem = itemGO.GetComponent<InventoryItem>();
+
+        newItem.Set(item.data, item.rarity, tileSize);
+
+        rectTransform.anchoredPosition = new Vector2(rectTransform.sizeDelta.x / 2, -rectTransform.sizeDelta.y / 2);
+
+        if (currentEquipment == null)
+        {
+            SetEquipment(newItem);
+        } else
+        {
+
+        }
+
+        return newItem;
     }
 
-    private void HandleUnequipItem()
+    public InventoryItem UnequipItem()
     {
-        if (isActive && 
-            inventoryController.selectedItem == null &&
-            currentEquipment != null &&
-            inputHandler.Select
-            )
-        {
-            // TODO: 还有默认是仓库的情况，待补充
-            inventoryController.SetSelectedInventory(backpackInventory);
-            Debug.Log(inventoryController.selectedInventory);
-            inventoryController.CreateItemOnMouse(currentEquipment.data, currentEquipment.rarity);
+        // TODO: 还有默认是仓库的情况，待补充
+        InventoryItem unequipItem =  inventoryController.CreateItemOnMouse(currentEquipment.data, currentEquipment.rarity, backpackInventory);
 
-            Destroy(currentEquipment.gameObject);
-            currentEquipment = null;
-        }
+        Destroy(currentEquipment.gameObject);
+        currentEquipment = null;
+
+        return unequipItem;
     }
 }

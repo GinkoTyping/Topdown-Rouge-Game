@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class InventoryItem : MonoBehaviour
 {
@@ -67,6 +68,12 @@ public class InventoryItem : MonoBehaviour
     {
         isRotated = !isRotated;
         rectTransform.rotation = Quaternion.Euler(0, 0, isRotated ? 90f : 0f);
+    }
+
+    public void Remove(bool isClear)
+    {
+        Grid fromInventory = GetComponentInParent<Grid>();
+        fromInventory.RemoveItem(this, isClear: isClear);
     }
 }
 

@@ -320,11 +320,13 @@ MonoBehaviour:
   inventoryItemsData:
   - {fileID: 11400000, guid: 8d62b6f87406bdb45af0e0d102f78618, type: 2}
   - {fileID: 11400000, guid: dd9cde6a023398b4db6c37026c1614ce, type: 2}
-  equipmentAudio: {fileID: 8300000, guid: 2971bc3a7f512ae43aa1389c045c02b6, type: 3}
+  equipmentAudio: {fileID: 8300000, guid: 8539b7c24be610145a3acfa2ae76f0e9, type: 3}
   treasureAudio: {fileID: 8300000, guid: 9c9488e6c1912a240b5ddd98e3991ae9, type: 3}
   consumableAudio: {fileID: 8300000, guid: 0d3cb27a8e23475458428a4e62800749, type: 3}
   removeAudio: {fileID: 8300000, guid: 7a034c0123a1a71439b25cd35a119a5c, type: 3}
   selectAudio: {fileID: 8300000, guid: 0d4b3939317a8f84993a22757e1f2bb0, type: 3}
+  equipAudio: {fileID: 8300000, guid: dd45cebe94562d94da5d7bb4f9e84d09, type: 3}
+  selectedEquipmentSlot: {fileID: 0}
 --- !u!224 &39305243 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 552863461737092114, guid: 3259ebf5cd549d94f9ca2a7d68174f7b,
@@ -22356,11 +22358,6 @@ PrefabInstance:
     - target: {fileID: 552863461737092114, guid: 3259ebf5cd549d94f9ca2a7d68174f7b,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4794307080382385411, guid: 3259ebf5cd549d94f9ca2a7d68174f7b,
-        type: 3}
-      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7866012455686097217, guid: 3259ebf5cd549d94f9ca2a7d68174f7b,

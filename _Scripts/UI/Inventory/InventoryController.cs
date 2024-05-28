@@ -27,9 +27,12 @@ public class InventoryController : MonoBehaviour
     public AudioClip removeAudio;
     [SerializeField]
     public AudioClip selectAudio;
+    [SerializeField]
+    public AudioClip equipAudio;
 
     public event Action onInventoryChange;
 
+    private EquipmentSlot selectedEquipmentSlot;
     public Grid selectedInventory {  get; private set; }
     public InventoryItem selectedItem { get; private set; }
     public float scaleParam { get; private set; }
@@ -59,9 +62,13 @@ public class InventoryController : MonoBehaviour
         scaleParam = canvasTransform.localScale.x;
 
         UpdateSelectedItem();
+
         HandleSelectItem();
         HandleRotateItem();
         HandleRemoveItem();
+
+        HandleEquipItem();
+        HandleUnequipItem();
 
         Test();
     }
@@ -85,6 +92,11 @@ public class InventoryController : MonoBehaviour
         {
             onInventoryChange?.Invoke();
         }
+    }
+
+    public void SetSelectedEquipmentSlot(EquipmentSlot equipmentSlot)
+    {
+        selectedEquipmentSlot = equipmentSlot;
     }
 
     private void UpdateSelectedItem()
@@ -162,6 +174,46 @@ public class InventoryController : MonoBehaviour
         }
     }
 
+    private void HandleEquipItem()
+    {
+        if (selectedEquipmentSlot == null || selectedItem == null)
+        {
+            return;
+        }
+
+        if (playerInputEventHandler.Select)
+        {
+            playerInputEventHandler.useSelectSignal();
+
+            InventoryItem equipmentItem =  selectedEquipmentSlot.EquipItem(selectedItem);
+
+            bool successEquipped = equipmentItem != null;
+            if (successEquipped)
+            {
+                selectedItem.Remove(true);
+                selectedItem = null;
+
+                PlayEquipItemAudio();
+            } else
+            {
+                SoundManager.Instance.Warning();
+            }
+        }
+    }
+    private void HandleUnequipItem()
+    {
+        if (selectedEquipmentSlot?.currentEquipment == null)
+        {
+            return;
+        }
+
+        if (playerInputEventHandler.Select)
+        {
+            playerInputEventHandler.useSelectSignal();
+            selectedEquipmentSlot.UnequipItem();
+        }
+    }
+
     private Vector2Int GetInventoryPosition(InventoryItem item)
     {
         Vector2 mousePosition = playerInputEventHandler.MousePosition;
@@ -175,24 +227,33 @@ public class InventoryController : MonoBehaviour
         return selectedInventory.GetGridRelativePosition(relativePostion);
     }
 
-    public InventoryItem CreateItemOnMouse(InventoryItemSO itemData, Rarity? rarity = null)
+    public InventoryItem CreateItemOnMouse(
+        InventoryItemSO itemData, 
+        Rarity? rarity = null, 
+        Grid inventory = null)
     {
-        if (selectedInventory == null)
+        if (inventory == null)
+        {
+            inventory = selectedInventory;
+        }
+
+        if (inventory == null)
         {
             return null;
         }
 
         GameObject itemGO = Instantiate(inventoryItemPrefab);
-        selectedItem = itemGO.GetComponent<InventoryItem>();
+
+        SetSelectedItem(itemGO.GetComponent<InventoryItem>());
 
         RectTransform rectTransform = itemGO.GetComponent<RectTransform>();
-        rectTransform?.SetParent(selectedInventory.GetComponent<RectTransform>());
+        rectTransform?.SetParent(inventory.GetComponent<RectTransform>());
 
         Rarity setRarity = rarity == null 
             ? itemData.defaultRarity 
             : (Rarity)rarity;
 
-        itemGO.GetComponent<InventoryItem>().Set(itemData, setRarity, selectedInventory.tileSize);
+        itemGO.GetComponent<InventoryItem>().Set(itemData, setRarity, inventory.tileSize);
 
         return selectedItem;
     }
@@ -204,7 +265,7 @@ public class InventoryController : MonoBehaviour
             selectedItem = null;
             selectedItemTransform = null;
 
-            InventoryItemSO itemData = inventoryItemsData[UnityEngine.Random.Range(0, 3)];
+            InventoryItemSO itemData = inventoryItemsData[UnityEngine.Random.Range(0, 2)];
 
             InventoryItem item =  CreateItemOnMouse(itemData);
 
@@ -231,6 +292,11 @@ public class InventoryController : MonoBehaviour
         {
             SoundManager.Instance.PlaySound(equipmentAudio);
         }
+    }
+
+    public void PlayEquipItemAudio()
+    {
+        SoundManager.Instance.PlaySound(equipAudio);
     }
     public InventoryItem CreateItemInInventory(InventoryItemSO itemData, Rarity rarity,  Grid inventory, Vector2Int? position = null)
     {
@@ -279,6 +345,7 @@ public class InventoryController : MonoBehaviour
     public void SetSelectedItem(InventoryItem item)
     {
         selectedItem = item;
+        selectedItemTransform = selectedItem.GetComponent<RectTransform>();
     }
 
     public void HandleInventoryClose()
