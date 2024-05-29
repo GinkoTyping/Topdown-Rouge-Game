@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "newInventoryItemData", menuName = "Data/Inventory/Equipment/Jewelry")]
 public class JewelryItemSO : EquipmentItemSO
 {
-
+    
 }

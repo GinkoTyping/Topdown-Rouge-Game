@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine;
 public class EquipmentItemSO : InventoryItemSO
 {
     public EquipmentType equipmentType;
+    public BonusAttribute[] bonusAttribute;
 }
 public enum EquipmentType
 {
@@ -18,4 +20,11 @@ public enum EquipmentType
     Feet,
     Necklace,
     Ring,
+}
+
+[Serializable]
+public class BonusAttribute
+{
+    public AttributeType type;
+    public int value;
 }

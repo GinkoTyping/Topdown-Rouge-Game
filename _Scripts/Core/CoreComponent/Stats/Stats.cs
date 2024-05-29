@@ -5,8 +5,8 @@ namespace Ginko.CoreSystem
 {
     public class Stats : CoreComponent
     {
-        [field: SerializeField] public Stat Health {  get; private set; }
-        [field: SerializeField] public Stat Poise {  get; private set; }
+        [field: SerializeField] public ResouceStat Health {  get; private set; }
+        [field: SerializeField] public ResouceStat Poise {  get; private set; }
 
         private void OnEnable()
         {

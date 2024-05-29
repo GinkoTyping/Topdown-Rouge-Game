@@ -6,13 +6,14 @@ using UnityEngine;
 namespace Ginko.CoreSystem
 {
     [Serializable]
-    public class Stat
+    public abstract class BaseStat
     {
-
         [field: SerializeField] public float MaxValue { get; private set; }
-        [field: SerializeField] public float RecoveryRate { get; private set; }
+
         public event Action OnCurrentValueZero;
         public event Action<float, float> OnCurrentValueChange;
+
+        private float currentValue; 
         public float CurrentValue
         {
             get => currentValue;
@@ -27,17 +28,8 @@ namespace Ginko.CoreSystem
                 OnCurrentValueChange?.Invoke(currentValue, MaxValue);
             }
         }
-        private float currentValue;
-        public void Init() => CurrentValue = MaxValue;
+
         public void Increase(float amount) => CurrentValue += amount;
         public void Decrease(float amount) => CurrentValue -= amount;
-
-        public void LogicUpdate()
-        {
-            if (RecoveryRate > 0 && CurrentValue < MaxValue)
-            {
-                Increase(RecoveryRate * Time.deltaTime);
-            }
-        }
     }
 }

@@ -33,6 +33,7 @@ public class InventoryController : MonoBehaviour
     public event Action onInventoryChange;
 
     private EquipmentSlot selectedEquipmentSlot;
+    private EquipmentSlot[] equipmentSlots;
     public Grid selectedInventory {  get; private set; }
     public InventoryItem selectedItem { get; private set; }
     public float scaleParam { get; private set; }
@@ -53,6 +54,7 @@ public class InventoryController : MonoBehaviour
     {
         playerInputEventHandler = Player.Instance.InputHandler;
         canvasTransform = GetComponent<RectTransform>();
+        equipmentSlots = transform.Find("Equipment").Find("Slots").GetComponentsInChildren<EquipmentSlot>();
 
         gameObject.SetActive(false);
     }
@@ -65,10 +67,12 @@ public class InventoryController : MonoBehaviour
 
         HandleSelectItem();
         HandleRotateItem();
-        HandleRemoveItem();
+        HandleFastRemoveItem();
 
         HandleEquipItem();
         HandleUnequipItem();
+
+        HandleFastEquipItem();
 
         Test();
     }
@@ -160,7 +164,7 @@ public class InventoryController : MonoBehaviour
         }
     }
 
-    private void HandleRemoveItem()
+    private void HandleFastRemoveItem()
     {
         if (playerInputEventHandler.HoldCombineKey && playerInputEventHandler.Select)
         {
@@ -174,20 +178,70 @@ public class InventoryController : MonoBehaviour
         }
     }
 
-    private void HandleEquipItem()
+    private void HandleFastEquipItem()
+    {
+        if (playerInputEventHandler.HoldCombineKey && playerInputEventHandler.DeSelect)
+        {
+            playerInputEventHandler.useDeSelectSignal();
+            Vector2Int inventoryPosition = GetInventoryPosition(null);
+
+            InventoryItem itemToEquip = selectedInventory.PickUpItem(inventoryPosition);
+
+            if (itemToEquip.data.itemType != ItemType.Equipment)
+            {
+                return;
+            }
+
+            EquipmentType equipmentType = ((EquipmentItemSO)(itemToEquip.data)).equipmentType;
+
+            SetSelectedItem(itemToEquip);
+
+            int ringSlotIndex = 0;
+
+            foreach (EquipmentSlot slot in equipmentSlots)
+            {
+                if (slot.type == equipmentType)
+                {
+                    SetSelectedEquipmentSlot(slot);
+
+                    if (slot.type == EquipmentType.Ring)
+                    {
+                        if (slot.currentEquipment == null)
+                        {
+                            HandleEquipItem(true);
+                            break;
+                        } 
+                        else if (slot.currentEquipment != null && ringSlotIndex == 1)
+                        {
+                            HandleEquipItem(true);
+                            break;
+                        }
+                        ringSlotIndex++;
+                    } 
+                    else
+                    {
+                        HandleEquipItem(true);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    private void HandleEquipItem(bool isManual = false)
     {
         if (selectedEquipmentSlot == null || selectedItem == null)
         {
             return;
         }
 
-        if (playerInputEventHandler.Select)
+        if (playerInputEventHandler.Select || isManual)
         {
             playerInputEventHandler.useSelectSignal();
 
             InventoryItem cloneItem = selectedItem;
 
-            // 因为目标 EquipmentSlo t已经有 Item 时，会将该 Item 替换给 selectedItem ,所以需要清除当前的 selectedItem
+            // 因为目标 EquipmentSlot已经有 Item 时，会将该 Item 替换给 selectedItem ,所以需要清除当前的 selectedItem
             if (selectedEquipmentSlot.currentEquipment != null)
             {
                 RemoveItem(selectedItem);
@@ -211,6 +265,7 @@ public class InventoryController : MonoBehaviour
             }
         }
     }
+
     private void HandleUnequipItem()
     {
         if (selectedEquipmentSlot?.currentEquipment == null)

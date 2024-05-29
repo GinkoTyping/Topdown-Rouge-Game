@@ -1,3 +1,4 @@
+using Ginko.CoreSystem;
 using Ginko.PlayerSystem;
 using System;
 using UnityEngine;
@@ -11,13 +12,14 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField]
     private GameObject equipmentPrefab;
 
-    private bool isEmpty;
     private bool isActive;
+
+    private Image backgroundImage;
+    private Color defaultBackgroundColor;
 
     private InventoryController inventoryController;
     private Grid backpackInventory;
-    private Image backgroundImage;
-    private Color defaultBackgroundColor;
+    private PlayerStats stats;
 
     public InventoryItem currentEquipment { get; private set; }
 
@@ -27,6 +29,11 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         backgroundImage = GetComponent<Image>();
         backpackInventory = inventoryController.transform.Find("Backpack").GetComponentInChildren<Grid>();
         defaultBackgroundColor = backgroundImage.color;
+    }
+
+    private void Start()
+    {
+        stats = Player.Instance.Core.GetCoreComponent <PlayerStats>();
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -47,7 +54,17 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
     public void SetEquipment(InventoryItem item)
     {
-        currentEquipment = item;
+        if (item == null)
+        {
+            UpdatePlayerAttribute(false);
+            Destroy(currentEquipment.gameObject);
+            currentEquipment = null;
+        }
+        else
+        {
+            currentEquipment = item;
+            UpdatePlayerAttribute(true);
+        }
     }
 
     private void SwitchHighlight(bool isHighlight)
@@ -102,9 +119,29 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         // TODO: 还有默认是仓库的情况，待补充
         InventoryItem unequipItem =  inventoryController.CreateItemOnMouse(currentEquipment.data, currentEquipment.rarity, backpackInventory);
 
-        Destroy(currentEquipment.gameObject);
-        currentEquipment = null;
+        SetEquipment(null);
 
         return unequipItem;
+    }
+
+    private void UpdatePlayerAttribute(bool isEquip)
+    {
+        EquipmentItemSO equipmentData = (EquipmentItemSO)currentEquipment.data;
+        BonusAttribute[] bonusAttribute = equipmentData.bonusAttribute;
+
+        foreach (BonusAttribute attribute in bonusAttribute)
+        {
+            if(attribute.value != 0)
+            {
+                AttributeStat playerAttribute = stats.GetAttribute(attribute.type);
+                if (isEquip)
+                {
+                    playerAttribute.Increase(attribute.value);
+                } else
+                {
+                    playerAttribute.Decrease(attribute.value);
+                }
+            }
+        }
     }
 }

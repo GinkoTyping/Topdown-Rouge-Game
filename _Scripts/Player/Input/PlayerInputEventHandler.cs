@@ -79,6 +79,7 @@ public class PlayerInputEventHandler : MonoBehaviour
     #region UI
     public Vector2 MousePosition { get; private set; }
     public bool Select { get; private set; }
+    public bool DeSelect { get; private set; }
     public bool Test { get; private set; }
     public bool RotateItem { get; private set; }
     public bool PressEsc { get; private set; }
@@ -109,6 +110,25 @@ public class PlayerInputEventHandler : MonoBehaviour
     public void useSelectSignal()
     {
         Select = false;
+    }
+    public void OnDeSelect(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            DeSelect = true;
+        }
+        else if (context.performed)
+        {
+
+        }
+        else if (context.canceled)
+        {
+            DeSelect = false;
+        }
+    }
+    public void useDeSelectSignal()
+    {
+        DeSelect = false;
     }
 
     public void OnTest(InputAction.CallbackContext context)
