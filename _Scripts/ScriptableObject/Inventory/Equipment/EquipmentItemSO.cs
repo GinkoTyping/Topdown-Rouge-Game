@@ -11,10 +11,11 @@ public class EquipmentItemSO : InventoryItemSO
 public enum EquipmentType
 {
     Weapon,
-    Helemet,
+    Head,
+    Body,
     Hand,
     Leg,
     Feet,
-    Nacklace,
+    Necklace,
     Ring,
 }

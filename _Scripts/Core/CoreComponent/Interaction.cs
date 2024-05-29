@@ -90,6 +90,11 @@ namespace Ginko.CoreSystem
         }
         public void InteractItem()
         {
+            if (currentInteractingItem == null)
+            {
+                return;
+            }
+
             if (!isInteracting && currentInteractingItem.isInteractive)
             {
                 isInteracting = true;

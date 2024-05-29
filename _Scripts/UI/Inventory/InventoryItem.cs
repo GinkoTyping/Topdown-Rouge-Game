@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class InventoryItem : MonoBehaviour
 {
     [SerializeField]
-    public Material[] rarityMaterials;
+    public Color[] rarityColors;
 
     public InventoryItemSO data;
     public Vector2Int pivotPositionOnGrid;
@@ -21,21 +20,16 @@ public class InventoryItem : MonoBehaviour
         get => isRotated ? data.size.x : data.size.y;
     }
 
-    private Transform shaderTransform;
+    private RectTransform backgroundTransform;
+    private RectTransform itemTransform;
     private RectTransform rectTransform;
-    private InventoryController inventoryController;
     private bool isRotated;
 
     private void Awake()
     {
-        shaderTransform = transform.Find("BackgroundColor");
+        backgroundTransform = transform.Find("BackgroundColor").GetComponent<RectTransform>();
+        itemTransform = transform.Find("Item").GetComponent<RectTransform>();
         rectTransform = GetComponent<RectTransform>();
-
-    }
-
-    private void Start()
-    {
-        inventoryController = GetComponentInParent<InventoryController>();
     }
 
     private void OnEnable()
@@ -47,28 +41,38 @@ public class InventoryItem : MonoBehaviour
     {
         data = itemSO;
         this.rarity = rarity;
+        rectTransform.localScale = Vector3.one;
 
-        // 设置自身
         Vector2 size = new Vector2(0, 0);
         size.x = width * tileSize;
         size.y = height * tileSize;
-        rectTransform.sizeDelta = size;
-        rectTransform.localScale = Vector3.one;
-        GetComponent<Image>().sprite = itemSO.sprite;
 
-        // 设置背景
-        shaderTransform.GetComponent<RectTransform>().sizeDelta = size;
-        shaderTransform.GetComponent<Image>().sprite = itemSO.sprite;
-
-        // 设置shader material
-        foreach (Material mat in rarityMaterials)
+        if (tileSize != 0)
         {
-            if (mat.GetFloat("_Rarity") == (float)rarity)
+            rectTransform.sizeDelta = size;
+            itemTransform.sizeDelta = size;
+            backgroundTransform.sizeDelta = size;
+        }
+
+        itemTransform.GetComponent<Image>().sprite = itemSO.sprite;
+
+        for(int i = 0; i < rarityColors.Length; i++)
+        {
+            if (i == (int)rarity)
             {
-                shaderTransform.GetComponent<Image>().material = mat;
+                backgroundTransform.GetComponent<Image>().color = rarityColors[i];
+
                 break;
             }
         }
+    }
+    public void Set(InventoryItemSO itemSO, Rarity rarity, Vector2 size)
+    {
+        Set(itemSO, rarity, 0);
+
+        rectTransform.sizeDelta = size;
+        itemTransform.sizeDelta = size;
+        backgroundTransform.sizeDelta = size;
     }
 
     public void Rotate()

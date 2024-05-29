@@ -334,25 +334,6 @@ public class InventoryController : MonoBehaviour
         return newItem;
     }
 
-    public InventoryItem EquipSelectedItem(EquipmentSlot equipmentSlot)
-    {
-        GameObject itemGO = Instantiate(inventoryItemPrefab);
-        RectTransform rectTransform = itemGO.GetComponent<RectTransform>();
-        rectTransform.SetParent(equipmentSlot.GetComponent<RectTransform>());
-        InventoryItem newItem = itemGO.GetComponent<InventoryItem>();
-
-        newItem.Set(selectedItem.data, selectedItem.rarity, equipmentSlot.tileSize);
-
-        rectTransform.anchoredPosition = new Vector2(rectTransform.sizeDelta.x / 2, -rectTransform.sizeDelta.y / 2);
-
-        // 清楚物品栏中的装备
-        Grid fromInventory = selectedItem.GetComponentInParent<Grid>();
-        fromInventory.RemoveItem(selectedItem, isClear: true);
-        selectedItem = null;
-
-        return newItem;
-    }
-
     public void SetSelectedItem(InventoryItem item)
     {
         selectedItem = item;
@@ -371,6 +352,7 @@ public class InventoryController : MonoBehaviour
             SetSelectedItem(null);
         }
     }
+    
     public void HandleInventoryClose()
     {
         InventoryItem[] items = lootInventory.GetComponentsInChildren<InventoryItem>();

@@ -9,8 +9,6 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField]
     public EquipmentType type;
     [SerializeField]
-    public int tileSize;
-    [SerializeField]
     private GameObject equipmentPrefab;
 
     private bool isEmpty;
@@ -84,10 +82,12 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
         GameObject itemGO = Instantiate(equipmentPrefab);
         RectTransform rectTransform = itemGO.GetComponent<RectTransform>();
-        rectTransform.SetParent(GetComponent<RectTransform>());
-        InventoryItem equippedItem = itemGO.GetComponent<InventoryItem>();
 
-        equippedItem.Set(item.data, item.rarity, tileSize);
+        rectTransform.SetParent(GetComponent<RectTransform>());
+        rectTransform.SetAsFirstSibling();
+
+        InventoryItem equippedItem = itemGO.GetComponent<InventoryItem>();
+        equippedItem.Set(item.data, item.rarity, GetComponent<RectTransform>().sizeDelta);
 
         rectTransform.anchoredPosition = new Vector2(rectTransform.sizeDelta.x / 2, -rectTransform.sizeDelta.y / 2);
 
