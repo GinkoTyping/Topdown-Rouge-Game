@@ -1,12 +1,8 @@
 using Ginko.PlayerSystem;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using static UnityEditor.Progress;
+
 
 public class InventoryController : MonoBehaviour
 {
@@ -44,17 +40,27 @@ public class InventoryController : MonoBehaviour
     private UIManager UIManager;
     private Grid lootInventory;
 
+    private GameObject equipmentPage;
+    private GameObject equipmentDetailPage;
+    private TextMeshProUGUI switchEquipemntPageButton;
+    private bool isShowEquipmentPage;
+
     private void Awake()
     {
         UIManager = GetComponentInParent<UIManager>();
         lootInventory = transform.Find("Loot").GetComponentInChildren<Grid>();
+        equipmentPage = transform.Find("Equipment").Find("SlotsPage").gameObject;
+        equipmentDetailPage = transform.Find("Equipment").Find("Details").gameObject;
+        switchEquipemntPageButton = transform.Find("Equipment").Find("SwitchDetailButton").GetComponentInChildren<TextMeshProUGUI>();
+
+        isShowEquipmentPage = true;
     }
 
     private void Start()
     {
         playerInputEventHandler = Player.Instance.InputHandler;
         canvasTransform = GetComponent<RectTransform>();
-        equipmentSlots = transform.Find("Equipment").Find("Slots").GetComponentsInChildren<EquipmentSlot>();
+        equipmentSlots = transform.Find("Equipment").Find("SlotsPage").GetComponentsInChildren<EquipmentSlot>();
 
         gameObject.SetActive(false);
     }
@@ -80,6 +86,7 @@ public class InventoryController : MonoBehaviour
     private void OnEnable()
     {
         UIManager.onInventoryUIClose += HandleInventoryClose;
+        equipmentDetailPage.SetActive(false);
     }
 
     private void OnDisable()
@@ -407,7 +414,7 @@ public class InventoryController : MonoBehaviour
             SetSelectedItem(null);
         }
     }
-    
+
     public void HandleInventoryClose()
     {
         InventoryItem[] items = lootInventory.GetComponentsInChildren<InventoryItem>();
@@ -417,5 +424,17 @@ public class InventoryController : MonoBehaviour
             lootInventory.RemoveItem(item);
             Destroy(item.gameObject);
         }
+    }
+
+    public void OnSwitchEquipmentPage()
+    {
+        isShowEquipmentPage = !isShowEquipmentPage;
+
+        equipmentPage.SetActive(isShowEquipmentPage);
+        equipmentDetailPage.SetActive(!isShowEquipmentPage);
+
+        switchEquipemntPageButton.text = isShowEquipmentPage ? "Detailed Stauts" : "Equipment Status";
+
+        SoundManager.Instance.ButtonClick();
     }
 }

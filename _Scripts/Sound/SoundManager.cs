@@ -9,8 +9,12 @@ public class SoundManager : MonoBehaviour
 
     [SerializeField] private AudioSource effectSource, musicSource;
     [SerializeField] private float volume;
+
     [Header("Common Audio")]
     [SerializeField] private AudioClip errorHint;
+
+    [Header("UI Audio")]
+    [SerializeField] private AudioClip buttonClick;
     private void Awake()
     {
         if (Instance == null)
@@ -42,5 +46,10 @@ public class SoundManager : MonoBehaviour
     public void Warning()
     {
         effectSource.PlayOneShot(errorHint);
+    }
+
+    public void ButtonClick()
+    {
+        effectSource.PlayOneShot(buttonClick);
     }
 }

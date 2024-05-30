@@ -19,4 +19,10 @@ namespace Ginko.CoreSystem
             }
         }
     }
+
+    public enum ResourceType
+    {
+        Health,
+        Mana,
+    }
 }

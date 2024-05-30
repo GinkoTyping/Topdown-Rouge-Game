@@ -1,4 +1,5 @@
 using System;
+using System.Xml.Linq;
 using UnityEngine;
 
 namespace Ginko.CoreSystem
@@ -20,6 +21,16 @@ namespace Ginko.CoreSystem
 
             Health.LogicUpdate();
             Poise.LogicUpdate();
+        }
+        public ResouceStat GetAttribute(ResourceType type)
+        {
+            ResouceStat output = null;
+            if (type == ResourceType.Health)
+            {
+                output = Health;
+            }
+
+            return output;
         }
     }
 }
