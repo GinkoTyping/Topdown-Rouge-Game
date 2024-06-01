@@ -104,11 +104,9 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         GameObject itemGO = Instantiate(equipmentPrefab);
         RectTransform rectTransform = itemGO.GetComponent<RectTransform>();
 
-        rectTransform.SetParent(GetComponent<RectTransform>());
-        rectTransform.SetAsFirstSibling();
-
         InventoryItem equippedItem = itemGO.GetComponent<InventoryItem>();
-        equippedItem.Set(item.data, item.rarity, GetComponent<RectTransform>().sizeDelta);
+        equippedItem.Set(item.data, GetComponent<RectTransform>(), item.rarity, GetComponent<RectTransform>().sizeDelta);
+        rectTransform.SetAsFirstSibling();
 
         rectTransform.anchoredPosition = new Vector2(rectTransform.sizeDelta.x / 2, -rectTransform.sizeDelta.y / 2);
 

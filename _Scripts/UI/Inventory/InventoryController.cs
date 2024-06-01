@@ -48,6 +48,8 @@ public class InventoryController : MonoBehaviour
     private TextMeshProUGUI switchEquipemntPageButton;
     private bool isShowEquipmentPage;
     private float scaleUnit;
+    private RectTransform pickupItemFrom;
+
     private void Awake()
     {
         UIManager = GetComponentInParent<UIManager>();
@@ -125,6 +127,11 @@ public class InventoryController : MonoBehaviour
         }
     }
 
+    public void SetPickUpItemFrom(RectTransform transform)
+    {
+        pickupItemFrom = transform;
+    }
+
     private void UpdateSelectedItem()
     {
         if (selectedItem != null)
@@ -150,6 +157,7 @@ public class InventoryController : MonoBehaviour
             if (selectedItem == null)
             {
                 selectedItem = selectedInventory.PickUpItem(inventoryPosition);
+                SetPickUpItemFrom(selectedInventory.GetComponent<RectTransform>());
                 if (selectedItem != null)
                 {
                     SoundManager.Instance.PlaySound(selectAudio);
@@ -298,11 +306,19 @@ public class InventoryController : MonoBehaviour
         if (playerInputEventHandler.Select)
         {
             playerInputEventHandler.useSelectSignal();
+
+            SetPickUpItemFrom(selectedEquipmentSlot.GetComponent<RectTransform>());
             selectedEquipmentSlot.UnequipItem();
         }
     }
     
     public void HandleInventoryClose()
+    {
+        RestoreLootBox();
+        RestorePickUpItem();
+    }
+
+    private void RestoreLootBox()
     {
         InventoryItem[] items = lootInventory.GetComponentsInChildren<InventoryItem>();
 
@@ -310,6 +326,27 @@ public class InventoryController : MonoBehaviour
         {
             lootInventory.RemoveItem(item);
             Destroy(item.gameObject);
+        }
+    }
+
+    private void RestorePickUpItem()
+    {
+        if (selectedItem != null && pickupItemFrom != null)
+        {
+
+            Grid grid = pickupItemFrom.GetComponent<Grid>();
+            EquipmentSlot slot = pickupItemFrom.GetComponent<EquipmentSlot>();
+            if (grid != null)
+            {
+                grid.PlaceItem(selectedItem, selectedItem.pivotPositionOnGrid);
+            }
+            else if (slot != null)
+            {
+                SetSelectedEquipmentSlot(slot);
+                HandleEquipItem(true);
+            }
+
+            SetSelectedItem(null);
         }
     }
 
@@ -373,14 +410,11 @@ public class InventoryController : MonoBehaviour
 
         SetSelectedItem(itemGO.GetComponent<InventoryItem>());
 
-        RectTransform rectTransform = itemGO.GetComponent<RectTransform>();
-        rectTransform?.SetParent(inventory.GetComponent<RectTransform>());
-
         Rarity setRarity = rarity == null 
             ? itemData.defaultRarity 
             : (Rarity)rarity;
 
-        itemGO.GetComponent<InventoryItem>().Set(itemData, setRarity, inventory.tileSize);
+        itemGO.GetComponent<InventoryItem>().Set(itemData, inventory.GetComponent<RectTransform>(), setRarity, inventory.tileSize);
 
         return selectedItem;
     }
@@ -430,9 +464,8 @@ public class InventoryController : MonoBehaviour
         GameObject itemGO = Instantiate(inventoryItemPrefab);
 
         RectTransform rectTransform = itemGO.GetComponent<RectTransform>();
-        rectTransform?.SetParent(inventory.GetComponent<RectTransform>());
 
-        itemGO.GetComponent<InventoryItem>().Set(itemData, rarity, inventory.tileSize);
+        itemGO.GetComponent<InventoryItem>().Set(itemData, inventory.GetComponent<RectTransform>(), rarity, inventory.tileSize);
 
         InventoryItem newItem = itemGO.GetComponent<InventoryItem>();
 

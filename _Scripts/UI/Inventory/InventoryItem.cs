@@ -37,10 +37,11 @@ public class InventoryItem : MonoBehaviour
         isRotated = false;
     }
 
-    public void Set(InventoryItemSO itemSO, Rarity rarity, int tileSize)
+    public void Set(InventoryItemSO itemSO, RectTransform parent,Rarity rarity, int tileSize)
     {
         data = itemSO;
         this.rarity = rarity;
+        rectTransform.SetParent(parent);
         rectTransform.localScale = Vector3.one;
 
         Vector2 size = new Vector2(0, 0);
@@ -66,9 +67,9 @@ public class InventoryItem : MonoBehaviour
             }
         }
     }
-    public void Set(InventoryItemSO itemSO, Rarity rarity, Vector2 size)
+    public void Set(InventoryItemSO itemSO, RectTransform parent, Rarity rarity, Vector2 size)
     {
-        Set(itemSO, rarity, 0);
+        Set(itemSO, parent, rarity, 0);
 
         rectTransform.sizeDelta = size;
         itemTransform.sizeDelta = size;
@@ -79,6 +80,11 @@ public class InventoryItem : MonoBehaviour
     {
         isRotated = !isRotated;
         rectTransform.rotation = Quaternion.Euler(0, 0, isRotated ? 90f : 0f);
+    }
+
+    public void SetPickUpFrom()
+    {
+
     }
 }
 

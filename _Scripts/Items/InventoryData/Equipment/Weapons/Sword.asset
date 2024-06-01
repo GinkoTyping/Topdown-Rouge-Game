@@ -21,4 +21,6 @@ MonoBehaviour:
   bonusAttributes:
   - type: 0
     value: 4
+  - type: 4
+    value: 0.2
   damageAmouts: 0c0000000f00000014000000

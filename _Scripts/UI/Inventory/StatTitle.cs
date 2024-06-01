@@ -17,7 +17,12 @@ public class StatTitle : MonoBehaviour
     private TextMeshProUGUI textMesh;
     private PlayerStats playerStats;
 
-    private List<AttributeType> multiAttributes = new List<AttributeType> { AttributeType.CriticalChance, AttributeType.CriticalDamage };
+    private List<AttributeType> multiAttributes = new List<AttributeType> { 
+        AttributeType.CriticalChance,
+        AttributeType.CriticalDamage,
+        AttributeType.PhysicalReduction,
+        AttributeType.MoveSpeed
+        };
 
     private void Awake()
     {
