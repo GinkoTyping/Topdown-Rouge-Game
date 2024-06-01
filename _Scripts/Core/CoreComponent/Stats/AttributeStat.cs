@@ -10,6 +10,13 @@ public class AttributeStat : BaseStat
 {
     [SerializeField]
     public AttributeType type;
+    [SerializeField]
+    private float initValue;
+
+    public void Init()
+    {
+        CurrentValue = initValue;
+    }
 }
 
 public enum AttributeType
@@ -17,5 +24,7 @@ public enum AttributeType
     Strength,
     Intelligence,
     Agility,
+    CriticalChance,
+    CriticalDamage,
 }
 

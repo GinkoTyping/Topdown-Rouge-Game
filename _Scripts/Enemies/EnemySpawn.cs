@@ -13,14 +13,18 @@ public class EnemySpawn : MonoBehaviour
     [SerializeField]
     public Vector2[] spawnPositions;
 
+    private EnemyPool poolManager;
+
     private void Start()
     {
+        poolManager = GameObject.Find("Enemies").GetComponent<EnemyPool>();
+
         if (spawnPositions.Length > 0 && isSpawning)
         {
-            PoolManager.Instance.SetCurrrentObject(skeleton);
+            poolManager.SetCurrrentObject(skeleton);
             foreach (Vector2 pos in spawnPositions)
             {
-                GameObject enemy = PoolManager.Instance.Pool.Get();
+                GameObject enemy = poolManager.Pool.Get();
                 enemy.transform.position = pos;
             }
         }

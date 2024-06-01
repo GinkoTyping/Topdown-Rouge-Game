@@ -9,6 +9,8 @@ namespace Ginko.CoreSystem
     {
         protected Core Core { get; private set; }
         protected EntityDataSO entityData;
+        
+        public virtual void OnEnable() { }
         public virtual void LogicUpdate() { }
         protected virtual void Awake()
         {

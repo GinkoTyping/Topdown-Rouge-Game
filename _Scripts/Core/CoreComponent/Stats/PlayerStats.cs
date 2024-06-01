@@ -10,6 +10,16 @@ namespace Ginko.CoreSystem
         [SerializeField]
         public AttributeStat[] attributes;
 
+        public override void OnEnable()
+        {
+            base.OnEnable();
+
+            foreach (AttributeStat attribute in attributes)
+            {
+                attribute.Init();
+            }
+        }
+
         public AttributeStat GetAttribute(AttributeType type)
         {
             AttributeStat output = null;

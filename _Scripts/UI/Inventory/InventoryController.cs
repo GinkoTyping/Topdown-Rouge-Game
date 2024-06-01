@@ -2,6 +2,8 @@ using Ginko.PlayerSystem;
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using static UnityEditor.Progress;
 
 
 public class InventoryController : MonoBehaviour
@@ -42,9 +44,10 @@ public class InventoryController : MonoBehaviour
 
     private GameObject equipmentPage;
     private GameObject equipmentDetailPage;
+    private ItemHoverController hoverController;
     private TextMeshProUGUI switchEquipemntPageButton;
     private bool isShowEquipmentPage;
-
+    private float scaleUnit;
     private void Awake()
     {
         UIManager = GetComponentInParent<UIManager>();
@@ -52,7 +55,9 @@ public class InventoryController : MonoBehaviour
         equipmentPage = transform.Find("Equipment").Find("SlotsPage").gameObject;
         equipmentDetailPage = transform.Find("Equipment").Find("Details").gameObject;
         switchEquipemntPageButton = transform.Find("Equipment").Find("SwitchDetailButton").GetComponentInChildren<TextMeshProUGUI>();
+        hoverController = GameObject.Find("Hover").GetComponent<ItemHoverController>();
 
+        scaleUnit = Camera.main.orthographicSize / Screen.height * 2;
         isShowEquipmentPage = true;
     }
 
@@ -79,6 +84,8 @@ public class InventoryController : MonoBehaviour
         HandleUnequipItem();
 
         HandleFastEquipItem();
+
+        HandleHoverItem();
 
         Test();
     }
@@ -108,6 +115,14 @@ public class InventoryController : MonoBehaviour
     public void SetSelectedEquipmentSlot(EquipmentSlot equipmentSlot)
     {
         selectedEquipmentSlot = equipmentSlot;
+    }
+    public void SetSelectedItem(InventoryItem item)
+    {
+        selectedItem = item;
+        if (selectedItem != null)
+        {
+            selectedItemTransform = selectedItem.GetComponent<RectTransform>();
+        }
     }
 
     private void UpdateSelectedItem()
@@ -286,6 +301,45 @@ public class InventoryController : MonoBehaviour
             selectedEquipmentSlot.UnequipItem();
         }
     }
+    
+    public void HandleInventoryClose()
+    {
+        InventoryItem[] items = lootInventory.GetComponentsInChildren<InventoryItem>();
+
+        foreach (InventoryItem item in items)
+        {
+            lootInventory.RemoveItem(item);
+            Destroy(item.gameObject);
+        }
+    }
+
+    private void HandleHoverItem()
+    {
+        if (selectedInventory != null || selectedEquipmentSlot != null)
+        {
+            InventoryItem item = null;
+            if (selectedInventory != null)
+            {
+                Vector2Int pos = GetInventoryPosition(null);
+                item = selectedInventory.GetItem(pos);
+            }
+            else
+            {
+                item = selectedEquipmentSlot.currentEquipment;
+            }
+
+            if (item == null)
+            {
+                hoverController.Hide();
+            }
+            else if (item != hoverController.currentItem)
+            {
+                RectTransform rect = item.GetComponent<RectTransform>();
+                Vector2 position = (Vector2)rect.position + new Vector2(rect.sizeDelta.x * scaleUnit / 2, rect.sizeDelta.y * scaleUnit / 2);
+                hoverController.Set(item, position);
+            }
+        }
+    }
 
     private Vector2Int GetInventoryPosition(InventoryItem item)
     {
@@ -396,15 +450,6 @@ public class InventoryController : MonoBehaviour
         return newItem;
     }
 
-    public void SetSelectedItem(InventoryItem item)
-    {
-        selectedItem = item;
-        if (selectedItem != null)
-        {
-            selectedItemTransform = selectedItem.GetComponent<RectTransform>();
-        }
-    }
-
     private void RemoveItem(InventoryItem item)
     {
         Grid fromInventory = item.GetComponentInParent<Grid>();
@@ -412,17 +457,6 @@ public class InventoryController : MonoBehaviour
         if (selectedItem == this)
         {
             SetSelectedItem(null);
-        }
-    }
-
-    public void HandleInventoryClose()
-    {
-        InventoryItem[] items = lootInventory.GetComponentsInChildren<InventoryItem>();
-
-        foreach (InventoryItem item in items)
-        {
-            lootInventory.RemoveItem(item);
-            Destroy(item.gameObject);
         }
     }
 

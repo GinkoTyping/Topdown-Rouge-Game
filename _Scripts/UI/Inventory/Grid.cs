@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class Grid : MonoBehaviour
 {
@@ -68,7 +69,7 @@ public class Grid : MonoBehaviour
         return tileGridPosition;
     }
 
-    private Vector2 GetGridObsolutePosition(InventoryItem item)
+    public Vector2 GetGridObsolutePosition(InventoryItem item)
     {
         Vector2 output = Vector2.zero;
         Vector2Int position = item.pivotPositionOnGrid;
@@ -129,6 +130,10 @@ public class Grid : MonoBehaviour
         return true;
     }
 
+    public InventoryItem GetItem(Vector2Int pos)
+    {
+        return inventoryItemSlot[pos.x, pos.y];
+    }
     public InventoryItem PickUpItem(Vector2Int pos)
     {
         InventoryItem item = inventoryItemSlot[pos.x, pos.y];

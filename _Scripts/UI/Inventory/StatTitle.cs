@@ -17,6 +17,8 @@ public class StatTitle : MonoBehaviour
     private TextMeshProUGUI textMesh;
     private PlayerStats playerStats;
 
+    private List<AttributeType> multiAttributes = new List<AttributeType> { AttributeType.CriticalChance, AttributeType.CriticalDamage };
+
     private void Awake()
     {
         textMesh = transform.Find("Value").GetComponent<TextMeshProUGUI>();
@@ -33,7 +35,12 @@ public class StatTitle : MonoBehaviour
             textMesh.text = $"{playerStats.GetAttribute(resourceType).CurrentValue} / {playerStats.GetAttribute(resourceType).MaxValue}";
         } else
         {
-            textMesh.text = playerStats.GetAttribute(attributeType).CurrentValue.ToString();
+            float value = playerStats.GetAttribute(attributeType).CurrentValue;
+            textMesh.text = value.ToString();
+            if (multiAttributes.Contains(attributeType))
+            {
+                textMesh.text = $"{value * 100}%";
+            }
         }
     }
 }

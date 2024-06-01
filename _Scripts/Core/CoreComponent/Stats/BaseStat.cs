@@ -13,7 +13,8 @@ namespace Ginko.CoreSystem
         public event Action OnCurrentValueZero;
         public event Action<float, float> OnCurrentValueChange;
 
-        private float currentValue; 
+        private List<float> multiFactors = new List<float>();
+        private float currentValue;
         public float CurrentValue
         {
             get => currentValue;

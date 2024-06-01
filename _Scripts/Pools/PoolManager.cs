@@ -6,20 +6,20 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class PoolManager : MonoBehaviour
+public abstract class PoolManager : MonoBehaviour
 {
-    public static PoolManager Instance { get; private set; }
+    [SerializeField]
+    private Transform containerTransform;
+    [SerializeField]
+    private int maxSize;
+
     public ObjectPool<GameObject> Pool { get; private set; }
 
     private GameObject currentObject;
-    private GameObject EnemiesHolder;
 
     private void Awake()
     {
-        Instance = this;
-
-        Pool = new ObjectPool<GameObject>(createFunc, actionOnGet, actionOnRelease, actionOnDestroy, true, 10, 100);
-        EnemiesHolder = GameObject.Find("Enemies");
+        Pool = new ObjectPool<GameObject>(createFunc, actionOnGet, actionOnRelease, actionOnDestroy, true, 10, maxSize);
     }
 
     private void actionOnDestroy(GameObject obj)
@@ -39,8 +39,9 @@ public class PoolManager : MonoBehaviour
 
     private GameObject createFunc()
     {
-        GameObject obj =  Instantiate(currentObject, Vector2.zero, Quaternion.identity, EnemiesHolder.transform);
-        obj.GetComponent<Entity>().SetPool(Pool);
+        GameObject obj =  Instantiate(currentObject, Vector2.zero, Quaternion.identity, containerTransform);
+
+        SetPoolReference(obj);
 
         return obj;
     }
@@ -49,4 +50,6 @@ public class PoolManager : MonoBehaviour
     {
         currentObject = obj;
     }
+
+    public abstract void SetPoolReference(GameObject obj);
 }

@@ -9,8 +9,10 @@ namespace Ginko.CoreSystem
         [field: SerializeField] public ResouceStat Health {  get; private set; }
         [field: SerializeField] public ResouceStat Poise {  get; private set; }
 
-        private void OnEnable()
+        public override void OnEnable()
         {
+            base.OnEnable();
+
             Health.Init();
             Poise.Init();
         }

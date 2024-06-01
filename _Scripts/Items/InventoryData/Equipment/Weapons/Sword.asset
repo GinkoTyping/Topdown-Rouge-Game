@@ -18,8 +18,7 @@ MonoBehaviour:
   defaultRarity: 0
   priceSetting: {fileID: 11400000, guid: 8f6592c64ce70514294b85906f7046aa, type: 2}
   equipmentType: 0
+  bonusAttributes:
+  - type: 0
+    value: 4
   damageAmouts: 0c0000000f00000014000000
-  bounsAttribute:
-    strength: 0
-    intelligence: 0
-    agility: 0

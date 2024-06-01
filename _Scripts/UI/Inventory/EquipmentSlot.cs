@@ -1,6 +1,7 @@
 using Ginko.CoreSystem;
 using Ginko.PlayerSystem;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -20,6 +21,9 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     private InventoryController inventoryController;
     private Grid backpackInventory;
     private PlayerStats stats;
+
+    private List<AttributeType> plusAttributes = new List<AttributeType> { AttributeType.Intelligence, AttributeType.Strength, AttributeType.Agility};
+    private List<AttributeType> multiAttributes = new List<AttributeType> { AttributeType.CriticalChance, AttributeType.CriticalDamage };
 
     public InventoryItem currentEquipment { get; private set; }
 
@@ -52,7 +56,7 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         isActive = false;
         inventoryController.SetSelectedEquipmentSlot(null);
     }
-    public void SetEquipment(InventoryItem item)
+    public void UpdateEquipmentStat(InventoryItem item)
     {
         if (item == null)
         {
@@ -108,7 +112,7 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
         rectTransform.anchoredPosition = new Vector2(rectTransform.sizeDelta.x / 2, -rectTransform.sizeDelta.y / 2);
 
-        SetEquipment(equippedItem);
+        UpdateEquipmentStat(equippedItem);
 
         InventoryItem[] output = { equippedItem, unequippedItem };
         return output;
@@ -119,7 +123,7 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         // TODO: 还有默认是仓库的情况，待补充
         InventoryItem unequipItem =  inventoryController.CreateItemOnMouse(currentEquipment.data, currentEquipment.rarity, backpackInventory);
 
-        SetEquipment(null);
+        UpdateEquipmentStat(null);
 
         return unequipItem;
     }
@@ -127,7 +131,7 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     private void UpdatePlayerAttribute(bool isEquip)
     {
         EquipmentItemSO equipmentData = (EquipmentItemSO)currentEquipment.data;
-        BonusAttribute[] bonusAttribute = equipmentData.bonusAttribute;
+        BonusAttribute[] bonusAttribute = equipmentData.bonusAttributes;
 
         foreach (BonusAttribute attribute in bonusAttribute)
         {
@@ -137,6 +141,7 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 if (isEquip)
                 {
                     playerAttribute.Increase(attribute.value);
+
                 } else
                 {
                     playerAttribute.Decrease(attribute.value);
