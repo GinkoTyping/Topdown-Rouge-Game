@@ -22,6 +22,21 @@ public class SoretedAttribute
         AttributeType.DamageReduction,
         AttributeType.MoveSpeed
     };
+
+    public AttributeType[] intAttribute = new AttributeType[]
+    {
+        AttributeType.Strength,
+        AttributeType.Intelligence,
+        AttributeType.Agility,
+    };
+
+    public AttributeType[] floatAttribute = new AttributeType[]
+{
+        AttributeType.CriticalChance,
+        AttributeType.CriticalDamage,
+        AttributeType.DamageReduction,
+        AttributeType.MoveSpeed,
+};
 }
 
 public enum AttributeType

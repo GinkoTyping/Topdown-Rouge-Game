@@ -321,7 +321,7 @@ MonoBehaviour:
     type: 3}
   inventoryItemsData:
   - {fileID: 11400000, guid: dd9cde6a023398b4db6c37026c1614ce, type: 2}
-  - {fileID: 11400000, guid: df0a87d68702abb4fae7aaa9540ad7d3, type: 2}
+  - {fileID: 11400000, guid: 83bce6a07ca2b054f9a21e54652f0297, type: 2}
   - {fileID: 11400000, guid: 1924b5e9740d13c4ca96c81e61b61b10, type: 2}
   equipmentAudio: {fileID: 8300000, guid: 8539b7c24be610145a3acfa2ae76f0e9, type: 3}
   treasureAudio: {fileID: 8300000, guid: 9c9488e6c1912a240b5ddd98e3991ae9, type: 3}

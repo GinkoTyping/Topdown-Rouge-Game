@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -19,8 +20,13 @@ public class InventoryItemProp : MonoBehaviour
             AttributeType.CriticalChance,
             AttributeType.CriticalDamage,
         };
-    
+    private SoretedAttribute soretedAttribute;
 
+
+    private void Awake()
+    {
+        soretedAttribute = new SoretedAttribute();
+    }
     private void Start()
     {
         textMesh = transform.Find("Value").GetComponent<TextMeshProUGUI>();
@@ -28,17 +34,48 @@ public class InventoryItemProp : MonoBehaviour
 
     public void Set(BonusAttribute attribute)
     {
+        if (attribute?.type == null)
+        {
+            return;
+        }
+
         if (textMesh == null)
         {
             textMesh = transform.Find("Value").GetComponent<TextMeshProUGUI>();
         }
-        if (plusAttribute.Contains(attribute.type))
+
+        string name = ShortenAttributeName(attribute.type);
+
+        if (soretedAttribute.intAttribute.Contains(attribute.type))
         {
-            textMesh.text = $"{attribute.type} +{attribute.value}";
+            textMesh.text = $"{name} +{attribute.value}";
         } 
-        else if (multiAttribute.Contains(attribute.type))
+        else if (soretedAttribute.floatAttribute.Contains(attribute.type))
         {
-            textMesh.text = $"{attribute.type} +{attribute.value}%";
+            textMesh.text = $"{name} +{attribute.value * 100}%";
+        } else
+        {
+            Debug.LogError($"AttributeType Unmatched: {attribute.type}");
+        }
+    }
+
+    private string ShortenAttributeName(AttributeType attribute)
+    {
+        if (attribute == AttributeType.CriticalChance)
+        {
+            return "Crit. Chance";
+        } 
+        else if (attribute == AttributeType.CriticalDamage)
+        {
+            return "Crit. Damage";
+        }
+        else if (attribute == AttributeType.DamageReduction)
+        {
+            return "DMG Reduction";
+        }
+        else
+        {
+            return attribute.ToString();
         }
     }
 }

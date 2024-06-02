@@ -21,6 +21,28 @@ public enum EquipmentType
     Ring,
 }
 
+public class SortedEquipmentType
+{
+    public EquipmentType[] MainArmorEquipments = new EquipmentType[]
+    {
+        EquipmentType.Body,
+        EquipmentType.Leg,
+    };
+
+    public EquipmentType[] SubArmorEquipments = new EquipmentType[]
+    {
+        EquipmentType.Head,
+        EquipmentType.Hand,
+        EquipmentType.Feet,
+    };
+
+    public EquipmentType[] JewelryEquipments = new EquipmentType[]
+    {
+        EquipmentType.Ring,
+        EquipmentType.Necklace,
+    };
+}
+
 [Serializable]
 public class BonusAttribute
 {
