@@ -18,16 +18,3 @@ public class AttributeStat : BaseStat
         CurrentValue = initValue;
     }
 }
-
-public enum AttributeType
-{
-    Strength,
-    Intelligence,
-    Agility,
-
-    CriticalChance,
-    CriticalDamage,
-    PhysicalReduction,
-    MoveSpeed
-}
-

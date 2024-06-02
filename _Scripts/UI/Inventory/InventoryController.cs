@@ -2,8 +2,6 @@ using Ginko.PlayerSystem;
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using static UnityEditor.Progress;
 
 
 public class InventoryController : MonoBehaviour
@@ -11,6 +9,8 @@ public class InventoryController : MonoBehaviour
     [Header("Base")]
     [SerializeField]
     public GameObject inventoryItemPrefab;
+    [SerializeField]
+    public GameObject equipmentItemPrefab;
     [SerializeField]
     public InventoryItemSO[] inventoryItemsData;
 
@@ -269,15 +269,7 @@ public class InventoryController : MonoBehaviour
         {
             playerInputEventHandler.useSelectSignal();
 
-            InventoryItem cloneItem = selectedItem;
-
-            // 因为目标 EquipmentSlot已经有 Item 时，会将该 Item 替换给 selectedItem ,所以需要清除当前的 selectedItem
-            if (selectedEquipmentSlot.currentEquipment != null)
-            {
-                RemoveItem(selectedItem);
-            }
-
-            InventoryItem[] equipItems =  selectedEquipmentSlot.EquipItem(cloneItem);
+            InventoryItem[] equipItems =  selectedEquipmentSlot.EquipItem(selectedItem as EquipmentItem);
 
             bool successEquipped = equipItems != null;
             if (successEquipped)
@@ -285,7 +277,7 @@ public class InventoryController : MonoBehaviour
                 bool isEmptySlotBeforeEquip = equipItems[1] == null;
                 if (isEmptySlotBeforeEquip)
                 {
-                    RemoveItem(selectedItem);
+                    SetSelectedItem(null);
                 }
 
                 PlayEquipItemAudio();
@@ -376,6 +368,10 @@ public class InventoryController : MonoBehaviour
                 hoverController.Set(item, position);
             }
         }
+        else if (selectedInventory == null && selectedEquipmentSlot == null)
+        { 
+            hoverController.Hide();
+        }
     }
 
     private Vector2Int GetInventoryPosition(InventoryItem item)
@@ -406,7 +402,11 @@ public class InventoryController : MonoBehaviour
             return null;
         }
 
-        GameObject itemGO = Instantiate(inventoryItemPrefab);
+        GameObject itemGO = Instantiate(
+            itemData.itemType == ItemType.Equipment 
+            ? equipmentItemPrefab 
+            : inventoryItemPrefab
+            );
 
         SetSelectedItem(itemGO.GetComponent<InventoryItem>());
 
@@ -414,7 +414,13 @@ public class InventoryController : MonoBehaviour
             ? itemData.defaultRarity 
             : (Rarity)rarity;
 
-        itemGO.GetComponent<InventoryItem>().Set(itemData, inventory.GetComponent<RectTransform>(), setRarity, inventory.tileSize);
+        InventoryItem inventoryItem = itemGO.GetComponent<InventoryItem>();
+        inventoryItem.Set(itemData, inventory.GetComponent<RectTransform>(), setRarity, inventory.tileSize);
+        if (itemData.itemType == ItemType.Equipment)
+        {
+            EquipmentItem equipmentItem = inventoryItem as EquipmentItem;
+            equipmentItem.SetBonusAttribute();
+        }
 
         return selectedItem;
     }
@@ -426,7 +432,8 @@ public class InventoryController : MonoBehaviour
             selectedItem = null;
             selectedItemTransform = null;
 
-            InventoryItemSO itemData = inventoryItemsData[UnityEngine.Random.Range(0, 2)];
+            int index = UnityEngine.Random.Range(0, 2);
+            InventoryItemSO itemData = inventoryItemsData[index];
 
             InventoryItem item =  CreateItemOnMouse(itemData);
 
@@ -459,13 +466,22 @@ public class InventoryController : MonoBehaviour
     {
         SoundManager.Instance.PlaySound(equipAudio);
     }
-    public InventoryItem CreateItemInInventory(InventoryItemSO itemData, Rarity rarity,  Grid inventory, Vector2Int? position = null)
-    {
-        GameObject itemGO = Instantiate(inventoryItemPrefab);
 
-        RectTransform rectTransform = itemGO.GetComponent<RectTransform>();
+    public InventoryItem CreateItemInInventory(InventoryItemSO itemData, Rarity rarity,  Grid inventory, BonusAttribute[] bonusAttributes = null, Vector2Int? position = null)
+    {
+        GameObject itemGO = Instantiate(
+            itemData.itemType == ItemType.Equipment
+            ? equipmentItemPrefab
+            : inventoryItemPrefab
+            );
 
         itemGO.GetComponent<InventoryItem>().Set(itemData, inventory.GetComponent<RectTransform>(), rarity, inventory.tileSize);
+
+        EquipmentItem equipment = itemGO.GetComponent<EquipmentItem>();
+        if (equipment != null)
+        {
+            equipment.SetBonusAttribute(bonusAttributes);
+        }
 
         InventoryItem newItem = itemGO.GetComponent<InventoryItem>();
 
@@ -481,16 +497,6 @@ public class InventoryController : MonoBehaviour
         }
 
         return newItem;
-    }
-
-    private void RemoveItem(InventoryItem item)
-    {
-        Grid fromInventory = item.GetComponentInParent<Grid>();
-        fromInventory.RemoveItem(item, isClear: true);
-        if (selectedItem == this)
-        {
-            SetSelectedItem(null);
-        }
     }
 
     public void OnSwitchEquipmentPage()

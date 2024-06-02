@@ -104,7 +104,7 @@ namespace Ginko.CoreSystem
             {
                 foreach (BaseLootData item in lootStorage)
                 {
-                    inventoryController.CreateItemInInventory(item.data, item.rarity, lootInventory, item.pivotPositionOnGrid);
+                    inventoryController.CreateItemInInventory(item.data, item.rarity, lootInventory, item.bonusAttributes, item.pivotPositionOnGrid);
                 }
             }
         }

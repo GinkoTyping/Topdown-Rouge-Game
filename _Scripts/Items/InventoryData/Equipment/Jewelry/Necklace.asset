@@ -12,16 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70a5deff46a80494d8de5c7a54e22158, type: 3}
   m_Name: Necklace
   m_EditorClassIdentifier: 
+  itemName: Normal Necklace
   sprite: {fileID: 21300000, guid: fedb36a8ba672a540a4ef57e09049a75, type: 3}
   itemType: 0
   size: {x: 1, y: 1}
   defaultRarity: 0
   priceSetting: {fileID: 11400000, guid: 8f6592c64ce70514294b85906f7046aa, type: 2}
   equipmentType: 6
-  bonusAttributes:
-  - type: 0
-    value: 2
-  - type: 1
-    value: 2
-  - type: 4
-    value: 0.2
+  bonusAttributes: []

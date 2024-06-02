@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -61,7 +62,6 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if (item == null)
         {
             UpdatePlayerAttribute(false);
-            Destroy(currentEquipment.gameObject);
             currentEquipment = null;
         }
         else
@@ -87,7 +87,7 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     /// </summary>
     /// <param name="item"></param>
     /// <returns>[equippedItem, unequippedItem]</returns>
-    public InventoryItem[] EquipItem(InventoryItem item)
+    public InventoryItem[] EquipItem(EquipmentItem item)
     {
         EquipmentItemSO data = (EquipmentItemSO)item.data;
         InventoryItem unequippedItem = null;
@@ -101,35 +101,36 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             unequippedItem = UnequipItem();
         }
 
-        GameObject itemGO = Instantiate(equipmentPrefab);
-        RectTransform rectTransform = itemGO.GetComponent<RectTransform>();
-
-        InventoryItem equippedItem = itemGO.GetComponent<InventoryItem>();
-        equippedItem.Set(item.data, GetComponent<RectTransform>(), item.rarity, GetComponent<RectTransform>().sizeDelta);
+        item.SetSize(GetComponent<RectTransform>().sizeDelta);
+        RectTransform rectTransform = item.GetComponent<RectTransform>();
+        rectTransform.SetParent(GetComponent<RectTransform>());
         rectTransform.SetAsFirstSibling();
-
         rectTransform.anchoredPosition = new Vector2(rectTransform.sizeDelta.x / 2, -rectTransform.sizeDelta.y / 2);
 
-        UpdateEquipmentStat(equippedItem);
+        UpdateEquipmentStat(item);
 
-        InventoryItem[] output = { equippedItem, unequippedItem };
+        InventoryItem[] output = { item, unequippedItem };
         return output;
     }
 
-    public InventoryItem UnequipItem()
+    public EquipmentItem UnequipItem()
     {
-        // TODO: 还有默认是仓库的情况，待补充
-        InventoryItem unequipItem =  inventoryController.CreateItemOnMouse(currentEquipment.data, currentEquipment.rarity, backpackInventory);
+        currentEquipment.SetSize(backpackInventory.tileSize);
 
+        // TODO: 还有默认是仓库的情况，待补充
+        currentEquipment.GetComponent<RectTransform>().SetParent(backpackInventory.GetComponent<RectTransform>());
+        inventoryController.SetSelectedItem(currentEquipment);
+
+        EquipmentItem output = currentEquipment as EquipmentItem;
         UpdateEquipmentStat(null);
 
-        return unequipItem;
+        return output;
     }
 
     private void UpdatePlayerAttribute(bool isEquip)
     {
-        EquipmentItemSO equipmentData = (EquipmentItemSO)currentEquipment.data;
-        BonusAttribute[] bonusAttribute = equipmentData.bonusAttributes;
+        EquipmentItem equipmentItem = currentEquipment as EquipmentItem;
+        BonusAttribute[] bonusAttribute = equipmentItem.bonusAttributes;
 
         foreach (BonusAttribute attribute in bonusAttribute)
         {

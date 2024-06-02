@@ -2,6 +2,7 @@ using Ginko.PlayerSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,6 +15,7 @@ public class ItemHoverController : MonoBehaviour, IPointerEnterHandler, IPointer
     private float padding;
 
     private TextMeshProUGUI nameInfo;
+    private TextMeshProUGUI typeInfo;
     private PoolManager poolManager;
     private Transform hoverPropsContainer;
     private RectTransform rectTransform;
@@ -24,6 +26,8 @@ public class ItemHoverController : MonoBehaviour, IPointerEnterHandler, IPointer
     private void Awake()
     {
         nameInfo = transform.Find("Name").GetComponent<TextMeshProUGUI>();
+        typeInfo = transform.Find("Type").GetComponent<TextMeshProUGUI>();
+
         hoverPropsContainer = transform.Find("Props").transform;
         rectTransform = GetComponent<RectTransform>();
         hoverContainer = GameObject.Find("HoverContainer").GetComponent<RectTransform>();
@@ -41,23 +45,24 @@ public class ItemHoverController : MonoBehaviour, IPointerEnterHandler, IPointer
         currentItem = item;
         gameObject.SetActive(true);
 
-        rectTransform.SetParent(hoverContainer);
-        rectTransform.SetAsLastSibling();
-        rectTransform.position = pos;
-
         ClearProps();
+        SetPosition(pos);
+        SetBasicInfo(item.data);
 
         ItemType type = item.data.itemType;
         if (type == ItemType.Equipment)
         {
-            SetEquipmentProps((EquipmentItemSO)item.data);
+            SetEquipmentDetailInfo((EquipmentItem)item);
         }
     }
 
     public void Hide()
     {
-        currentItem = null;
-        gameObject.SetActive(false);
+        if (gameObject.activeSelf)
+        {
+            currentItem = null;
+            gameObject.SetActive(false);
+        }
     }
 
     private void ClearProps()
@@ -70,12 +75,33 @@ public class ItemHoverController : MonoBehaviour, IPointerEnterHandler, IPointer
         }
     }
 
-    private void SetEquipmentProps(EquipmentItemSO data)
+    private void SetPosition(Vector2 pos)
     {
-        for (int i = 0; i < data.bonusAttributes.Length; i++)
+        rectTransform.SetParent(hoverContainer);
+        rectTransform.SetAsLastSibling();
+        rectTransform.position = pos;
+    }
+    private void SetBasicInfo(InventoryItemSO data)
+    {
+        nameInfo.text = data.itemName;
+
+        if (data.itemType == ItemType.Equipment)
+        {
+            EquipmentItemSO equipmentData = (EquipmentItemSO)data;
+            typeInfo.text = equipmentData.equipmentType.ToString();
+        }
+        else
+        {
+            typeInfo.text = data.itemName.ToString();
+        }
+
+    }
+    private void SetEquipmentDetailInfo(EquipmentItem item)
+    {
+        for (int i = 0; i < item.bonusAttributes.Length; i++)
         {
             GameObject prop = poolManager.Pool.Get();
-            prop.GetComponent<InventoryItemProp>().Set(data.bonusAttributes[i]);
+            prop.GetComponent<InventoryItemProp>().Set(item.bonusAttributes[i]);
 
             RectTransform rect = prop.GetComponent<RectTransform>();
 

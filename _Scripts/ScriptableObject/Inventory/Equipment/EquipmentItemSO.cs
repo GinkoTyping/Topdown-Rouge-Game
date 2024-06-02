@@ -8,7 +8,6 @@ using UnityEngine;
 public class EquipmentItemSO : InventoryItemSO
 {
     public EquipmentType equipmentType;
-    public BonusAttribute[] bonusAttributes;
 }
 public enum EquipmentType
 {
@@ -27,4 +26,10 @@ public class BonusAttribute
 {
     public AttributeType type;
     public float value;
+
+    public BonusAttribute(AttributeType type, float value) 
+    {
+        this.type = type;
+        this.value = value;
+    }
 }

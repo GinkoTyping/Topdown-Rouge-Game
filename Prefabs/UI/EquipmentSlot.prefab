@@ -165,6 +165,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 5
-  tileSize: 64
-  equipmentPrefab: {fileID: 335937374205450573, guid: 955c618e3ce8201418aa9a8a1e9171b2,
+  equipmentPrefab: {fileID: 335937374205450573, guid: 61fb9fd5f0ce7fe49978b0ae182d7e38,
     type: 3}

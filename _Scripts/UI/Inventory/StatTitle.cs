@@ -20,7 +20,7 @@ public class StatTitle : MonoBehaviour
     private List<AttributeType> multiAttributes = new List<AttributeType> { 
         AttributeType.CriticalChance,
         AttributeType.CriticalDamage,
-        AttributeType.PhysicalReduction,
+        AttributeType.DamageReduction,
         AttributeType.MoveSpeed
         };
 
