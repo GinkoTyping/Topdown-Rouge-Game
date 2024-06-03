@@ -51,5 +51,10 @@ public abstract class PoolManager : MonoBehaviour
         currentObject = obj;
     }
 
+    public void SetCurrentParrent(Transform transform)
+    {
+        containerTransform = transform;
+    }
+
     public abstract void SetPoolReference(GameObject obj);
 }

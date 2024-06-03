@@ -26,11 +26,14 @@ public class InventoryItem : MonoBehaviour
     private RectTransform rectTransform;
     private bool isRotated;
 
+    private AttributeHelper attributeHelper;
+
     protected virtual void Awake()
     {
         backgroundTransform = transform.Find("BackgroundColor").GetComponent<RectTransform>();
         itemTransform = transform.Find("Item").GetComponent<RectTransform>();
         rectTransform = GetComponent<RectTransform>();
+        attributeHelper = GameObject.Find("Helper").GetComponent<AttributeHelper>();
     }
 
     private void OnEnable()
@@ -49,15 +52,7 @@ public class InventoryItem : MonoBehaviour
 
         itemTransform.GetComponent<Image>().sprite = itemSO.sprite;
 
-        for(int i = 0; i < rarityColors.Length; i++)
-        {
-            if (i == (int)rarity)
-            {
-                backgroundTransform.GetComponent<Image>().color = rarityColors[i];
-
-                break;
-            }
-        }
+        backgroundTransform.GetComponent<Image>().color = attributeHelper.GetAttributeColor(rarity);
     }
 
     public void SetSize(Vector2 size)

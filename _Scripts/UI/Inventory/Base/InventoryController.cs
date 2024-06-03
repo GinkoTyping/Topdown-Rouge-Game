@@ -44,7 +44,7 @@ public class InventoryController : MonoBehaviour
 
     private GameObject equipmentPage;
     private GameObject equipmentDetailPage;
-    private ItemHoverController hoverController;
+    private InventoryItemHoverController hoverController;
     private TextMeshProUGUI switchEquipemntPageButton;
     private bool isShowEquipmentPage;
     private float scaleUnit;
@@ -57,7 +57,7 @@ public class InventoryController : MonoBehaviour
         equipmentPage = transform.Find("Equipment").Find("SlotsPage").gameObject;
         equipmentDetailPage = transform.Find("Equipment").Find("Details").gameObject;
         switchEquipemntPageButton = transform.Find("Equipment").Find("SwitchDetailButton").GetComponentInChildren<TextMeshProUGUI>();
-        hoverController = GameObject.Find("Hover").GetComponent<ItemHoverController>();
+        hoverController = GameObject.Find("Hover").GetComponent<InventoryItemHoverController>();
 
         scaleUnit = Camera.main.orthographicSize / Screen.height * 2;
         isShowEquipmentPage = true;
@@ -364,8 +364,7 @@ public class InventoryController : MonoBehaviour
             else if (item != hoverController.currentItem)
             {
                 RectTransform rect = item.GetComponent<RectTransform>();
-                Vector2 position = CalculateHoverPos(rect);
-                hoverController.Set(item, position);
+                hoverController.Set(item, rect);
             }
         }
         else if (selectedInventory == null && selectedEquipmentSlot == null)

@@ -19,4 +19,20 @@ MonoBehaviour:
   defaultRarity: 2
   priceSetting: {fileID: 11400000, guid: 8f6592c64ce70514294b85906f7046aa, type: 2}
   equipmentType: 7
-  bonusAttributes: []
+  baseAttributes:
+  - rarity: 0
+    attributes:
+    - type: 4
+      value: 0.02
+  - rarity: 1
+    attributes:
+    - type: 4
+      value: 0.05
+  - rarity: 2
+    attributes:
+    - type: 4
+      value: 0.1
+  - rarity: 3
+    attributes:
+    - type: 4
+      value: 0.2

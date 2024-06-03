@@ -31,12 +31,12 @@ public class SoretedAttribute
     };
 
     public AttributeType[] floatAttribute = new AttributeType[]
-{
+    {
         AttributeType.CriticalChance,
         AttributeType.CriticalDamage,
         AttributeType.DamageReduction,
         AttributeType.MoveSpeed,
-};
+    };
 }
 
 public enum AttributeType

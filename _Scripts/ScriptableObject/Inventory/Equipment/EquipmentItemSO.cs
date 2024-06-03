@@ -8,6 +8,7 @@ using UnityEngine;
 public class EquipmentItemSO : InventoryItemSO
 {
     public EquipmentType equipmentType;
+    public BaseAttributeByRarity[] baseAttributes;
 }
 public enum EquipmentType
 {
@@ -54,4 +55,11 @@ public class BonusAttribute
         this.type = type;
         this.value = value;
     }
+}
+
+[Serializable]
+public class BaseAttributeByRarity
+{
+    public Rarity rarity;
+    public BonusAttribute[] attributes;
 }
