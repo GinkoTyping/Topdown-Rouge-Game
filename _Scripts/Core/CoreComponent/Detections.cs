@@ -30,7 +30,8 @@ namespace Ginko.CoreSystem
 
         [Header("Interaction")]
         [SerializeField] public bool ActiveInteractionDetection;
-        [SerializeField] public float interactionDistance;
+        [SerializeField] public Vector2 interactionSize;
+        [SerializeField] public Vector2 interactionOffset;
         [SerializeField] public LayerMask interactionLayer;
         [SerializeField] public string tagName;
 
@@ -52,7 +53,7 @@ namespace Ginko.CoreSystem
 
         public bool GetInteractions(out Collider2D[] detections)
         {
-            detections = Physics2D.OverlapCircleAll(transform.position, interactionDistance, interactionLayer)
+            detections = Physics2D.OverlapBoxAll(transform.position + (Vector3)interactionOffset, interactionSize, interactionLayer)
                 .Where(x => x.tag == "Interactive" && x.GetComponentInChildren<IInteractable>().isInteractive)
                 .ToArray();
             return detections.Length > 0;
@@ -99,7 +100,7 @@ namespace Ginko.CoreSystem
                 Gizmos.color = Color.green;
                 Gizmos.DrawWireSphere(transform.position, hostileDetectionRadius);
                 Gizmos.DrawWireSphere(transform.position, closeRangeAttackRadius);
-                Gizmos.DrawWireSphere(transform.position, interactionDistance);
+                Gizmos.DrawWireCube(transform.position + (Vector3)interactionOffset, interactionSize);
                 Gizmos.DrawWireCube(transform.position + upperDetectionOffset, upperDetectionSize);
             }
         }

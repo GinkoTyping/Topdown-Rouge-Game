@@ -1884,7 +1884,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8192
   ActiveInteractionDetection: 1
-  interactionDistance: 1
+  interactionSize: {x: 0.6, y: 1.2}
+  interactionOffset: {x: 0, y: -0.4}
   interactionLayer:
     serializedVersion: 2
     m_Bits: 128
