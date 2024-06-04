@@ -372,22 +372,6 @@ public class InventoryController : MonoBehaviour
             hoverController.Hide();
         }
     }
-    private Vector2 CalculateHoverPos(RectTransform relative)
-    {
-        Vector3 hoverPosition = Camera.main.WorldToScreenPoint(relative.position);
-
-        RectTransform hoverRect = hoverController.GetComponent<RectTransform>();
-        float x;
-        float y;
-        x = hoverPosition.x + hoverRect.sizeDelta.x > Screen.width
-                ? relative.position.x - relative.sizeDelta.x * scaleUnit / 2 - hoverRect.sizeDelta.x * scaleUnit
-                : relative.position.x + relative.sizeDelta.x * scaleUnit / 2;
-        y = hoverPosition.y - hoverRect.sizeDelta.y < 0
-                ? relative.position.y - relative.sizeDelta.y * scaleUnit / 2 + hoverRect.sizeDelta.y * scaleUnit
-                : relative.position.y + relative.sizeDelta.y * scaleUnit / 2;
-
-        return new Vector2(x, y);
-    }
 
     private Vector2Int GetInventoryPosition(InventoryItem item)
     {
@@ -447,7 +431,7 @@ public class InventoryController : MonoBehaviour
             selectedItem = null;
             selectedItemTransform = null;
 
-            int index = UnityEngine.Random.Range(0, 2);
+            int index = UnityEngine.Random.Range(0, inventoryItemsData.Length);
             InventoryItemSO itemData = inventoryItemsData[index];
 
             InventoryItem item =  CreateItemOnMouse(itemData);

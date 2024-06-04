@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SoretedAttribute
 {
-    public AttributeType[] BaseAttributes = new AttributeType[]
+    public AttributeType[] PropertyAttributes = new AttributeType[]
     {
         AttributeType.Strength,
         AttributeType.Intelligence, 

@@ -44,7 +44,7 @@ public class StatTitle : MonoBehaviour
             textMesh.text = value.ToString();
             if (multiAttributes.Contains(attributeType))
             {
-                textMesh.text = $"{value * 100}%";
+                textMesh.text = $"{Mathf.Round(value * 100)}%";
             }
         }
     }

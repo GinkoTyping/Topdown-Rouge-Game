@@ -2,6 +2,7 @@ using Ginko.CoreSystem;
 using Ginko.PlayerSystem;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -129,9 +130,9 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     private void UpdatePlayerAttribute(bool isEquip)
     {
         EquipmentItem equipmentItem = currentEquipment as EquipmentItem;
-        BonusAttribute[] bonusAttribute = equipmentItem.bonusAttributes;
+        BonusAttribute[] attributes = equipmentItem.bonusAttributes.Concat(equipmentItem.baseAttributes).ToArray();
 
-        foreach (BonusAttribute attribute in bonusAttribute)
+        foreach (BonusAttribute attribute in attributes)
         {
             if(attribute.value != 0)
             {

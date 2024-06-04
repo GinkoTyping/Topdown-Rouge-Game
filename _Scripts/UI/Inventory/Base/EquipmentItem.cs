@@ -46,15 +46,46 @@ public class EquipmentItem : InventoryItem
         {
             EquipmentItemSO equipmentData = data as EquipmentItemSO;
 
+            SetPropertyAttributes();
+
             if (sortedEquipmentType.JewelryEquipments.Contains(equipmentData.equipmentType))
             {
-                SetBaseAttributes(rarity);
+                
             }
             else if (sortedEquipmentType.MainArmorEquipments.Contains(equipmentData.equipmentType))
             {
                 SetArmorAttributes();
+            } 
+            else if (equipmentData.equipmentType == EquipmentType.Weapon)
+            {
+                SetWeaponAttribute();
             }
         }
+    }
+
+    private void SetWeaponAttribute()
+    {
+        BonusAttribute[] output = null;
+
+        if (rarity == Rarity.Uncommon)
+        {
+            int ramdon = Random.Range(0, 2);
+            output = new BonusAttribute[]
+            {
+                new BonusAttribute(soretedAttribute.CriticalAttributes[ramdon], GetCriticalAttributeValue()[ramdon])
+            };
+        } 
+        else if (rarity != Rarity.Common)
+        {
+            float[] values = GetCriticalAttributeValue();
+            output = new BonusAttribute[]
+            {
+                new BonusAttribute(soretedAttribute.CriticalAttributes[0], values[0]),
+                new BonusAttribute(soretedAttribute.CriticalAttributes[1], values[1]),
+            };
+        }
+
+        UpdateBonuseAttribute(output);
     }
 
     private void SetArmorAttributes()
@@ -79,7 +110,7 @@ public class EquipmentItem : InventoryItem
 
         UpdateBonuseAttribute(output);
     }
-    private void SetBaseAttributes(Rarity rarity)
+    private void SetPropertyAttributes()
     {
         int attributeCount = 0;
         if (rarity == Rarity.Common || rarity == Rarity.Uncommon)
@@ -93,7 +124,7 @@ public class EquipmentItem : InventoryItem
 
         List<AttributeType> attributes = new List<AttributeType>();
         int randomInt = Random.Range(0, 3);
-        AttributeType[] baseAttributes = soretedAttribute.BaseAttributes;
+        AttributeType[] baseAttributes = soretedAttribute.PropertyAttributes;
         attributes.Add(baseAttributes[randomInt]);
         if (attributeCount == 2)
         {
@@ -114,7 +145,10 @@ public class EquipmentItem : InventoryItem
 
     private void UpdateBonuseAttribute(BonusAttribute[] attributes)
     {
-        bonusAttributes = bonusAttributes.Concat(attributes).ToArray();
+        if (attributes != null && attributes.Length > 0)
+        {
+            bonusAttributes = bonusAttributes.Concat(attributes).ToArray();
+        }
     }
 
     private int GetBaseAttributeValue(Rarity rarity)
@@ -138,6 +172,7 @@ public class EquipmentItem : InventoryItem
 
         return output;
     }
+   
     private float[] GetArmorAttributeValue()
     {
         float damageReduction = 0;
@@ -169,5 +204,32 @@ public class EquipmentItem : InventoryItem
         };
 
         return output;
+    }
+
+    private float[] GetCriticalAttributeValue() 
+    {
+        float criticalChance = 0f;
+        float criticalDamage = 0f;
+
+        switch (rarity)
+        {
+            case Rarity.Common:
+                criticalChance = Random.Range(1, 4);
+                criticalDamage = Random.Range(10, 16);
+                break;
+            case Rarity.Uncommon:
+                criticalChance = Random.Range(4, 9);
+                criticalDamage = Random.Range(20, 26);
+                break;
+            case Rarity.Rare:
+                criticalChance = Random.Range(10, 16);
+                criticalDamage = Random.Range(50, 71);
+                break;
+            case Rarity.Legend:
+                criticalChance = Random.Range(20, 31);
+                criticalDamage = Random.Range(100, 151);
+                break;
+        }
+        return new float[] { criticalChance / 100, criticalDamage / 100 };
     }
 }
