@@ -22,7 +22,8 @@ namespace Ginko.CoreSystem
 
         [Header("Sprite Render")]
         [SerializeField] public bool ActiveSpriteRenderDetection;
-        [SerializeField] public float hidingDetectionDistance;
+        [SerializeField] public Vector2 hidingDetectionSize;
+        [SerializeField] public Vector2 hidingDetectionOffset;
         [SerializeField] public Vector3 upperDetectionOffset;
         [SerializeField] public Vector3 upperDetectionSize;
         [SerializeField] public LayerMask obstableLayer;
@@ -76,7 +77,7 @@ namespace Ginko.CoreSystem
 
             if (ActiveSpriteRenderDetection)
             {
-                IsCollidingUpper = GetBoxDetections(upperDetectionOffset, upperDetectionSize);
+                IsCollidingUpper = GetBoxDetections(transform.position + upperDetectionOffset, upperDetectionSize);
             }
 
             if (ActiveInteractionDetection)
@@ -89,7 +90,8 @@ namespace Ginko.CoreSystem
 
         private void EmitHidingBehindEvent()
         {
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, hidingDetectionDistance, bigObjectLayer);
+            Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + (Vector3)hidingDetectionOffset, hidingDetectionSize, 0, bigObjectLayer);
+
             OnHidingBehind.Invoke(colliders);
         }
 
@@ -100,6 +102,7 @@ namespace Ginko.CoreSystem
                 Gizmos.color = Color.green;
                 Gizmos.DrawWireSphere(transform.position, hostileDetectionRadius);
                 Gizmos.DrawWireSphere(transform.position, closeRangeAttackRadius);
+                Gizmos.DrawWireCube(transform.position + (Vector3)hidingDetectionOffset, hidingDetectionSize);
                 Gizmos.DrawWireCube(transform.position + (Vector3)interactionOffset, interactionSize);
                 Gizmos.DrawWireCube(transform.position + upperDetectionOffset, upperDetectionSize);
             }

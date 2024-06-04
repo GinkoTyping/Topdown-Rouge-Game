@@ -1874,7 +1874,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   ActiveSpriteRenderDetection: 1
-  hidingDetectionDistance: 0
+  hidingDetectionSize: {x: 0.8, y: 1.6}
+  hidingDetectionOffset: {x: 0, y: -0.2}
   upperDetectionOffset: {x: 0, y: 0.1, z: 0}
   upperDetectionSize: {x: 1.2, y: 1.1, z: 0}
   obstableLayer:
