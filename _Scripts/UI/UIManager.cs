@@ -25,13 +25,13 @@ public class UIManager : MonoBehaviour
     private PlayerInput inputAction;
 
     private float menuOpenTime;
-    private RectTransform backpackInventoryUI;
+    private RectTransform luggageInventoryUI;
     private RectTransform lootInventoryUI;
     private RectTransform equipmentInventoryUI;
 
     private void Awake()
     {
-        backpackInventoryUI = inventoryUI.transform.Find("Backpack").GetComponent<RectTransform>();
+        luggageInventoryUI = inventoryUI.transform.Find("Luggage").GetComponent<RectTransform>();
         lootInventoryUI = inventoryUI.transform.Find("Loot").GetComponent<RectTransform>();
         equipmentInventoryUI = inventoryUI.transform.Find("Equipment").GetComponent<RectTransform>();
 
@@ -103,6 +103,6 @@ public class UIManager : MonoBehaviour
 
         // 装备栏和掠夺栏左右布局，物品栏在剩余宽度居中
         float widthLeft = Screen.width - border * 2 - lootInventoryUI.sizeDelta.x - equipmentInventoryUI.sizeDelta.x; 
-        backpackInventoryUI.anchoredPosition = new Vector2(widthLeft / 2 - backpackInventoryUI.sizeDelta.x / 2 + equipmentInventoryUI.sizeDelta.x + border, -border);
+        luggageInventoryUI.anchoredPosition = new Vector2(widthLeft / 2 - luggageInventoryUI.sizeDelta.x / 2 + equipmentInventoryUI.sizeDelta.x + border, -border);
     }
 }

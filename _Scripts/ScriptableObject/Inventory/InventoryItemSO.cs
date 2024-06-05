@@ -10,7 +10,9 @@ public class InventoryItemSO : ScriptableObject
     public ItemType itemType;
     public Vector2Int size;
     public Rarity defaultRarity;
-    public LootPriceDataSO priceSetting; 
+    public LootPriceDataSO priceSetting;
+
+    public BaseAttributeByRarity[] baseAttributes;
 }
 
 public enum Rarity

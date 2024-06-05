@@ -8,7 +8,6 @@ using UnityEngine;
 public class EquipmentItemSO : InventoryItemSO
 {
     public EquipmentType equipmentType;
-    public BaseAttributeByRarity[] baseAttributes;
 }
 public enum EquipmentType
 {

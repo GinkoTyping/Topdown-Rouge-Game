@@ -12,6 +12,8 @@ public class InventoryItem : MonoBehaviour
     public InventoryItemSO data;
     public Vector2Int pivotPositionOnGrid;
     public Rarity rarity;
+    public BonusAttribute[] baseAttributes;
+
     public int width
     {
         get => isRotated ? data.size.y : data.size.x;
@@ -53,6 +55,8 @@ public class InventoryItem : MonoBehaviour
         itemTransform.GetComponent<Image>().sprite = itemSO.sprite;
 
         backgroundTransform.GetComponent<Image>().color = attributeHelper.GetAttributeColor(rarity);
+
+        SetBaseAttribute(data);
     }
 
     public void SetSize(Vector2 size)
@@ -61,6 +65,7 @@ public class InventoryItem : MonoBehaviour
         itemTransform.sizeDelta = size;
         backgroundTransform.sizeDelta = size;
     }
+    
     public void SetSize(int tileSize)
     {
         Vector2 size = new Vector2(0, 0);
@@ -68,6 +73,20 @@ public class InventoryItem : MonoBehaviour
         size.y = height * tileSize;
 
         SetSize(size);
+    }
+
+    public void SetBaseAttribute(InventoryItemSO data)
+    {
+        if (data.baseAttributes.Length == 0)
+        {
+            return;
+        }
+
+        BonusAttribute[] attributes = data.baseAttributes.Where(attrubuteInfo => attrubuteInfo.rarity == rarity).ToArray()[0].attributes;
+        if (attributes.Length > 0)
+        {
+            baseAttributes = attributes;
+        }
     }
 
     public void Rotate()

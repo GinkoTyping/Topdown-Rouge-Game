@@ -25,6 +25,12 @@ public class SoretedAttribute
 
     public AttributeType[] intAttribute = new AttributeType[]
     {
+        AttributeType.MaxHealth,
+        AttributeType.WeaponDamage,
+        AttributeType.HealthRegeneration,
+        AttributeType.HealthRecovery,
+
+
         AttributeType.Strength,
         AttributeType.Intelligence,
         AttributeType.Agility,
@@ -41,6 +47,9 @@ public class SoretedAttribute
 
 public enum AttributeType
 {
+    MaxHealth,
+    WeaponDamage,
+    
     Strength,
     Intelligence,
     Agility,
@@ -48,5 +57,8 @@ public enum AttributeType
     CriticalChance,
     CriticalDamage,
     DamageReduction,
-    MoveSpeed
+    MoveSpeed,
+
+    HealthRegeneration,
+    HealthRecovery,
 }

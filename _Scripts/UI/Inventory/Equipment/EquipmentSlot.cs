@@ -32,7 +32,7 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         inventoryController = GetComponentInParent<InventoryController>();
         backgroundImage = GetComponent<Image>();
-        backpackInventory = inventoryController.transform.Find("Backpack").GetComponentInChildren<Grid>();
+        backpackInventory = inventoryController.transform.Find("Luggage").Find("Backpack").GetComponent<Grid>();
         defaultBackgroundColor = backgroundImage.color;
     }
 
@@ -140,10 +140,17 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 if (isEquip)
                 {
                     playerAttribute.Increase(attribute.value);
-
+                    if (attribute.type == AttributeType.MaxHealth)
+                    {
+                        stats.GetAttribute(ResourceType.Health).ChangeMaxValue(attribute.value);
+                    }
                 } else
                 {
                     playerAttribute.Decrease(attribute.value);
+                    if (attribute.type == AttributeType.MaxHealth)
+                    {
+                        stats.GetAttribute(ResourceType.Health).ChangeMaxValue(-attribute.value);
+                    }
                 }
             }
         }

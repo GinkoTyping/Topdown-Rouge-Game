@@ -8,26 +8,44 @@ public class AttributeHelper : MonoBehaviour
     public Color[] colors;
     public string ShortenAttributeName(AttributeType attribute)
     {
-        if (attribute == AttributeType.CriticalChance)
+        string name = attribute.ToString();
+        switch (attribute)
         {
-            return "Crit. Chance";
+            case AttributeType.MaxHealth:
+                name = "Max Health";
+                break;
+            case AttributeType.WeaponDamage:
+                name = "Weapon Damage";
+                break;
+            case AttributeType.Strength:
+                break;
+            case AttributeType.Intelligence:
+                break;
+            case AttributeType.Agility:
+                break;
+            case AttributeType.CriticalChance:
+                name = "Crit. Chance";
+                break;
+            case AttributeType.CriticalDamage:
+                name = "Crit. DMG.";
+                break;
+            case AttributeType.DamageReduction:
+                name = "DMG. Reduction";
+                break;
+            case AttributeType.MoveSpeed:
+                name = "Move Speed";
+                break;
+            case AttributeType.HealthRegeneration:
+                name = "HP Regeneration";
+                break;
+            case AttributeType.HealthRecovery:
+                name = "HP Recovery";
+                break;
+            default:
+                break;
         }
-        else if (attribute == AttributeType.CriticalDamage)
-        {
-            return "Crit. Damage";
-        }
-        else if (attribute == AttributeType.DamageReduction)
-        {
-            return "DMG Reduction";
-        }
-        else if (attribute == AttributeType.MoveSpeed)
-        {
-            return "Move Speed";
-        }
-        else
-        {
-            return attribute.ToString();
-        }
+
+        return name;
     }
 
     public Color GetAttributeColor(Rarity rarity, bool isTransparent = true)

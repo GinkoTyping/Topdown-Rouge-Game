@@ -22,18 +22,26 @@ MonoBehaviour:
   baseAttributes:
   - rarity: 0
     attributes:
-    - type: 3
+    - type: 5
       value: 0.02
+    - type: 1
+      value: 10
   - rarity: 1
     attributes:
-    - type: 3
+    - type: 5
       value: 0.05
+    - type: 1
+      value: 15
   - rarity: 2
     attributes:
-    - type: 3
+    - type: 5
       value: 0.1
+    - type: 1
+      value: 20
   - rarity: 3
     attributes:
-    - type: 3
+    - type: 5
       value: 0.2
+    - type: 1
+      value: 30
   damageAmouts: 0c0000000f00000014000000

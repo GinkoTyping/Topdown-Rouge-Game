@@ -31,5 +31,10 @@ namespace Ginko.CoreSystem
 
         public void Increase(float amount) => CurrentValue += amount;
         public void Decrease(float amount) => CurrentValue -= amount;
+
+        public void ChangeMaxValue(float value)
+        {
+            MaxValue += value;
+        }
     }
 }

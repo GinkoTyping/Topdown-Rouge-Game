@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ceee09c0b2e3d146b730a21d4a3dd27, type: 3}
   m_Name: BlueGem
   m_EditorClassIdentifier: 
+  itemName: Blue Gem
   sprite: {fileID: 21300000, guid: ab1243d22f288ea4086da747a3efa104, type: 3}
   itemType: 2
   size: {x: 1, y: 1}

@@ -26,7 +26,7 @@ public class InventoryItemHoverAttribute : MonoBehaviour
         textMesh = transform.Find("Value").GetComponent<TextMeshProUGUI>();
     }
 
-    public void Set(Rarity rarity, BonusAttribute attribute, bool isBaseAttribute = false)
+    public void Set(BonusAttribute attribute, bool isBaseAttribute = false)
     {
         if (attribute?.type == null)
         {

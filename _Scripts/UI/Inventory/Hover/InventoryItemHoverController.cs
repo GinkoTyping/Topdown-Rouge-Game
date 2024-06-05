@@ -20,9 +20,11 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
     private float attributePadding;
 
     const float TOP_PADDING = 40.0f;
-    const float BOTTOM_PADDING = 110.0f;
+    const float BOTTOM_PADDING = 90.0f;
+    const float DEFAULT_HEIGHT = 250.0f;
 
     private Image nameBGImage;
+    private RectTransform typeInfoLine;
     private TextMeshProUGUI nameInfo;
     private TextMeshProUGUI typeInfo;
     private TextMeshProUGUI rarityInfo;
@@ -49,6 +51,7 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
         nameBGImage = transform.Find("Name").Find("Background").GetComponent<Image>();
         typeInfo = transform.Find("TypeInfo").Find("Type").GetComponent<TextMeshProUGUI>();
         rarityInfo = transform.Find("TypeInfo").Find("Rarity").GetComponent<TextMeshProUGUI>();
+        typeInfoLine = transform.Find("TypeInfo").Find("Line").GetComponent<RectTransform>();
         priceInfo = transform.Find("Price").GetComponentInChildren<TextMeshProUGUI>();
 
         baseAttributeContainer = transform.Find("BaseAttribute").transform;
@@ -88,8 +91,11 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
         ItemType type = item.data.itemType;
         if (type == ItemType.Equipment)
         {
-            SetBaseAttributes((EquipmentItem)item);
+            SetBaseAttributes(item);
             SetBonusAttributes((EquipmentItem)item);
+        } else if (type == ItemType.Consumable)
+        {
+            SetBaseAttributes(item);
         }
 
         SetHeight(item);
@@ -107,11 +113,21 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
         if (item.data.itemType == ItemType.Equipment)
         {
             EquipmentItem equipmentItem = (EquipmentItem)item;
-            float attributeUI = GetAttributeUIHeight(equipmentItem.bonusAttributes);
+            float attributeUI = GetAttributeUIHeight(equipmentItem.bonusAttributes.Concat(equipmentItem.baseAttributes).ToArray());
             height = TOP_PADDING + attributeUI + BOTTOM_PADDING;
-        } else
+        } 
+        else if (item.data.itemType == ItemType.Treasure)
         {
-            height = 250.0f;
+            height = TOP_PADDING + BOTTOM_PADDING;
+        }
+        else if (item.data.itemType == ItemType.Consumable)
+        {
+            float attributeUI = GetAttributeUIHeight(item.baseAttributes);
+            height = TOP_PADDING + attributeUI + BOTTOM_PADDING;
+        }
+        else
+        {
+            height = DEFAULT_HEIGHT;
         }
 
         Vector2 size = new Vector2(rectTransform.sizeDelta.x, height);
@@ -176,6 +192,8 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
 
         rarityInfo.text = $"Rarity: <#{ColorToHex(color)}>{item.rarity}</color>";
 
+        typeInfoLine.gameObject.SetActive(data.itemType != ItemType.Treasure);
+
         if (data.itemType == ItemType.Equipment)
         {
             EquipmentItemSO equipmentData = (EquipmentItemSO)data;
@@ -183,19 +201,19 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
         }
         else
         {
-            typeInfo.text = $"Type: {data.itemName}";
+            typeInfo.text = $"Type: {data.itemType}";
         }
 
     }
 
-    private void SetBaseAttributes(EquipmentItem item)
+    private void SetBaseAttributes(InventoryItem item)
     {
         poolManager.SetCurrentParrent(baseAttributeContainer);
 
         for (int i = 0; i < item.baseAttributes.Length; i++)
         {
             GameObject prop = poolManager.Pool.Get();
-            prop.GetComponent<InventoryItemHoverAttribute>().Set(item.rarity, item.baseAttributes[i], true);
+            prop.GetComponent<InventoryItemHoverAttribute>().Set(item.baseAttributes[i], true);
 
             RectTransform rect = prop.GetComponent<RectTransform>();
 
@@ -211,7 +229,7 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
         for (int i = 0; i < item.bonusAttributes.Length; i++)
         {
             GameObject prop = poolManager.Pool.Get();
-            prop.GetComponent<InventoryItemHoverAttribute>().Set(item.rarity, item.bonusAttributes[i]);
+            prop.GetComponent<InventoryItemHoverAttribute>().Set(item.bonusAttributes[i]);
 
             RectTransform rect = prop.GetComponent<RectTransform>();
 
@@ -242,7 +260,7 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
         
     }
 
-    #region
+    #region Utils
     private string ColorToHex(Color32 color)
     {
         string hex = color.r.ToString("X2") + color.g.ToString("X2") + color.b.ToString("X2") + color.a.ToString("X2");

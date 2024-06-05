@@ -2,15 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEditor.Progress;
-using static UnityEditor.Rendering.CameraUI;
 
 public class EquipmentItem : InventoryItem
 {
     private SortedEquipmentType sortedEquipmentType;
     private SoretedAttribute soretedAttribute;
 
-    public BonusAttribute[] baseAttributes;
     public BonusAttribute[] bonusAttributes;
 
     protected override void Awake()
@@ -19,22 +16,6 @@ public class EquipmentItem : InventoryItem
         sortedEquipmentType = new SortedEquipmentType();
         soretedAttribute = new SoretedAttribute();
 
-    }
-
-    public override void Set(InventoryItemSO itemSO, RectTransform parent, Rarity rarity, int tileSize)
-    {
-        base.Set(itemSO, parent, rarity, tileSize);
-
-        SetBaseAttribute(itemSO as EquipmentItemSO);
-    }
-
-    public void SetBaseAttribute(EquipmentItemSO data)
-    {
-        BonusAttribute[] attributes = data.baseAttributes.Where(attrubuteInfo => attrubuteInfo.rarity == rarity).ToArray()[0].attributes;
-        if (attributes.Length > 0)
-        {
-            baseAttributes = attributes;
-        }
     }
 
     public void SetBonusAttribute(BonusAttribute[] customData = null)
@@ -110,6 +91,7 @@ public class EquipmentItem : InventoryItem
 
         UpdateBonuseAttribute(output);
     }
+    
     private void SetPropertyAttributes()
     {
         int attributeCount = 0;
