@@ -249,6 +249,7 @@ GameObject:
   - component: {fileID: 22688789}
   - component: {fileID: 22688791}
   - component: {fileID: 22688790}
+  - component: {fileID: 22688792}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -358,6 +359,9 @@ MonoBehaviour:
     type: 3}
   equipmentItemPrefab: {fileID: 335937374205450573, guid: 61fb9fd5f0ce7fe49978b0ae182d7e38,
     type: 3}
+  equipmentPage: {fileID: 455281663}
+  equipmentDetailPage: {fileID: 328698476}
+  lootInventory: {fileID: 868860415}
   inventoryItemsData:
   - {fileID: 11400000, guid: dd9cde6a023398b4db6c37026c1614ce, type: 2}
   - {fileID: 11400000, guid: 83bce6a07ca2b054f9a21e54652f0297, type: 2}
@@ -394,6 +398,21 @@ MonoBehaviour:
   removeAudio: {fileID: 8300000, guid: 6e769e16d4685cc48aca99ff1170a61d, type: 3}
   selectAudio: {fileID: 8300000, guid: 0d4b3939317a8f84993a22757e1f2bb0, type: 3}
   equipAudio: {fileID: 8300000, guid: dd45cebe94562d94da5d7bb4f9e84d09, type: 3}
+--- !u!114 &22688792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22688784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deb06a70a3ca1db4684cf4c1a47d95dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backpackInventory: {fileID: 469230693}
+  pocketInventory: {fileID: 1318541009}
+  selectedEquipmentSlot: {fileID: 0}
 --- !u!224 &38548659 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 803513424643659688, guid: e6d9402ca3b2804429754d15c458f3da,
@@ -12234,7 +12253,7 @@ GameObject:
   - component: {fileID: 868860415}
   - component: {fileID: 868860414}
   m_Layer: 5
-  m_Name: Grid
+  m_Name: Loot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

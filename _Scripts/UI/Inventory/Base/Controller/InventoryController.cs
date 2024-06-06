@@ -11,46 +11,45 @@ public class InventoryController : MonoBehaviour
     public GameObject inventoryItemPrefab;
     [SerializeField]
     public GameObject equipmentItemPrefab;
+
+    [Header("GameObject")]
+    [SerializeField]
+    private GameObject equipmentPage;
+    [SerializeField]
+    private GameObject equipmentDetailPage;
+
+    [Header("Grid")]
+    [SerializeField]
+    private Grid lootInventory;
+
+    [Header("Test")]
     [SerializeField]
     public InventoryItemSO[] inventoryItemsData;
 
     public event Action onInventoryChange;
 
-    private EquipmentSlot selectedEquipmentSlot;
-    private EquipmentSlot[] equipmentSlots;
     public Grid selectedInventory {  get; private set; }
     public InventoryItem selectedItem { get; private set; }
     public float scaleParam { get; private set; }
 
     private InventoryItemIndicatorController indicatorController;
-    private InventorySoundController soundController;
+    private EquipmentsPageController equipmentsPageController;
     private PlayerInputEventHandler playerInputEventHandler;
+
     private RectTransform selectedItemTransform;
     private RectTransform canvasTransform;
-    private UIManager UIManager;
-    private Grid lootInventory;
-    private Grid pocketInventory;
-    private Grid backpackInventory;
+    private RectTransform pickupItemFrom;
 
-    private GameObject equipmentPage;
-    private GameObject equipmentDetailPage;
+    private UIManager UIManager;
+
     private InventoryItemHoverController hoverController;
     private TextMeshProUGUI switchEquipemntPageButton;
     private bool isShowEquipmentPage;
 
-    private RectTransform pickupItemFrom;
-
     private void Awake()
     {
         UIManager = GetComponentInParent<UIManager>();
-        soundController = GetComponent<InventorySoundController>();
 
-        pocketInventory = transform.Find("Luggage").Find("Pocket").GetComponent<Grid>();
-        lootInventory = transform.Find("Loot").GetComponentInChildren<Grid>();
-        backpackInventory = transform.Find("Luggage").Find("Backpack").GetComponent<Grid>();
-
-        equipmentPage = transform.Find("Equipment").Find("SlotsPage").gameObject;
-        equipmentDetailPage = transform.Find("Equipment").Find("Details").gameObject;
         switchEquipemntPageButton = transform.Find("Equipment").Find("SwitchDetailButton").GetComponentInChildren<TextMeshProUGUI>();
         hoverController = GameObject.Find("Hover").GetComponent<InventoryItemHoverController>();
 
@@ -61,8 +60,9 @@ public class InventoryController : MonoBehaviour
     {
         playerInputEventHandler = Player.Instance.InputHandler;
         indicatorController = GetComponent<InventoryItemIndicatorController>();
+        equipmentsPageController = GetComponent<EquipmentsPageController>();
+
         canvasTransform = GetComponent<RectTransform>();
-        equipmentSlots = transform.Find("Equipment").Find("SlotsPage").GetComponentsInChildren<EquipmentSlot>();
 
         gameObject.SetActive(false);
     }
@@ -77,12 +77,6 @@ public class InventoryController : MonoBehaviour
         HandleSelectingItem();
         HandleRotateItem();
         HandleFastRemoveItem();
-
-        HandleEquipItem();
-        HandleUnequipItem();
-
-        HandleFastEquipItem();
-        HandleFastUnequipItem();
 
         HandleHoverItem();
 
@@ -99,8 +93,20 @@ public class InventoryController : MonoBehaviour
     {
         UIManager.onInventoryUIClose -= HandleInventoryClose;
     }
+    
+    private void UpdateSelectedItem()
+    {
+        if (selectedItem != null)
+        {
+            if (selectedItemTransform == null)
+            {
+                selectedItemTransform = selectedItem.GetComponent<RectTransform>();
+            }
+            selectedItemTransform.position = (Vector3)playerInputEventHandler.MousePosition;
+        }
+    }
 
-
+    #region Set
     public void SetSelectedInventory(Grid inventory)
     {
         selectedInventory = inventory;
@@ -113,11 +119,7 @@ public class InventoryController : MonoBehaviour
             onInventoryChange?.Invoke();
         }
     }
-
-    public void SetSelectedEquipmentSlot(EquipmentSlot equipmentSlot)
-    {
-        selectedEquipmentSlot = equipmentSlot;
-    }
+   
     public void SetSelectedItem(InventoryItem item)
     {
         selectedItem = item;
@@ -131,18 +133,7 @@ public class InventoryController : MonoBehaviour
     {
         pickupItemFrom = transform;
     }
-
-    private void UpdateSelectedItem()
-    {
-        if (selectedItem != null)
-        {
-            if (selectedItemTransform == null)
-            {
-                selectedItemTransform = selectedItem.GetComponent<RectTransform>(); 
-            }
-            selectedItemTransform.position = (Vector3)playerInputEventHandler.MousePosition;
-        }
-    }
+    #endregion
 
     #region Handle Inputs
     private void HandleSelectItem()
@@ -208,102 +199,9 @@ public class InventoryController : MonoBehaviour
         }
     }
 
-    private void HandleFastEquipItem()
-    {
-        if (playerInputEventHandler.DeSelect 
-            && selectedItem == null 
-            && selectedInventory != null
-            && selectedInventory != pocketInventory)
-        {
-            playerInputEventHandler.useDeSelectSignal();
-            Vector2Int inventoryPosition = GetInventoryPosition(null);
-
-            InventoryItem itemToEquip = selectedInventory.PickUpItem(inventoryPosition, false);
-
-            if (itemToEquip.data.itemType == ItemType.Equipment)
-            {
-                FastEquipEquipment(itemToEquip as EquipmentItem);
-            } 
-            else if (itemToEquip.data.itemType == ItemType.Consumable)
-            {
-                FastEquipConsumable(itemToEquip);
-            }
-        }
-    }
-
-    private void HandleFastUnequipItem()
-    {
-        if (playerInputEventHandler.DeSelect
-            && selectedItem == null)
-        {
-            if (selectedEquipmentSlot != null)
-            {
-                playerInputEventHandler.useDeSelectSignal();
-
-                FastUnequipEquipment();
-            }
-            else if (selectedInventory == pocketInventory)
-            {
-                playerInputEventHandler.useDeSelectSignal();
-
-            }
-        }
-    }
-
-    private void HandleEquipItem(bool isManual = false)
-    {
-        if (selectedEquipmentSlot == null || selectedItem == null)
-        {
-            return;
-        }
-
-        if (playerInputEventHandler.Select || isManual)
-        {
-            playerInputEventHandler.useSelectSignal();
-
-            InventoryItem[] equipItems =  selectedEquipmentSlot.EquipItem(selectedItem as EquipmentItem);
-
-            bool successEquipped = equipItems != null;
-            if (successEquipped)
-            {
-                bool isEmptySlotBeforeEquip = equipItems[1] == null;
-                if (isEmptySlotBeforeEquip)
-                {
-                    SetSelectedItem(null);
-                }
-
-                soundController.PlayEquipItemAudio();
-            } else
-            {
-                SoundManager.Instance.Warning();
-            }
-
-            if (isManual)
-            {
-                SetSelectedEquipmentSlot(null);
-            }
-        }
-    }
-
-    private void HandleUnequipItem()
-    {
-        if (selectedEquipmentSlot?.currentEquipment == null)
-        {
-            return;
-        }
-
-        if (playerInputEventHandler.Select)
-        {
-            playerInputEventHandler.useSelectSignal();
-
-            SetPickUpItemFrom(selectedEquipmentSlot.GetComponent<RectTransform>());
-            selectedEquipmentSlot.UnequipItem(backpackInventory);
-        }
-    }
-
     private void HandleHoverItem()
     {
-        if (selectedInventory != null || selectedEquipmentSlot != null)
+        if (selectedInventory != null || equipmentsPageController.selectedEquipmentSlot != null)
         {
             InventoryItem item = null;
             if (selectedInventory != null)
@@ -313,7 +211,7 @@ public class InventoryController : MonoBehaviour
             }
             else
             {
-                item = selectedEquipmentSlot.currentEquipment;
+                item = equipmentsPageController.selectedEquipmentSlot.currentEquipment;
             }
 
             if (item == null)
@@ -326,7 +224,7 @@ public class InventoryController : MonoBehaviour
                 hoverController.Set(item, rect);
             }
         }
-        else if (selectedInventory == null && selectedEquipmentSlot == null)
+        else if (selectedInventory == null && equipmentsPageController.selectedEquipmentSlot == null)
         {
             hoverController.Hide();
         }
@@ -345,62 +243,12 @@ public class InventoryController : MonoBehaviour
 
     public void HandleInventoryClose()
     {
-        RestoreLootBox();
+        ResetLootBox();
         RestorePickUpItem();
     }
     #endregion
-
-    private void FastUnequipEquipment()
-    {
-        Vector2Int? position = backpackInventory.GetSpaceForItem(selectedEquipmentSlot.currentEquipment);
-        selectedEquipmentSlot.UnequipItem(backpackInventory, (Vector2Int)position);
-    }
     
-    private void FastEquipEquipment(EquipmentItem item)
-    {
-        SetSelectedItem(item);
-        EquipmentType equipmentType = ((EquipmentItemSO)(item.data)).equipmentType;
-        int ringSlotIndex = 0;
-
-        foreach (EquipmentSlot slot in equipmentSlots)
-        {
-            if (slot.type == equipmentType)
-            {
-                SetSelectedEquipmentSlot(slot);
-
-                if (slot.type == EquipmentType.Ring)
-                {
-                    if (slot.currentEquipment == null)
-                    {
-                        HandleEquipItem(true);
-                        break;
-                    }
-                    else if (slot.currentEquipment != null && ringSlotIndex == 1)
-                    {
-                        HandleEquipItem(true);
-                        break;
-                    }
-                    ringSlotIndex++;
-                }
-                else
-                {
-                    HandleEquipItem(true);
-                    break;
-                }
-            }
-        }
-    }
-    
-    private void FastEquipConsumable(InventoryItem item)
-    {
-        Vector2Int pos =  (Vector2Int)pocketInventory.GetSpaceForItem(item);
-
-        if (pos != null)
-        {
-            pocketInventory.PlaceItem(item, pos);
-        }
-    }
-    private void RestoreLootBox()
+    private void ResetLootBox()
     {
         InventoryItem[] items = lootInventory.GetComponentsInChildren<InventoryItem>();
 
@@ -424,15 +272,15 @@ public class InventoryController : MonoBehaviour
             }
             else if (slot != null)
             {
-                SetSelectedEquipmentSlot(slot);
-                HandleEquipItem(true);
+                equipmentsPageController.SetSelectedEquipmentSlot(slot);
+                equipmentsPageController.HandleEquipItem(true);
             }
 
             SetSelectedItem(null);
         }
     }
 
-    private Vector2Int GetInventoryPosition(InventoryItem item)
+    public Vector2Int GetInventoryPosition(InventoryItem item)
     {
         Vector2 mousePosition = playerInputEventHandler.MousePosition;
 
@@ -444,7 +292,31 @@ public class InventoryController : MonoBehaviour
 
         return selectedInventory.GetGridRelativePosition(relativePostion);
     }
+    
+    public void Test()
+    {
+        if (playerInputEventHandler.Test)
+        {
+            playerInputEventHandler.useTestSignal();
+            selectedItem = null;
+            selectedItemTransform = null;
 
+            int index = UnityEngine.Random.Range(0, inventoryItemsData.Length);
+            InventoryItemSO itemData = inventoryItemsData[index];
+
+            InventoryItem item = CreateItemOnMouse(itemData);
+
+            selectedItem = null;
+
+            Vector2Int? pos = selectedInventory.GetSpaceForItem(item);
+            if (pos != null)
+            {
+                selectedInventory.PlaceItem(item, pos.Value);
+            }
+        }
+    }
+
+    #region Create
     public InventoryItem CreateItemOnMouse(
         InventoryItemSO itemData, 
         Rarity? rarity = null, 
@@ -482,28 +354,6 @@ public class InventoryController : MonoBehaviour
 
         return selectedItem;
     }
-    public void Test()
-    {
-        if (playerInputEventHandler.Test)
-        {
-            playerInputEventHandler.useTestSignal();
-            selectedItem = null;
-            selectedItemTransform = null;
-
-            int index = UnityEngine.Random.Range(0, inventoryItemsData.Length);
-            InventoryItemSO itemData = inventoryItemsData[index];
-
-            InventoryItem item =  CreateItemOnMouse(itemData);
-
-            selectedItem = null;
-
-            Vector2Int? pos = selectedInventory.GetSpaceForItem(item);
-            if (pos != null)
-            {
-                selectedInventory.PlaceItem(item, pos.Value);
-            }
-        }
-    }
 
     public InventoryItem CreateItemInInventory(InventoryItemSO itemData, Rarity rarity,  Grid inventory, BonusAttribute[] bonusAttributes = null, Vector2Int? position = null)
     {
@@ -536,7 +386,8 @@ public class InventoryController : MonoBehaviour
 
         return newItem;
     }
-
+    #endregion
+    
     public void OnSwitchEquipmentPage()
     {
         isShowEquipmentPage = !isShowEquipmentPage;

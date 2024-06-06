@@ -20,19 +20,18 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     private Color defaultBackgroundColor;
 
     private InventoryController inventoryController;
-    private Grid backpackInventory;
+    private EquipmentsPageController equipmentsPageController;
     private PlayerStats stats;
 
-    private List<AttributeType> plusAttributes = new List<AttributeType> { AttributeType.Intelligence, AttributeType.Strength, AttributeType.Agility};
-    private List<AttributeType> multiAttributes = new List<AttributeType> { AttributeType.CriticalChance, AttributeType.CriticalDamage };
 
     public InventoryItem currentEquipment { get; private set; }
 
     private void Awake()
     {
         inventoryController = GetComponentInParent<InventoryController>();
+        equipmentsPageController = GetComponentInParent<EquipmentsPageController>();
+
         backgroundImage = GetComponent<Image>();
-        backpackInventory = inventoryController.transform.Find("Luggage").Find("Backpack").GetComponent<Grid>();
         defaultBackgroundColor = backgroundImage.color;
     }
 
@@ -44,7 +43,7 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         isActive = true;
         SwitchHighlight(true);
-        inventoryController.SetSelectedEquipmentSlot(this);
+        equipmentsPageController.SetSelectedEquipmentSlot(this);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -55,7 +54,7 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
 
         isActive = false;
-        inventoryController.SetSelectedEquipmentSlot(null);
+        equipmentsPageController.SetSelectedEquipmentSlot(null);
     }
     public void UpdateEquipmentStat(InventoryItem item)
     {
