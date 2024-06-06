@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class Grid : MonoBehaviour
 {
     private InventoryController inventoryController;
+    private InventorySoundController soundController;
 
     [SerializeField]
     public int tileSize;
@@ -27,6 +28,7 @@ public class Grid : MonoBehaviour
         inventoryRectTransform = GetComponentInParent<RectTransform>();
         gridRectTransform = GetComponent<RectTransform>();
         inventoryController = GetComponentInParent<InventoryController>();
+        soundController = GetComponentInParent<InventorySoundController>();
 
         Init(inventorySize.x, inventorySize.y);
     }
@@ -122,6 +124,8 @@ public class Grid : MonoBehaviour
 
         itemTransform.localPosition = GetGridObsolutePosition(item);
 
+        soundController.PlayPlaceItemAudio(item);
+
         return true;
     }
 
@@ -134,7 +138,7 @@ public class Grid : MonoBehaviour
         return inventoryItemSlot[pos.x, pos.y];
     }
     
-    public InventoryItem PickUpItem(Vector2Int pos)
+    public InventoryItem PickUpItem(Vector2Int pos, bool? playSound = true)
     {
         InventoryItem item = inventoryItemSlot[pos.x, pos.y];
         if (item == null)
@@ -144,15 +148,20 @@ public class Grid : MonoBehaviour
 
         RemoveItem(item);
 
+        if ((bool)playSound)
+        {
+            soundController.PlayPickUpItemAudio();
+        }
+
         return item;
     }
     
-    public InventoryItem RemoveItem(Vector2Int pos)
+    public InventoryItem RemoveItem(Vector2Int pos, bool? isClear = false)
     {
         InventoryItem item = inventoryItemSlot[pos.x, pos.y];
         if (item != null)
         {
-            RemoveItem(item);
+            RemoveItem(item, isClear);
         }
 
         return item;
@@ -172,6 +181,8 @@ public class Grid : MonoBehaviour
         {
             // TODO: ∂‘œÛ≥ÿ
             Destroy(item.gameObject);
+
+            soundController.PlayRemoveItemAudio();
         }
 
         return item;

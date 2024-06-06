@@ -15,6 +15,7 @@ public class SoundManager : MonoBehaviour
 
     [Header("UI Audio")]
     [SerializeField] private AudioClip buttonClick;
+
     private void Awake()
     {
         if (Instance == null)

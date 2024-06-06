@@ -14,20 +14,6 @@ public class InventoryController : MonoBehaviour
     [SerializeField]
     public InventoryItemSO[] inventoryItemsData;
 
-    [Header("Audios")]
-    [SerializeField]
-    public AudioClip equipmentAudio;
-    [SerializeField]
-    public AudioClip treasureAudio;
-    [SerializeField]
-    public AudioClip consumableAudio;
-    [SerializeField]
-    public AudioClip removeAudio;
-    [SerializeField]
-    public AudioClip selectAudio;
-    [SerializeField]
-    public AudioClip equipAudio;
-
     public event Action onInventoryChange;
 
     private EquipmentSlot selectedEquipmentSlot;
@@ -36,7 +22,8 @@ public class InventoryController : MonoBehaviour
     public InventoryItem selectedItem { get; private set; }
     public float scaleParam { get; private set; }
 
-    private ItemIndicatorController indicatorController;
+    private InventoryItemIndicatorController indicatorController;
+    private InventorySoundController soundController;
     private PlayerInputEventHandler playerInputEventHandler;
     private RectTransform selectedItemTransform;
     private RectTransform canvasTransform;
@@ -56,6 +43,7 @@ public class InventoryController : MonoBehaviour
     private void Awake()
     {
         UIManager = GetComponentInParent<UIManager>();
+        soundController = GetComponent<InventorySoundController>();
 
         pocketInventory = transform.Find("Luggage").Find("Pocket").GetComponent<Grid>();
         lootInventory = transform.Find("Loot").GetComponentInChildren<Grid>();
@@ -72,7 +60,7 @@ public class InventoryController : MonoBehaviour
     private void Start()
     {
         playerInputEventHandler = Player.Instance.InputHandler;
-        indicatorController = GetComponent<ItemIndicatorController>();
+        indicatorController = GetComponent<InventoryItemIndicatorController>();
         canvasTransform = GetComponent<RectTransform>();
         equipmentSlots = transform.Find("Equipment").Find("SlotsPage").GetComponentsInChildren<EquipmentSlot>();
 
@@ -94,6 +82,7 @@ public class InventoryController : MonoBehaviour
         HandleUnequipItem();
 
         HandleFastEquipItem();
+        HandleFastUnequipItem();
 
         HandleHoverItem();
 
@@ -173,7 +162,6 @@ public class InventoryController : MonoBehaviour
 
                 if (selectedItem != null)
                 {
-                    SoundManager.Instance.PlaySound(selectAudio);
                     selectedItemTransform = selectedItem.GetComponent<RectTransform>();
                     selectedItem.GetComponent<RectTransform>().SetAsLastSibling();
                     SetPickUpItemFrom(selectedInventory.GetComponent<RectTransform>());
@@ -184,7 +172,6 @@ public class InventoryController : MonoBehaviour
                 bool hasPlacedItem = selectedInventory.PlaceItem(selectedItem, inventoryPosition);
                 if (hasPlacedItem)
                 {
-                    PlayeInteractItemAudio(selectedItem);
                     selectedItem = null;
                     indicatorController.HideIndicator();
                 } else
@@ -217,21 +204,21 @@ public class InventoryController : MonoBehaviour
             playerInputEventHandler.useSelectSignal();
 
             Vector2Int inventoryPosition = GetInventoryPosition(null);
-            InventoryItem item = selectedInventory.RemoveItem(inventoryPosition);
-            Destroy(item.gameObject);
-
-            SoundManager.Instance.PlaySound(removeAudio);
+            selectedInventory.RemoveItem(inventoryPosition, true);
         }
     }
 
     private void HandleFastEquipItem()
     {
-        if (playerInputEventHandler.DeSelect && selectedItem == null)
+        if (playerInputEventHandler.DeSelect 
+            && selectedItem == null 
+            && selectedInventory != null
+            && selectedInventory != pocketInventory)
         {
             playerInputEventHandler.useDeSelectSignal();
             Vector2Int inventoryPosition = GetInventoryPosition(null);
 
-            InventoryItem itemToEquip = selectedInventory.PickUpItem(inventoryPosition);
+            InventoryItem itemToEquip = selectedInventory.PickUpItem(inventoryPosition, false);
 
             if (itemToEquip.data.itemType == ItemType.Equipment)
             {
@@ -240,6 +227,25 @@ public class InventoryController : MonoBehaviour
             else if (itemToEquip.data.itemType == ItemType.Consumable)
             {
                 FastEquipConsumable(itemToEquip);
+            }
+        }
+    }
+
+    private void HandleFastUnequipItem()
+    {
+        if (playerInputEventHandler.DeSelect
+            && selectedItem == null)
+        {
+            if (selectedEquipmentSlot != null)
+            {
+                playerInputEventHandler.useDeSelectSignal();
+
+                FastUnequipEquipment();
+            }
+            else if (selectedInventory == pocketInventory)
+            {
+                playerInputEventHandler.useDeSelectSignal();
+
             }
         }
     }
@@ -266,10 +272,15 @@ public class InventoryController : MonoBehaviour
                     SetSelectedItem(null);
                 }
 
-                PlayEquipItemAudio();
+                soundController.PlayEquipItemAudio();
             } else
             {
                 SoundManager.Instance.Warning();
+            }
+
+            if (isManual)
+            {
+                SetSelectedEquipmentSlot(null);
             }
         }
     }
@@ -338,6 +349,12 @@ public class InventoryController : MonoBehaviour
         RestorePickUpItem();
     }
     #endregion
+
+    private void FastUnequipEquipment()
+    {
+        Vector2Int? position = backpackInventory.GetSpaceForItem(selectedEquipmentSlot.currentEquipment);
+        selectedEquipmentSlot.UnequipItem(backpackInventory, (Vector2Int)position);
+    }
     
     private void FastEquipEquipment(EquipmentItem item)
     {
@@ -486,26 +503,6 @@ public class InventoryController : MonoBehaviour
                 selectedInventory.PlaceItem(item, pos.Value);
             }
         }
-    }
-
-    private void PlayeInteractItemAudio(InventoryItem item)
-    {
-        ItemType itemType = item.data.itemType;
-        if (itemType == ItemType.Treasure)
-        {
-            SoundManager.Instance.PlaySound(treasureAudio);
-        } else if (itemType == ItemType.Consumable)
-        {
-            SoundManager.Instance.PlaySound(consumableAudio);
-        } else if (itemType == ItemType.Equipment)
-        {
-            SoundManager.Instance.PlaySound(equipmentAudio);
-        }
-    }
-
-    public void PlayEquipItemAudio()
-    {
-        SoundManager.Instance.PlaySound(equipAudio);
     }
 
     public InventoryItem CreateItemInInventory(InventoryItemSO itemData, Rarity rarity,  Grid inventory, BonusAttribute[] bonusAttributes = null, Vector2Int? position = null)

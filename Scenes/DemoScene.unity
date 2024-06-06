@@ -247,6 +247,7 @@ GameObject:
   - component: {fileID: 22688787}
   - component: {fileID: 22688786}
   - component: {fileID: 22688789}
+  - component: {fileID: 22688791}
   - component: {fileID: 22688790}
   m_Layer: 5
   m_Name: Inventory
@@ -361,12 +362,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dd9cde6a023398b4db6c37026c1614ce, type: 2}
   - {fileID: 11400000, guid: 83bce6a07ca2b054f9a21e54652f0297, type: 2}
   - {fileID: 11400000, guid: 85c5e076ca22ccf4b8fc234d308c3609, type: 2}
-  equipmentAudio: {fileID: 8300000, guid: 8539b7c24be610145a3acfa2ae76f0e9, type: 3}
-  treasureAudio: {fileID: 8300000, guid: 9c9488e6c1912a240b5ddd98e3991ae9, type: 3}
-  consumableAudio: {fileID: 8300000, guid: 0d3cb27a8e23475458428a4e62800749, type: 3}
-  removeAudio: {fileID: 8300000, guid: 7a034c0123a1a71439b25cd35a119a5c, type: 3}
-  selectAudio: {fileID: 8300000, guid: 0d4b3939317a8f84993a22757e1f2bb0, type: 3}
-  equipAudio: {fileID: 8300000, guid: dd45cebe94562d94da5d7bb4f9e84d09, type: 3}
 --- !u!114 &22688790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,6 +376,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   placeItemIndicatorPrefab: {fileID: 8481477140941530154, guid: 857682b91e474e1419630dcf676f617b,
     type: 3}
+--- !u!114 &22688791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22688784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2af4c0bd66ce8c3439cc0eaccafbd734, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  equipmentAudio: {fileID: 8300000, guid: 8539b7c24be610145a3acfa2ae76f0e9, type: 3}
+  treasureAudio: {fileID: 8300000, guid: 9c9488e6c1912a240b5ddd98e3991ae9, type: 3}
+  consumableAudio: {fileID: 8300000, guid: 0d3cb27a8e23475458428a4e62800749, type: 3}
+  removeAudio: {fileID: 8300000, guid: 6e769e16d4685cc48aca99ff1170a61d, type: 3}
+  selectAudio: {fileID: 8300000, guid: 0d4b3939317a8f84993a22757e1f2bb0, type: 3}
+  equipAudio: {fileID: 8300000, guid: dd45cebe94562d94da5d7bb4f9e84d09, type: 3}
 --- !u!224 &38548659 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 803513424643659688, guid: e6d9402ca3b2804429754d15c458f3da,
