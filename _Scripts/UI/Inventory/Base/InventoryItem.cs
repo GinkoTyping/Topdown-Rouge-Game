@@ -6,9 +6,6 @@ using UnityEngine.UI;
 
 public class InventoryItem : MonoBehaviour
 {
-    [SerializeField]
-    public Color[] rarityColors;
-
     public InventoryItemSO data;
     public Vector2Int pivotPositionOnGrid;
     public Rarity rarity;
@@ -24,6 +21,7 @@ public class InventoryItem : MonoBehaviour
     }
 
     private RectTransform backgroundTransform;
+    private RectTransform borderTransform;
     private RectTransform itemTransform;
     private RectTransform rectTransform;
     private bool isRotated;
@@ -33,6 +31,7 @@ public class InventoryItem : MonoBehaviour
     protected virtual void Awake()
     {
         backgroundTransform = transform.Find("BackgroundColor").GetComponent<RectTransform>();
+        borderTransform = transform.Find("Border").GetComponent<RectTransform>();
         itemTransform = transform.Find("Item").GetComponent<RectTransform>();
         rectTransform = GetComponent<RectTransform>();
         attributeHelper = GameObject.Find("Helper").GetComponent<AttributeHelper>();
@@ -64,6 +63,7 @@ public class InventoryItem : MonoBehaviour
         rectTransform.sizeDelta = size;
         itemTransform.sizeDelta = size;
         backgroundTransform.sizeDelta = size;
+        borderTransform.sizeDelta = size;
     }
     
     public void SetSize(int tileSize)

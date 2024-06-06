@@ -36,36 +36,43 @@ public class InventoryController : MonoBehaviour
     public InventoryItem selectedItem { get; private set; }
     public float scaleParam { get; private set; }
 
+    private ItemIndicatorController indicatorController;
     private PlayerInputEventHandler playerInputEventHandler;
     private RectTransform selectedItemTransform;
     private RectTransform canvasTransform;
     private UIManager UIManager;
     private Grid lootInventory;
+    private Grid pocketInventory;
+    private Grid backpackInventory;
 
     private GameObject equipmentPage;
     private GameObject equipmentDetailPage;
     private InventoryItemHoverController hoverController;
     private TextMeshProUGUI switchEquipemntPageButton;
     private bool isShowEquipmentPage;
-    private float scaleUnit;
+
     private RectTransform pickupItemFrom;
 
     private void Awake()
     {
         UIManager = GetComponentInParent<UIManager>();
+
+        pocketInventory = transform.Find("Luggage").Find("Pocket").GetComponent<Grid>();
         lootInventory = transform.Find("Loot").GetComponentInChildren<Grid>();
+        backpackInventory = transform.Find("Luggage").Find("Backpack").GetComponent<Grid>();
+
         equipmentPage = transform.Find("Equipment").Find("SlotsPage").gameObject;
         equipmentDetailPage = transform.Find("Equipment").Find("Details").gameObject;
         switchEquipemntPageButton = transform.Find("Equipment").Find("SwitchDetailButton").GetComponentInChildren<TextMeshProUGUI>();
         hoverController = GameObject.Find("Hover").GetComponent<InventoryItemHoverController>();
 
-        scaleUnit = Camera.main.orthographicSize / Screen.height * 2;
         isShowEquipmentPage = true;
     }
 
     private void Start()
     {
         playerInputEventHandler = Player.Instance.InputHandler;
+        indicatorController = GetComponent<ItemIndicatorController>();
         canvasTransform = GetComponent<RectTransform>();
         equipmentSlots = transform.Find("Equipment").Find("SlotsPage").GetComponentsInChildren<EquipmentSlot>();
 
@@ -79,6 +86,7 @@ public class InventoryController : MonoBehaviour
         UpdateSelectedItem();
 
         HandleSelectItem();
+        HandleSelectingItem();
         HandleRotateItem();
         HandleFastRemoveItem();
 
@@ -108,7 +116,10 @@ public class InventoryController : MonoBehaviour
     {
         selectedInventory = inventory;
 
-        if (inventory != null)
+        if (inventory == null)
+        {
+            indicatorController.HideIndicator();
+        } else
         {
             onInventoryChange?.Invoke();
         }
@@ -143,6 +154,8 @@ public class InventoryController : MonoBehaviour
             selectedItemTransform.position = (Vector3)playerInputEventHandler.MousePosition;
         }
     }
+
+    #region Handle Inputs
     private void HandleSelectItem()
     {
         if (selectedInventory == null)
@@ -157,11 +170,13 @@ public class InventoryController : MonoBehaviour
             if (selectedItem == null)
             {
                 selectedItem = selectedInventory.PickUpItem(inventoryPosition);
-                SetPickUpItemFrom(selectedInventory.GetComponent<RectTransform>());
+
                 if (selectedItem != null)
                 {
                     SoundManager.Instance.PlaySound(selectAudio);
                     selectedItemTransform = selectedItem.GetComponent<RectTransform>();
+                    selectedItem.GetComponent<RectTransform>().SetAsLastSibling();
+                    SetPickUpItemFrom(selectedInventory.GetComponent<RectTransform>());
                 }
             }
             else
@@ -171,6 +186,7 @@ public class InventoryController : MonoBehaviour
                 {
                     PlayeInteractItemAudio(selectedItem);
                     selectedItem = null;
+                    indicatorController.HideIndicator();
                 } else
                 {
                     SoundManager.Instance.Warning();
@@ -210,50 +226,20 @@ public class InventoryController : MonoBehaviour
 
     private void HandleFastEquipItem()
     {
-        if (playerInputEventHandler.HoldCombineKey && playerInputEventHandler.DeSelect)
+        if (playerInputEventHandler.DeSelect && selectedItem == null)
         {
             playerInputEventHandler.useDeSelectSignal();
             Vector2Int inventoryPosition = GetInventoryPosition(null);
 
             InventoryItem itemToEquip = selectedInventory.PickUpItem(inventoryPosition);
 
-            if (itemToEquip.data.itemType != ItemType.Equipment)
+            if (itemToEquip.data.itemType == ItemType.Equipment)
             {
-                return;
-            }
-
-            EquipmentType equipmentType = ((EquipmentItemSO)(itemToEquip.data)).equipmentType;
-
-            SetSelectedItem(itemToEquip);
-
-            int ringSlotIndex = 0;
-
-            foreach (EquipmentSlot slot in equipmentSlots)
+                FastEquipEquipment(itemToEquip as EquipmentItem);
+            } 
+            else if (itemToEquip.data.itemType == ItemType.Consumable)
             {
-                if (slot.type == equipmentType)
-                {
-                    SetSelectedEquipmentSlot(slot);
-
-                    if (slot.type == EquipmentType.Ring)
-                    {
-                        if (slot.currentEquipment == null)
-                        {
-                            HandleEquipItem(true);
-                            break;
-                        } 
-                        else if (slot.currentEquipment != null && ringSlotIndex == 1)
-                        {
-                            HandleEquipItem(true);
-                            break;
-                        }
-                        ringSlotIndex++;
-                    } 
-                    else
-                    {
-                        HandleEquipItem(true);
-                        break;
-                    }
-                }
+                FastEquipConsumable(itemToEquip);
             }
         }
     }
@@ -300,45 +286,7 @@ public class InventoryController : MonoBehaviour
             playerInputEventHandler.useSelectSignal();
 
             SetPickUpItemFrom(selectedEquipmentSlot.GetComponent<RectTransform>());
-            selectedEquipmentSlot.UnequipItem();
-        }
-    }
-    
-    public void HandleInventoryClose()
-    {
-        RestoreLootBox();
-        RestorePickUpItem();
-    }
-
-    private void RestoreLootBox()
-    {
-        InventoryItem[] items = lootInventory.GetComponentsInChildren<InventoryItem>();
-
-        foreach (InventoryItem item in items)
-        {
-            lootInventory.RemoveItem(item);
-            Destroy(item.gameObject);
-        }
-    }
-
-    private void RestorePickUpItem()
-    {
-        if (selectedItem != null && pickupItemFrom != null)
-        {
-
-            Grid grid = pickupItemFrom.GetComponent<Grid>();
-            EquipmentSlot slot = pickupItemFrom.GetComponent<EquipmentSlot>();
-            if (grid != null)
-            {
-                grid.PlaceItem(selectedItem, selectedItem.pivotPositionOnGrid);
-            }
-            else if (slot != null)
-            {
-                SetSelectedEquipmentSlot(slot);
-                HandleEquipItem(true);
-            }
-
-            SetSelectedItem(null);
+            selectedEquipmentSlot.UnequipItem(backpackInventory);
         }
     }
 
@@ -368,8 +316,102 @@ public class InventoryController : MonoBehaviour
             }
         }
         else if (selectedInventory == null && selectedEquipmentSlot == null)
-        { 
+        {
             hoverController.Hide();
+        }
+    }
+    
+    private void HandleSelectingItem()
+    {
+        if(selectedInventory != null && selectedItem != null)
+        {
+            indicatorController.ShowIndicator(GetInventoryPosition(selectedItem), selectedItem);
+        } else
+        {
+            indicatorController.HideIndicator();
+        }
+    }
+
+    public void HandleInventoryClose()
+    {
+        RestoreLootBox();
+        RestorePickUpItem();
+    }
+    #endregion
+    
+    private void FastEquipEquipment(EquipmentItem item)
+    {
+        SetSelectedItem(item);
+        EquipmentType equipmentType = ((EquipmentItemSO)(item.data)).equipmentType;
+        int ringSlotIndex = 0;
+
+        foreach (EquipmentSlot slot in equipmentSlots)
+        {
+            if (slot.type == equipmentType)
+            {
+                SetSelectedEquipmentSlot(slot);
+
+                if (slot.type == EquipmentType.Ring)
+                {
+                    if (slot.currentEquipment == null)
+                    {
+                        HandleEquipItem(true);
+                        break;
+                    }
+                    else if (slot.currentEquipment != null && ringSlotIndex == 1)
+                    {
+                        HandleEquipItem(true);
+                        break;
+                    }
+                    ringSlotIndex++;
+                }
+                else
+                {
+                    HandleEquipItem(true);
+                    break;
+                }
+            }
+        }
+    }
+    
+    private void FastEquipConsumable(InventoryItem item)
+    {
+        Vector2Int pos =  (Vector2Int)pocketInventory.GetSpaceForItem(item);
+
+        if (pos != null)
+        {
+            pocketInventory.PlaceItem(item, pos);
+        }
+    }
+    private void RestoreLootBox()
+    {
+        InventoryItem[] items = lootInventory.GetComponentsInChildren<InventoryItem>();
+
+        foreach (InventoryItem item in items)
+        {
+            lootInventory.RemoveItem(item);
+            Destroy(item.gameObject);
+        }
+    }
+
+    private void RestorePickUpItem()
+    {
+        if (selectedItem != null && pickupItemFrom != null)
+        {
+
+            Grid grid = pickupItemFrom.GetComponent<Grid>();
+            EquipmentSlot slot = pickupItemFrom.GetComponent<EquipmentSlot>();
+            if (grid != null)
+            {
+                grid.PlaceItem(selectedItem, selectedItem.pivotPositionOnGrid);
+            }
+            else if (slot != null)
+            {
+                SetSelectedEquipmentSlot(slot);
+                HandleEquipItem(true);
+            }
+
+            SetSelectedItem(null);
         }
     }
 

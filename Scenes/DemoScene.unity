@@ -247,6 +247,7 @@ GameObject:
   - component: {fileID: 22688787}
   - component: {fileID: 22688786}
   - component: {fileID: 22688789}
+  - component: {fileID: 22688790}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -366,6 +367,20 @@ MonoBehaviour:
   removeAudio: {fileID: 8300000, guid: 7a034c0123a1a71439b25cd35a119a5c, type: 3}
   selectAudio: {fileID: 8300000, guid: 0d4b3939317a8f84993a22757e1f2bb0, type: 3}
   equipAudio: {fileID: 8300000, guid: dd45cebe94562d94da5d7bb4f9e84d09, type: 3}
+--- !u!114 &22688790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22688784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0da3c35150450949a1ed7bf84eb07c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placeItemIndicatorPrefab: {fileID: 8481477140941530154, guid: 857682b91e474e1419630dcf676f617b,
+    type: 3}
 --- !u!224 &38548659 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 803513424643659688, guid: e6d9402ca3b2804429754d15c458f3da,
@@ -3895,6 +3910,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileSize: 64
   inventorySize: {x: 5, y: 6}
+  allowedItemTypes: 000000000100000002000000
 --- !u!224 &472791711 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 552863461737092114, guid: 3259ebf5cd549d94f9ca2a7d68174f7b,
@@ -11476,7 +11492,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <color=red>Equip Item </color><size=-8>(<U>Shift + right CLICK</U>)</size>
+  m_text: <color=red>Equip Item </color><size=-8>(<U>right CLICK</U>)</size>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9b8a9e84803883d4483a020bd9aecec3, type: 2}
   m_sharedMaterial: {fileID: -8685982625448611527, guid: 9b8a9e84803883d4483a020bd9aecec3,
@@ -12256,6 +12272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileSize: 64
   inventorySize: {x: 4, y: 5}
+  allowedItemTypes: 000000000100000002000000
 --- !u!114 &868860416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17611,6 +17628,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileSize: 64
   inventorySize: {x: 5, y: 1}
+  allowedItemTypes: 01000000
 --- !u!114 &1318541010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21513,10 +21531,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colors:
-  - {r: 0.00030589104, g: 1, b: 0, a: 0.39215687}
-  - {r: 0, g: 0.5793958, b: 1, a: 0.39215687}
-  - {r: 1, g: 0, b: 0.90361214, a: 0.39215687}
-  - {r: 1, g: 0.46949834, b: 0, a: 0.39215687}
+  - {r: 0.6273585, g: 1, b: 0.6273585, a: 0.47058824}
+  - {r: 0.48593804, g: 0.77334464, b: 0.9811321, a: 0.47058824}
+  - {r: 1, g: 0.3820755, b: 0.9394192, a: 0.47058824}
+  - {r: 1, g: 0.53801334, b: 0.1273585, a: 0.47058824}
 --- !u!4 &1790577082
 Transform:
   m_ObjectHideFlags: 0

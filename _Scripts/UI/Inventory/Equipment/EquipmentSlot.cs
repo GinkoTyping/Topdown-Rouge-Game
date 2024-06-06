@@ -98,7 +98,7 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
         if (currentEquipment != null)
         {
-            unequippedItem = UnequipItem();
+            unequippedItem = UnequipItem(item.GetComponentInParent<Grid>(), item.pivotPositionOnGrid);
         }
 
         item.SetSize(GetComponent<RectTransform>().sizeDelta);
@@ -113,13 +113,19 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         return output;
     }
 
-    public EquipmentItem UnequipItem()
+    public EquipmentItem UnequipItem(Grid inventory, Vector2Int? postion = null)
     {
-        currentEquipment.SetSize(backpackInventory.tileSize);
+        currentEquipment.SetSize(inventory.tileSize);
 
-        // TODO: 还有默认是仓库的情况，待补充
-        currentEquipment.GetComponent<RectTransform>().SetParent(backpackInventory.GetComponent<RectTransform>());
-        inventoryController.SetSelectedItem(currentEquipment);
+        if (postion == null)
+        {
+            currentEquipment.GetComponent<RectTransform>().SetParent(inventory.transform);
+            inventoryController.SetSelectedItem(currentEquipment);
+        } else
+        {
+            inventory.PlaceItem(currentEquipment, (Vector2Int)postion);
+            inventoryController.SetSelectedItem(null);
+        }
 
         EquipmentItem output = currentEquipment as EquipmentItem;
         UpdateEquipmentStat(null);
