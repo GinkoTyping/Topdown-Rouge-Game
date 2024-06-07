@@ -26,8 +26,6 @@ namespace Ginko.CoreSystem
         private bool isShowInteractHint;
         private bool isInteracting;
 
-        private GameObject InventoryUI;
-
         protected override void Awake()
         {
             base.Awake();
@@ -37,7 +35,6 @@ namespace Ginko.CoreSystem
 
             loopBar = GameObject.FindGameObjectWithTag("HintContainer").GetComponentInChildren<LoopBar>();
             detections = Core.GetCoreComponent<Detections>();
-            InventoryUI = GameObject.Find("Inventory").gameObject;
         }
 
         public override void LogicUpdate()
@@ -56,7 +53,8 @@ namespace Ginko.CoreSystem
                     currentInteractingItem = detections.interactiveObjects[0].GetComponentInChildren<IInteractable>();
                     interactTextGO = Instantiate(textMesh, currentInteractingItem.interactionIconPos, Quaternion.identity);
                     TextMeshProUGUI meshGO = interactTextGO.GetComponentInChildren<TextMeshProUGUI>();
-                    meshGO.text = interactionText;
+                    meshGO.color = Color.white;
+                    meshGO.text = currentInteractingItem.hintText;
                 }
             } else
             {
@@ -105,15 +103,6 @@ namespace Ginko.CoreSystem
                 loopBar.OnLoadingEnd += OnInteractEnd;
 
                 currentInteractingItem.Interact(this);
-            }
-        }
-
-        public void HandleLootable()
-        {
-            if (currentInteractingItem.interactType == InteractType.Lootable)
-            {
-                InventoryUI.SetActive(true);
-                Player.Instance.InputAction.SwitchCurrentActionMap("UI");
             }
         }
     }

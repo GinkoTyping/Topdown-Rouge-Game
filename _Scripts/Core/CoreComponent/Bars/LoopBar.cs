@@ -37,7 +37,7 @@ public class LoopBar : MonoBehaviour
         }
     }
 
-    public void SetBar(float time)
+    public void SetBar(float time = 0)
     {
         loadingTimeAll = time;
         loadingTimeLeft = time;
@@ -46,6 +46,9 @@ public class LoopBar : MonoBehaviour
     public void SetBar(float time, Vector3 position)
     {
         SetBar(time);
-        transform.position = position;
+        if (position != null)
+        {
+            transform.position = position;
+        }
     }
 }

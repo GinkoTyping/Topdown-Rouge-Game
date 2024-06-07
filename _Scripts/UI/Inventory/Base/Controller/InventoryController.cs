@@ -21,6 +21,8 @@ public class InventoryController : MonoBehaviour
     [Header("Grid")]
     [SerializeField]
     private Grid lootInventory;
+    [SerializeField]
+    public Grid backpackInventory;
 
     [Header("Test")]
     [SerializeField]

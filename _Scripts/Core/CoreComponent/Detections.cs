@@ -54,12 +54,15 @@ namespace Ginko.CoreSystem
 
         public bool GetInteractions(out Collider2D[] detections)
         {
-            detections = Physics2D.OverlapBoxAll(transform.position + (Vector3)interactionOffset, interactionSize, interactionLayer)
-                .Where(x => x.tag == "Interactive" && x.GetComponentInChildren<IInteractable>().isInteractive)
+            detections = Physics2D.OverlapBoxAll(transform.position + (Vector3)interactionOffset, interactionSize, 0, interactionLayer)
+                .Where(x => 
+                    x.tag == "Interactive" &&
+                    (x.GetComponentInChildren<IInteractable>().isInteractive ||
+                    x.GetComponent<IInteractable>().isInteractive)
+                    )
                 .ToArray();
             return detections.Length > 0;
         }
-
 
         public bool GetBoxDetections(Vector2 offset, Vector2 size)
         {

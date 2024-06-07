@@ -114,27 +114,6 @@ public class PlayerInputEventHandler : MonoBehaviour
         Select = false;
     }
 
-    public void OnDoubleSelect(InputAction.CallbackContext context)
-    {
-        if (context.started)
-        {
-            DoubleSelect = true;
-        }
-        else if (context.performed)
-        {
-
-        }
-        else if (context.canceled)
-        {
-            DoubleSelect = false;
-        }
-    }
-
-    public void UseDoubleSelectSignal()
-    {
-        DoubleSelect = false;
-    }
-
     public void OnDeSelect(InputAction.CallbackContext context)
     {
         if (context.started)

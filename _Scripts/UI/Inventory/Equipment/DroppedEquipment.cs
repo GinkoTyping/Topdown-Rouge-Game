@@ -1,22 +1,55 @@
+using Ginko.CoreSystem;
 using Ginko.PlayerSystem;
 using UnityEngine;
 
-public class DroppedEquipment : MonoBehaviour
+public class DroppedEquipment : MonoBehaviour, IInteractable
 {
     [SerializeField]
     private LineRenderer laserLineRenderer;
     [SerializeField]
     private ParticleSystem[] laserStartParticles;
+    [SerializeField]
+    private string HintText; 
+    [SerializeField]
+    private Vector2 InteractionIconPos;
 
     private DroppedItemController droppedItemController;
+    private InventoryController inventoryController;
+    private DroppedItemPool poolManager;
+
     private LayerMask dropsLayer;
     private Material[] laserMaterials;
+    private InventoryItem currentItem;
 
     private static Vector2 PADDING_SIZE = new Vector2(.5f, .5f);
     private static int SAFE_RECURSION_COUNT = 50;
 
+
+    #region interaction
+    public Vector2 interactionIconPos { get; private set; }
+
+    public float loadingTime {  get; private set; }
+
+    public bool isInteractive { get; private set; }
+
+    public InteractType interactType { get; private set; }
+
+    public string hintText { get; private set; }
+
+    #endregion
+
+    private void Start()
+    {
+        hintText = HintText;
+        interactionIconPos = (Vector2)transform.position + InteractionIconPos;
+
+        inventoryController = GameObject.Find("Inventory").GetComponent<InventoryController>();
+        poolManager = GetComponentInParent<DroppedItemPool>();
+    }
     public void Set(InventoryItem item)
     {
+        isInteractive = true;
+
         SetReference();
 
         transform.position = GetPositionToDrop(Player.Instance.transform.position, 0);
@@ -82,6 +115,21 @@ public class DroppedEquipment : MonoBehaviour
         {
             ParticleSystem.MainModule main = particle.main;
             main.startColor = laserLineRenderer.material.GetColor("_Color");
+        }
+    }
+
+    public void Interact(Interaction comp)
+    {
+        InventoryItem item = GetComponentInChildren<InventoryItem>(true);
+
+        Vector2Int? pos =  inventoryController.backpackInventory.GetSpaceForItem(item);
+        inventoryController.backpackInventory.PlaceItem(item, pos);
+        if (pos != null)
+        {
+            isInteractive = false;
+            poolManager.Pool.Release(gameObject);
+
+            item.gameObject.SetActive(true);
         }
     }
 }

@@ -17,17 +17,21 @@ namespace Ginko.CoreSystem
         [SerializeField]
         public AudioClip audioOnOpen;
         [SerializeField]
-        public InteractType InteractType;
+        public InteractType InteractType; 
+        [SerializeField]
+        public string HintText;
 
 
         public Vector2 interactionIconPos { get; private set; }
         public float loadingTime { get; private set; }
         public bool isInteractive { get; private set; }
         public InteractType interactType { get; private set; }
+        public string hintText { get; private set; }
 
         private Interaction interactionComp;
         private SpriteRenderer spriteRenderer;
         private LootsRespawning lootsRespawning;
+
 
         private bool hasOpened;
 
@@ -37,6 +41,7 @@ namespace Ginko.CoreSystem
 
             interactionIconPos = transform.position + interactionIconOffset;
             loadingTime = interactingTime;
+            hintText = HintText;
 
             spriteRenderer = GetComponentInParent<SpriteRenderer>();
             lootsRespawning = Core.GetCoreComponent<LootsRespawning>();
@@ -69,7 +74,7 @@ namespace Ginko.CoreSystem
                 interactionComp = comp;
 
                 comp.loopBar.OnLoadingEnd += OpenChest;
-                interactionComp.loopBar.OnLoadingEnd += lootsRespawning.OnLoots;
+                comp.loopBar.OnLoadingEnd += lootsRespawning.OnLoots;
 
                 SoundManager.Instance.PlaySound(audioOnSearch);
             }

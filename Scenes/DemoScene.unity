@@ -362,6 +362,7 @@ MonoBehaviour:
   equipmentPage: {fileID: 455281663}
   equipmentDetailPage: {fileID: 328698476}
   lootInventory: {fileID: 868860415}
+  backpackInventory: {fileID: 469230693}
   inventoryItemsData:
   - {fileID: 11400000, guid: 83bce6a07ca2b054f9a21e54652f0297, type: 2}
   - {fileID: 11400000, guid: dd9cde6a023398b4db6c37026c1614ce, type: 2}
@@ -1916,7 +1917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e4833524457f2143bcdb0f0bf436563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsDebug: 0
+  IsDebug: 1
   ActiveHostileDetection: 0
   hostileDetectionRadius: 0
   closeRangeAttackRadius: 0
@@ -1939,7 +1940,7 @@ MonoBehaviour:
   interactionOffset: {x: 0, y: -0.4}
   interactionLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 16512
   tagName: Interactive
   interactiveObjects: []
 --- !u!4 &219527385 stripped
