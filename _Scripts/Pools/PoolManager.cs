@@ -9,17 +9,21 @@ using UnityEngine.Pool;
 public abstract class PoolManager : MonoBehaviour
 {
     [SerializeField]
-    private Transform containerTransform;
+    protected Transform containerTransform;
     [SerializeField]
-    private int maxSize;
+    protected GameObject defaultObject;
+    [SerializeField]
+    protected int maxSize;
 
     public ObjectPool<GameObject> Pool { get; private set; }
 
-    private GameObject currentObject;
+    protected GameObject currentObject;
 
     private void Awake()
     {
         Pool = new ObjectPool<GameObject>(createFunc, actionOnGet, actionOnRelease, actionOnDestroy, true, 10, maxSize);
+
+        currentObject = defaultObject;
     }
 
     private void actionOnDestroy(GameObject obj)

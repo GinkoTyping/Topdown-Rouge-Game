@@ -33,6 +33,7 @@ public class InventoryController : MonoBehaviour
     public float scaleParam { get; private set; }
 
     private InventoryItemIndicatorController indicatorController;
+    private DroppedItemController droppedItemController;
     private EquipmentsPageController equipmentsPageController;
     private PlayerInputEventHandler playerInputEventHandler;
 
@@ -61,6 +62,7 @@ public class InventoryController : MonoBehaviour
         playerInputEventHandler = Player.Instance.InputHandler;
         indicatorController = GetComponent<InventoryItemIndicatorController>();
         equipmentsPageController = GetComponent<EquipmentsPageController>();
+        droppedItemController = GameObject.Find("Drops").GetComponent <DroppedItemController>();
 
         canvasTransform = GetComponent<RectTransform>();
 

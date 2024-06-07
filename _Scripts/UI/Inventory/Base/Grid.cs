@@ -9,6 +9,7 @@ public class Grid : MonoBehaviour
 {
     private InventoryController inventoryController;
     private InventorySoundController soundController;
+    private DroppedItemController droppedItemController;
 
     [SerializeField]
     public int tileSize;
@@ -22,6 +23,7 @@ public class Grid : MonoBehaviour
     private Vector2 positionOnGrid = Vector2.zero;
     private Vector2Int tileGridPosition = new Vector2Int();
     private InventoryItem[,] inventoryItemSlot;
+    
 
     void Awake()
     {
@@ -36,6 +38,8 @@ public class Grid : MonoBehaviour
     private void Start()
     {
         inventoryController.onInventoryChange += HandleInventoryChange;
+
+        droppedItemController = GameObject.Find("Drops").GetComponent<DroppedItemController>();
     }
 
     private void OnDestroy()
@@ -89,8 +93,16 @@ public class Grid : MonoBehaviour
         return GetGridObsolutePosition(item.pivotPositionOnGrid, item.width, item.height);
     }
 
-    public bool PlaceItem(InventoryItem item, Vector2Int pos)
+    public bool PlaceItem(InventoryItem item, Vector2Int? position)
     {
+        if (position == null)
+        {
+            Debug.Log("No room to place item.");
+            return false;
+        }
+
+        Vector2Int pos = (Vector2Int)position;
+
         item.pivotPositionOnGrid = pos;
 
         if (!CheckItemAllowed(item))
@@ -180,7 +192,8 @@ public class Grid : MonoBehaviour
         if ((bool)isClear)
         {
             // TODO: ∂‘œÛ≥ÿ
-            Destroy(item.gameObject);
+            droppedItemController.CreateDroppedItem(item);
+            //Destroy(item.gameObject);
 
             soundController.PlayRemoveItemAudio();
         }

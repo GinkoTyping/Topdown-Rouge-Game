@@ -363,9 +363,8 @@ MonoBehaviour:
   equipmentDetailPage: {fileID: 328698476}
   lootInventory: {fileID: 868860415}
   inventoryItemsData:
-  - {fileID: 11400000, guid: dd9cde6a023398b4db6c37026c1614ce, type: 2}
   - {fileID: 11400000, guid: 83bce6a07ca2b054f9a21e54652f0297, type: 2}
-  - {fileID: 11400000, guid: 85c5e076ca22ccf4b8fc234d308c3609, type: 2}
+  - {fileID: 11400000, guid: dd9cde6a023398b4db6c37026c1614ce, type: 2}
 --- !u!114 &22688790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -412,7 +411,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backpackInventory: {fileID: 469230693}
   pocketInventory: {fileID: 1318541009}
-  selectedEquipmentSlot: {fileID: 0}
+  lootInventory: {fileID: 868860415}
 --- !u!224 &38548659 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 803513424643659688, guid: e6d9402ca3b2804429754d15c458f3da,
@@ -547,6 +546,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   containerTransform: {fileID: 52266785}
+  defaultObject: {fileID: 0}
   maxSize: 100
 --- !u!1 &55488538
 GameObject:
@@ -1544,6 +1544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   containerTransform: {fileID: 376770056}
+  defaultObject: {fileID: 0}
   maxSize: 10
 --- !u!114 &152795768
 MonoBehaviour:
@@ -4956,6 +4957,75 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 682625699}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &688647790
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 688647791}
+  - component: {fileID: 688647792}
+  - component: {fileID: 688647793}
+  m_Layer: 0
+  m_Name: Drops
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &688647791
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688647790}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 90}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &688647792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688647790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49811b4a30ae961408154d593b4bffa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  containerTransform: {fileID: 688647791}
+  defaultObject: {fileID: 7537791953169405214, guid: 08903e788ab87ae4da455a42c4fdfaa8,
+    type: 3}
+  maxSize: 100
+--- !u!114 &688647793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688647790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f92bff4a2d22d20439ce7f9bf72f1623, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropsLayer:
+    serializedVersion: 2
+    m_Bits: 16384
+  laserMaterials:
+  - {fileID: 2100000, guid: 1accc3cdef8ed6b4fb38f3a76a6f1091, type: 2}
+  - {fileID: 2100000, guid: 17d7be56a7308914d91265e784bd7792, type: 2}
+  - {fileID: 2100000, guid: 2caec603a8330fa4283a38e4ea8b6615, type: 2}
+  - {fileID: 2100000, guid: 898128d279c39e74ea902d78fa54a605, type: 2}
 --- !u!1001 &696471786
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23550,6 +23620,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 83ae08dd-405c-4515-babd-57d5f04e6e39
     m_ActionName: UI/New action
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5833bdeb-095e-4026-b60f-aa228c49ae61
+    m_ActionName: UI/New action
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
@@ -26624,6 +26698,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 1262833006}
+  - {fileID: 688647791}
   - {fileID: 593774944}
   - {fileID: 1986595661}
   - {fileID: 52266785}

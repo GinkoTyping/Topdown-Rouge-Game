@@ -1,6 +1,7 @@
 using Ginko.PlayerSystem;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EquipmentsPageController : MonoBehaviour
@@ -9,12 +10,14 @@ public class EquipmentsPageController : MonoBehaviour
     private Grid backpackInventory;
     [SerializeField]
     private Grid pocketInventory;
+    [SerializeField]
+    private Grid lootInventory;
 
     private InventoryController inventoryController;
     private InventorySoundController soundController;
     private PlayerInputEventHandler playerInputEventHandler;
 
-    public EquipmentSlot selectedEquipmentSlot;
+    public EquipmentSlot selectedEquipmentSlot { get; private set; }
     private EquipmentSlot[] equipmentSlots;
 
     private void Start()
@@ -39,50 +42,8 @@ public class EquipmentsPageController : MonoBehaviour
     {
         selectedEquipmentSlot = equipmentSlot;
     }
-    
+
     #region Handlers
-
-    private void HandleFastEquipItem()
-    {
-        if (playerInputEventHandler.DeSelect
-            && inventoryController.selectedItem == null
-            && inventoryController.selectedInventory != null
-            && inventoryController.selectedInventory != pocketInventory)
-        {
-            playerInputEventHandler.useDeSelectSignal();
-            Vector2Int inventoryPosition = inventoryController.GetInventoryPosition(null);
-
-            InventoryItem itemToEquip = inventoryController.selectedInventory.PickUpItem(inventoryPosition, false);
-
-            if (itemToEquip.data.itemType == ItemType.Equipment)
-            {
-                FastEquipEquipment(itemToEquip as EquipmentItem);
-            }
-            else if (itemToEquip.data.itemType == ItemType.Consumable)
-            {
-                FastEquipConsumable(itemToEquip);
-            }
-        }
-    }
-
-    private void HandleFastUnequipItem()
-    {
-        if (playerInputEventHandler.DeSelect
-            && inventoryController.selectedItem == null)
-        {
-            if (selectedEquipmentSlot != null)
-            {
-                playerInputEventHandler.useDeSelectSignal();
-
-                FastUnequipEquipment();
-            }
-            else if (inventoryController.selectedInventory == pocketInventory)
-            {
-                playerInputEventHandler.useDeSelectSignal();
-
-            }
-        }
-    }
 
     public void HandleEquipItem(bool isManual = false)
     {
@@ -136,6 +97,48 @@ public class EquipmentsPageController : MonoBehaviour
         }
     }
     
+    private void HandleFastEquipItem()
+    {
+        if (playerInputEventHandler.DeSelect
+            && inventoryController.selectedItem == null
+            && inventoryController.selectedInventory != null
+            && inventoryController.selectedInventory != pocketInventory)
+        {
+            playerInputEventHandler.useDeSelectSignal();
+            Vector2Int inventoryPosition = inventoryController.GetInventoryPosition(null);
+
+            InventoryItem itemToEquip = inventoryController.selectedInventory.GetItem(inventoryPosition);
+
+            if (itemToEquip.data.itemType == ItemType.Equipment)
+            {
+                FastEquipEquipment(itemToEquip as EquipmentItem);
+            }
+            else if (itemToEquip.data.itemType == ItemType.Consumable)
+            {
+                FastEquipConsumable(itemToEquip);
+            }
+        }
+    }
+
+    private void HandleFastUnequipItem()
+    {
+        if (playerInputEventHandler.DeSelect
+            && inventoryController.selectedItem == null)
+        {
+            if (selectedEquipmentSlot != null)
+            {
+                playerInputEventHandler.useDeSelectSignal();
+
+                FastUnequipEquipment();
+            }
+            else if (inventoryController.selectedInventory == pocketInventory)
+            {
+                playerInputEventHandler.useDeSelectSignal();
+
+            }
+        }
+    }
+
     #endregion
 
     private void FastUnequipEquipment()
@@ -146,34 +149,53 @@ public class EquipmentsPageController : MonoBehaviour
 
     private void FastEquipEquipment(EquipmentItem item)
     {
-        inventoryController.SetSelectedItem(item);
         EquipmentType equipmentType = ((EquipmentItemSO)(item.data)).equipmentType;
-        int ringSlotIndex = 0;
+        bool hasEquipmentSlot = equipmentSlots
+            .Where(slot => 
+                slot.type == equipmentType 
+                && slot.currentEquipment == null
+                )
+            .ToArray().Length > 0;
 
-        foreach (EquipmentSlot slot in equipmentSlots)
+        if (!hasEquipmentSlot && inventoryController.selectedInventory == lootInventory)
         {
-            if (slot.type == equipmentType)
+            Vector2Int? pos = backpackInventory.GetSpaceForItem(item);
+            if (pos != null)
             {
-                SetSelectedEquipmentSlot(slot);
+                inventoryController.selectedInventory.RemoveItem(item);
+            }
+            backpackInventory.PlaceItem(item, (Vector2Int)pos);
+        } else
+        {
+            inventoryController.SetSelectedItem(item);
+            inventoryController.selectedInventory.RemoveItem(item);
 
-                if (slot.type == EquipmentType.Ring)
+            int ringSlotIndex = 0;
+            foreach (EquipmentSlot slot in equipmentSlots)
+            {
+                if (slot.type == equipmentType)
                 {
-                    if (slot.currentEquipment == null)
+                    SetSelectedEquipmentSlot(slot);
+
+                    if (slot.type == EquipmentType.Ring)
+                    {
+                        if (slot.currentEquipment == null)
+                        {
+                            HandleEquipItem(true);
+                            break;
+                        }
+                        else if (slot.currentEquipment != null && ringSlotIndex == 1)
+                        {
+                            HandleEquipItem(true);
+                            break;
+                        }
+                        ringSlotIndex++;
+                    }
+                    else
                     {
                         HandleEquipItem(true);
                         break;
                     }
-                    else if (slot.currentEquipment != null && ringSlotIndex == 1)
-                    {
-                        HandleEquipItem(true);
-                        break;
-                    }
-                    ringSlotIndex++;
-                }
-                else
-                {
-                    HandleEquipItem(true);
-                    break;
                 }
             }
         }
@@ -181,11 +203,23 @@ public class EquipmentsPageController : MonoBehaviour
 
     private void FastEquipConsumable(InventoryItem item)
     {
-        Vector2Int pos = (Vector2Int)pocketInventory.GetSpaceForItem(item);
+        Vector2Int? pocketPos = pocketInventory.GetSpaceForItem(item);
 
-        if (pos != null)
+        if(pocketPos == null && inventoryController.selectedInventory == lootInventory)
         {
-            pocketInventory.PlaceItem(item, pos);
+            Vector2Int? backpackPos = backpackInventory.GetSpaceForItem(item);
+            if (backpackPos != null)
+            {
+                inventoryController.selectedInventory.RemoveItem(item);
+            }
+            backpackInventory.PlaceItem(item, backpackPos);
+        } else
+        {
+            if (pocketPos != null)
+            {
+                inventoryController.selectedInventory.RemoveItem(item);
+            }
+            pocketInventory.PlaceItem(item, pocketPos);
         }
     }
 }

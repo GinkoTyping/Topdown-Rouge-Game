@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PlayerInputEventHandler : MonoBehaviour
@@ -96,6 +97,7 @@ public class PlayerInputEventHandler : MonoBehaviour
         if (context.started)
         {
             Select = true;
+
         }
         else if (context.performed)
         {
@@ -111,6 +113,28 @@ public class PlayerInputEventHandler : MonoBehaviour
     {
         Select = false;
     }
+
+    public void OnDoubleSelect(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            DoubleSelect = true;
+        }
+        else if (context.performed)
+        {
+
+        }
+        else if (context.canceled)
+        {
+            DoubleSelect = false;
+        }
+    }
+
+    public void UseDoubleSelectSignal()
+    {
+        DoubleSelect = false;
+    }
+
     public void OnDeSelect(InputAction.CallbackContext context)
     {
         if (context.started)
