@@ -40,7 +40,7 @@ public class UIManager : MonoBehaviour
     {
         playerInputEventHandler = Player.Instance.InputHandler;
         inputAction = Player.Instance.InputAction;
-        
+
         SetInventoryUI();
     }
 

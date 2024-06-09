@@ -21,6 +21,14 @@ namespace Ginko.CoreSystem
         [SerializeField]
         public string HintText;
 
+        public string keyboardText
+        {
+            get => "E";
+        }
+        public string controllText
+        {
+            get => "Y";
+        }
 
         public Vector2 interactionIconPos { get; private set; }
         public float loadingTime { get; private set; }

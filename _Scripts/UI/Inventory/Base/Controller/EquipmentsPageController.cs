@@ -1,4 +1,5 @@
 using Ginko.PlayerSystem;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,6 +117,9 @@ public class EquipmentsPageController : MonoBehaviour
             else if (itemToEquip.data.itemType == ItemType.Consumable)
             {
                 FastEquipConsumable(itemToEquip);
+            } else if (itemToEquip.data.itemType == ItemType.Treasure)
+            {
+                FastEquipTreasure(itemToEquip);
             }
         }
     }
@@ -140,10 +144,9 @@ public class EquipmentsPageController : MonoBehaviour
     }
 
     #endregion
-
     private void FastUnequipEquipment()
     {
-        Vector2Int? position = backpackInventory.GetSpaceForItem(selectedEquipmentSlot.currentEquipment);
+        Vector2Int? position = backpackInventory.GetSpaceToPlaceItem(selectedEquipmentSlot.currentEquipment);
         selectedEquipmentSlot.UnequipItem(backpackInventory, (Vector2Int)position);
     }
 
@@ -159,12 +162,11 @@ public class EquipmentsPageController : MonoBehaviour
 
         if (!hasEquipmentSlot && inventoryController.selectedInventory == lootInventory)
         {
-            Vector2Int? pos = backpackInventory.GetSpaceForItem(item);
+            Vector2Int? pos = backpackInventory.GetSpaceToPlaceItem(item);
             if (pos != null)
             {
                 inventoryController.selectedInventory.RemoveItem(item);
             }
-            backpackInventory.PlaceItem(item, (Vector2Int)pos);
         } else
         {
             inventoryController.SetSelectedItem(item);
@@ -203,16 +205,15 @@ public class EquipmentsPageController : MonoBehaviour
 
     private void FastEquipConsumable(InventoryItem item)
     {
-        Vector2Int? pocketPos = pocketInventory.GetSpaceForItem(item);
+        Vector2Int? pocketPos = pocketInventory.GetSpaceToPlaceItem(item, false);
 
         if(pocketPos == null && inventoryController.selectedInventory == lootInventory)
         {
-            Vector2Int? backpackPos = backpackInventory.GetSpaceForItem(item);
+            Vector2Int? backpackPos = backpackInventory.GetSpaceToPlaceItem(item);
             if (backpackPos != null)
             {
                 inventoryController.selectedInventory.RemoveItem(item);
             }
-            backpackInventory.PlaceItem(item, backpackPos);
         } else
         {
             if (pocketPos != null)
@@ -220,6 +221,18 @@ public class EquipmentsPageController : MonoBehaviour
                 inventoryController.selectedInventory.RemoveItem(item);
             }
             pocketInventory.PlaceItem(item, pocketPos);
+        }
+    }
+    
+    private void FastEquipTreasure(InventoryItem item)
+    {
+        if (inventoryController.selectedInventory == lootInventory)
+        {
+            Vector2Int? pos = backpackInventory.GetSpaceToPlaceItem(item);
+            if (pos != null)
+            {
+                inventoryController.selectedInventory.RemoveItem(item);
+            }
         }
     }
 }

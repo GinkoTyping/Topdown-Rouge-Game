@@ -1,11 +1,4 @@
-using Ginko.PlayerSystem;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.ShaderKeywordFilter;
-using UnityEditor.UIElements;
 using UnityEngine;
 
 namespace Ginko.CoreSystem
@@ -16,8 +9,6 @@ namespace Ginko.CoreSystem
         public LoopBar loopBar;
         [SerializeField]
         public GameObject textMesh;
-        [SerializeField]
-        public string interactionText;
 
         public IInteractable currentInteractingItem;
 
@@ -50,16 +41,26 @@ namespace Ginko.CoreSystem
                 // TODO: 同时检测到多个可交互物品时，怎么处理？
                 if (detections.interactiveObjects?.Length == 1)
                 {
-                    currentInteractingItem = detections.interactiveObjects[0].GetComponentInChildren<IInteractable>();
-                    interactTextGO = Instantiate(textMesh, currentInteractingItem.interactionIconPos, Quaternion.identity);
-                    TextMeshProUGUI meshGO = interactTextGO.GetComponentInChildren<TextMeshProUGUI>();
-                    meshGO.color = Color.white;
-                    meshGO.text = currentInteractingItem.hintText;
+                    interactTextGO = Instantiate(textMesh);
+                    interactTextGO.GetComponent<ButtonIndicator>()
+                        .Set(
+                            currentInteractingItem.interactionIconPos,
+                            currentInteractingItem.keyboardText,
+                            currentInteractingItem.hintText
+                        );
                 }
             } else
             {
                 isShowInteractHint = false;
                 Destroy(interactTextGO);
+            }
+        }
+
+        private void UpdateCurrrentItem()
+        {
+            if (detections.interactiveObjects?.Length == 1)
+            {
+                currentInteractingItem = detections.interactiveObjects[0].GetComponentInChildren<IInteractable>();
             }
         }
 
@@ -73,6 +74,7 @@ namespace Ginko.CoreSystem
         {
             if (detections.IsAbleToInteract && !isShowInteractHint && !isInteracting)
             {
+                UpdateCurrrentItem();
                 SwitchInteractHint(true);
             }
             else if (!detections.IsAbleToInteract && isShowInteractHint)
@@ -86,6 +88,7 @@ namespace Ginko.CoreSystem
             isInteracting = false;
             loopBar.OnLoadingEnd -= OnInteractEnd;
         }
+        
         public void InteractItem()
         {
             if (currentInteractingItem == null)

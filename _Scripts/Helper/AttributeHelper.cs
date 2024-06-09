@@ -6,6 +6,9 @@ public class AttributeHelper : MonoBehaviour
 {
     [SerializeField]
     public Color[] colors;
+    [SerializeField]
+    private Material[] materials;
+
     public string ShortenAttributeName(AttributeType attribute)
     {
         string name = attribute.ToString();
@@ -58,5 +61,10 @@ public class AttributeHelper : MonoBehaviour
         }
 
         return color;
+    }
+
+    public Material GetRarityColorMaterial(Rarity rarity)
+    {
+        return materials[(int)rarity];
     }
 }

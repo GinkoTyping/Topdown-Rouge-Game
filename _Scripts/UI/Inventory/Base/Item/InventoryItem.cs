@@ -1,15 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class InventoryItem : MonoBehaviour
 {
-    public InventoryItemSO data;
-    public Vector2Int pivotPositionOnGrid;
-    public Rarity rarity;
-    public BonusAttribute[] baseAttributes;
+    public InventoryItemSO data {  get; private set; }
+    public Vector2Int pivotPositionOnGrid { get; private set; }
+    public Rarity rarity { get; private set; }
+    public BonusAttribute[] baseAttributes { get; private set; }
 
     public int width
     {
@@ -21,9 +19,11 @@ public class InventoryItem : MonoBehaviour
     }
 
     private RectTransform backgroundTransform;
-    private RectTransform borderTransform;
     private RectTransform itemTransform;
     private RectTransform rectTransform;
+
+    private RectTransform[] rects;
+
     private bool isRotated;
 
     private AttributeHelper attributeHelper;
@@ -31,10 +31,13 @@ public class InventoryItem : MonoBehaviour
     protected virtual void Awake()
     {
         backgroundTransform = transform.Find("BackgroundColor").GetComponent<RectTransform>();
-        borderTransform = transform.Find("Border").GetComponent<RectTransform>();
         itemTransform = transform.Find("Item").GetComponent<RectTransform>();
         rectTransform = GetComponent<RectTransform>();
         attributeHelper = GameObject.Find("Helper").GetComponent<AttributeHelper>();
+
+        rects = GetComponentsInChildren<RectTransform>()
+            .Concat(new RectTransform[] { rectTransform })
+            .ToArray();
     }
 
     private void OnEnable()
@@ -53,17 +56,17 @@ public class InventoryItem : MonoBehaviour
 
         itemTransform.GetComponent<Image>().sprite = itemSO.sprite;
 
-        backgroundTransform.GetComponent<Image>().color = attributeHelper.GetAttributeColor(rarity);
+        backgroundTransform.GetComponent<Image>().material = attributeHelper.GetRarityColorMaterial(rarity);
 
         SetBaseAttribute(data);
     }
 
     public void SetSize(Vector2 size)
     {
-        rectTransform.sizeDelta = size;
-        itemTransform.sizeDelta = size;
-        backgroundTransform.sizeDelta = size;
-        borderTransform.sizeDelta = size;
+        foreach(RectTransform rect in rects)
+        {
+            rect.sizeDelta = size;
+        }
     }
     
     public void SetSize(int tileSize)
@@ -73,6 +76,11 @@ public class InventoryItem : MonoBehaviour
         size.y = height * tileSize;
 
         SetSize(size);
+    }
+
+    public void SetPivotPostion(Vector2Int pos)
+    {
+        pivotPositionOnGrid = pos;
     }
 
     public void SetBaseAttribute(InventoryItemSO data)

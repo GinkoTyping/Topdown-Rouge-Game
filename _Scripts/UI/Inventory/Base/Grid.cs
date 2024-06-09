@@ -103,7 +103,7 @@ public class Grid : MonoBehaviour
 
         Vector2Int pos = (Vector2Int)position;
 
-        item.pivotPositionOnGrid = pos;
+        item.SetPivotPostion(pos);
 
         if (!CheckItemAllowed(item))
         {
@@ -191,34 +191,44 @@ public class Grid : MonoBehaviour
 
         if ((bool)isClear)
         {
-            // TODO: ∂‘œÛ≥ÿ
             droppedItemController.CreateDroppedItem(item);
-            //Destroy(item.gameObject);
-
             soundController.PlayRemoveItemAudio();
         }
 
         return item;
     }
     
-    public Vector2Int? GetSpaceForItem(InventoryItem item)
+    public Vector2Int? GetSpaceToPlaceItem(InventoryItem item, bool autoPlace = true)
     {
         int maxWidth = inventorySize.x - item.width + 1;
         int maxHeight = inventorySize.y - item.height + 1;
 
+        Vector2Int? postion = null;
+
         for (int y = 0; y < maxHeight; y++)
         {
+            if (postion != null)
+            {
+                break;
+            }
+
             for (int x = 0; x < maxWidth; x++)
             {
                 Vector2Int output = new Vector2Int(x, y);
                 if (CheckItemOverlap(item, output))
                 {
-                    return output;
+                    postion = output;
+                    break;
                 }
             }
         }
 
-        return null;
+        if (postion != null && autoPlace)
+        {
+            PlaceItem(item, postion);
+        }
+
+        return postion;
     }
 
     #region Checks

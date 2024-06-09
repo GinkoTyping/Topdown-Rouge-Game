@@ -8,7 +8,11 @@ public interface IInteractable
     Vector2 interactionIconPos {  get; }
     float loadingTime {  get; }
     bool isInteractive {  get; }
+
     string hintText { get; }
+    string keyboardText { get; }
+    string controllText { get; }
+
     InteractType interactType { get; }
     void Interact(Interaction interactionComp);
 }

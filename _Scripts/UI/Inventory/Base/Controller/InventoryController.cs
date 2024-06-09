@@ -312,11 +312,7 @@ public class InventoryController : MonoBehaviour
 
             selectedItem = null;
 
-            Vector2Int? pos = selectedInventory.GetSpaceForItem(item);
-            if (pos != null)
-            {
-                selectedInventory.PlaceItem(item, pos.Value);
-            }
+            selectedInventory.GetSpaceToPlaceItem(item);
         }
     }
 
@@ -379,13 +375,7 @@ public class InventoryController : MonoBehaviour
 
         if (position == null)
         {
-            position = lootInventory.GetSpaceForItem(newItem);
-            
-        }
-
-        if (position != null)
-        {
-            lootInventory.PlaceItem(newItem, position.Value);
+            lootInventory.GetSpaceToPlaceItem(newItem);
         }
 
         return newItem;

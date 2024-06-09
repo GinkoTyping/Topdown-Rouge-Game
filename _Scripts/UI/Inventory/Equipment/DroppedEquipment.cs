@@ -1,6 +1,7 @@
 using Ginko.CoreSystem;
 using Ginko.PlayerSystem;
 using UnityEngine;
+using static IInteractable;
 
 public class DroppedEquipment : MonoBehaviour, IInteractable
 {
@@ -9,9 +10,13 @@ public class DroppedEquipment : MonoBehaviour, IInteractable
     [SerializeField]
     private ParticleSystem[] laserStartParticles;
     [SerializeField]
-    private string HintText; 
+    private string HintText;
+
     [SerializeField]
     private Vector2 InteractionIconPos;
+
+    public string keyboardText { get => "E"; }
+    public string controllText { get => "Y"; }
 
     private DroppedItemController droppedItemController;
     private InventoryController inventoryController;
@@ -19,11 +24,9 @@ public class DroppedEquipment : MonoBehaviour, IInteractable
 
     private LayerMask dropsLayer;
     private Material[] laserMaterials;
-    private InventoryItem currentItem;
 
     private static Vector2 PADDING_SIZE = new Vector2(.5f, .5f);
     private static int SAFE_RECURSION_COUNT = 50;
-
 
     #region interaction
     public Vector2 interactionIconPos { get; private set; }
@@ -40,7 +43,9 @@ public class DroppedEquipment : MonoBehaviour, IInteractable
 
     private void Start()
     {
+        // TODO: 添加装备名称
         hintText = HintText;
+
         interactionIconPos = (Vector2)transform.position + InteractionIconPos;
 
         inventoryController = GameObject.Find("Inventory").GetComponent<InventoryController>();
@@ -122,8 +127,7 @@ public class DroppedEquipment : MonoBehaviour, IInteractable
     {
         InventoryItem item = GetComponentInChildren<InventoryItem>(true);
 
-        Vector2Int? pos =  inventoryController.backpackInventory.GetSpaceForItem(item);
-        inventoryController.backpackInventory.PlaceItem(item, pos);
+        Vector2Int? pos =  inventoryController.backpackInventory.GetSpaceToPlaceItem(item);
         if (pos != null)
         {
             isInteractive = false;

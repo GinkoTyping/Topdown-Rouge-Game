@@ -24,22 +24,35 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
     const float DEFAULT_HEIGHT = 250.0f;
 
     private Image nameBGImage;
-    private RectTransform typeInfoLine;
-    private TextMeshProUGUI nameInfo;
-    private TextMeshProUGUI typeInfo;
-    private TextMeshProUGUI rarityInfo;
-    private TextMeshProUGUI priceInfo;
 
     private PoolManager poolManager;
+    private UIManager uiManager;
     private AttributeHelper attributeHelper;
 
-    private Transform bonusAttributeContainer;
-    private Transform baseAttributeContainer;
     private RectTransform rectTransform;
     private RectTransform hoverContainer;
     private RectTransform backgroundTransform;
     private RectTransform borderTransform;
 
+    [Header("UI Text")]
+    [SerializeField]
+    private TextMeshProUGUI nameInfo;
+    [SerializeField]
+    private TextMeshProUGUI typeInfo;
+    [SerializeField]
+    private TextMeshProUGUI rarityInfo;
+    [SerializeField]
+    private TextMeshProUGUI priceInfo;
+
+    [Header("Transform")]
+    [SerializeField]
+    private Transform baseAttributeContainer;
+    [SerializeField]
+    private Transform bonusAttributeContainer;
+    [SerializeField]
+    private RectTransform typeInfoLine;
+    [SerializeField]
+    private RectTransform buttonIndicators;
 
     private float scaleUnit;
 
@@ -47,15 +60,7 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
 
     private void Awake()
     {
-        nameInfo = transform.Find("Name").GetComponentInChildren<TextMeshProUGUI>();
         nameBGImage = transform.Find("Name").Find("Background").GetComponent<Image>();
-        typeInfo = transform.Find("TypeInfo").Find("Type").GetComponent<TextMeshProUGUI>();
-        rarityInfo = transform.Find("TypeInfo").Find("Rarity").GetComponent<TextMeshProUGUI>();
-        typeInfoLine = transform.Find("TypeInfo").Find("Line").GetComponent<RectTransform>();
-        priceInfo = transform.Find("Price").GetComponentInChildren<TextMeshProUGUI>();
-
-        baseAttributeContainer = transform.Find("BaseAttribute").transform;
-        bonusAttributeContainer = transform.Find("BonusAttribute").transform;
 
         rectTransform = GetComponent<RectTransform>();
         backgroundTransform = transform.Find("Background").GetComponent<RectTransform>();
@@ -73,6 +78,17 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
 
         poolManager = GetComponent<PoolManager>();
         poolManager.SetCurrrentObject(propPrefab);
+    }
+    
+    private void OnEnable()
+    {
+        uiManager = GameObject.Find("UI").GetComponent<UIManager>();
+        uiManager.onInventoryUIClose += Hide;
+    }
+
+    private void OnDisable()
+    {
+        uiManager.onInventoryUIClose -= Hide;
     }
 
     public void Set(InventoryItem item, Vector2 pos)
@@ -135,6 +151,7 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
         rectTransform.sizeDelta = size;
         backgroundTransform.sizeDelta = size;
         borderTransform.sizeDelta = size;
+        buttonIndicators.localPosition = new Vector3(buttonIndicators.sizeDelta.x / 2, -height + 4f, 0);
     }
 
     private Vector2 CalculateHoverPos(RectTransform relative)
