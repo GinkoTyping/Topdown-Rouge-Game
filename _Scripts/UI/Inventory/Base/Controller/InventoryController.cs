@@ -1,3 +1,4 @@
+using Ginko.CoreSystem;
 using Ginko.PlayerSystem;
 using System;
 using TMPro;
@@ -32,10 +33,10 @@ public class InventoryController : MonoBehaviour
 
     public Grid selectedInventory {  get; private set; }
     public InventoryItem selectedItem { get; private set; }
+    public int lootID { get; private set; }
     public float scaleParam { get; private set; }
 
     private InventoryItemIndicatorController indicatorController;
-    private DroppedItemController droppedItemController;
     private EquipmentsPageController equipmentsPageController;
     private PlayerInputEventHandler playerInputEventHandler;
 
@@ -64,7 +65,6 @@ public class InventoryController : MonoBehaviour
         playerInputEventHandler = Player.Instance.InputHandler;
         indicatorController = GetComponent<InventoryItemIndicatorController>();
         equipmentsPageController = GetComponent<EquipmentsPageController>();
-        droppedItemController = GameObject.Find("Drops").GetComponent <DroppedItemController>();
 
         canvasTransform = GetComponent<RectTransform>();
 
@@ -136,6 +136,11 @@ public class InventoryController : MonoBehaviour
     public void SetPickUpItemFrom(RectTransform transform)
     {
         pickupItemFrom = transform;
+    }
+    
+    public void SetLootID(LootsRespawning lootsRespawning)
+    {
+        lootID = lootsRespawning.GetInstanceID();
     }
     #endregion
 
@@ -247,12 +252,11 @@ public class InventoryController : MonoBehaviour
 
     public void HandleInventoryClose()
     {
-        ResetLootBox();
         RestorePickUpItem();
     }
     #endregion
     
-    private void ResetLootBox()
+    public void ResetLootBox()
     {
         InventoryItem[] items = lootInventory.GetComponentsInChildren<InventoryItem>();
 
@@ -376,6 +380,11 @@ public class InventoryController : MonoBehaviour
         if (position == null)
         {
             lootInventory.GetSpaceToPlaceItem(newItem);
+        }
+        else
+        {
+            lootInventory.PlaceItem(newItem, position);
+
         }
 
         return newItem;

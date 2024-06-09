@@ -1,7 +1,4 @@
-using Ginko.PlayerSystem;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace Ginko.CoreSystem
@@ -34,8 +31,10 @@ namespace Ginko.CoreSystem
             interactable = Core.GetCoreComponent<Interactable>();
         }
 
-        private void OnEnable()
+        public override void OnEnable()
         {
+            base.OnEnable();
+
             UIManager.onInventoryUIClose += HandleInventoryClose;
         }
 
@@ -57,6 +56,8 @@ namespace Ginko.CoreSystem
                 else
                 {
                     looted = true;
+
+                    inventoryController.SetLootID(this);
                     SpawnLoots();
                 }
             }
@@ -84,17 +85,18 @@ namespace Ginko.CoreSystem
                 }
             }
         }
+        
         public void HandleInventoryClose()
         {
-            if (looted)
+            if (GetInstanceID() == inventoryController.lootID)
             {
-                looted = true;
-
                 InventoryItem[] items = lootInventory.GetComponentsInChildren<InventoryItem>();
                 foreach (InventoryItem item in items)
                 {
                     lootStorage.Add(new BaseLootData(item));
                 }
+
+                inventoryController.ResetLootBox();
             }
         }
 
@@ -106,6 +108,8 @@ namespace Ginko.CoreSystem
                 {
                     inventoryController.CreateItemInInventory(item.data, item.rarity, lootInventory, item.bonusAttributes, item.pivotPositionOnGrid);
                 }
+
+                lootStorage.Clear();
             }
         }
 
