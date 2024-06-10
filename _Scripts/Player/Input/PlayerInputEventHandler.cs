@@ -14,6 +14,8 @@ public class PlayerInputEventHandler : MonoBehaviour
     public bool Dash { get; private set; }
     public bool Interact { get; private set; }
 
+    public bool Switch { get; private set; }
+
 
     public void OnMovement(InputAction.CallbackContext context)
     {
@@ -72,6 +74,30 @@ public class PlayerInputEventHandler : MonoBehaviour
         if (Interact)
         {
             Interact = false;
+        }
+    }
+
+    public void OnSwitch(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            Switch = true;
+        }
+        else if (context.performed)
+        {
+
+        }
+        else if (context.canceled)
+        {
+            Switch = false;
+        }
+    }
+
+    public void UseSwitchSignal()
+    {
+        if (Switch)
+        {
+            Switch = false;
         }
     }
 

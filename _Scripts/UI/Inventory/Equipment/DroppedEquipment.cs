@@ -20,7 +20,8 @@ public class DroppedEquipment : MonoBehaviour, IInteractable
 
     private DroppedItemController droppedItemController;
     private InventoryController inventoryController;
-    private DroppedItemPool poolManager;
+    private CommonPool poolManager;
+    private AttributeHelper attributeHelper;
 
     private LayerMask dropsLayer;
     private Material[] laserMaterials;
@@ -43,19 +44,16 @@ public class DroppedEquipment : MonoBehaviour, IInteractable
 
     private void Start()
     {
-        // TODO: 添加装备名称
-        hintText = HintText;
-
-        interactionIconPos = (Vector2)transform.position + InteractionIconPos;
-
         inventoryController = GameObject.Find("Inventory").GetComponent<InventoryController>();
-        poolManager = GetComponentInParent<DroppedItemPool>();
+        poolManager = GetComponentInParent<CommonPool>();
     }
-    public void Set(InventoryItem item)
+    public void Set(InventoryItem item, Vector3 postion)
     {
+        SetReference();
         isInteractive = true;
 
-        SetReference();
+        hintText = $"{HintText} (<#{attributeHelper.GetAttributeColor(item.rarity)}><u>{item.data.itemName}</u></color>)";
+        interactionIconPos = postion + (Vector3)InteractionIconPos;
 
         transform.position = GetPositionToDrop(Player.Instance.transform.position, 0);
         SetColor(item.rarity);
@@ -108,6 +106,8 @@ public class DroppedEquipment : MonoBehaviour, IInteractable
     private void SetReference()
     {
         droppedItemController = GetComponentInParent<DroppedItemController>();
+        attributeHelper = GameObject.Find("Helper").GetComponent<AttributeHelper>();
+
         dropsLayer = droppedItemController.dropsLayer;
         laserMaterials = droppedItemController.laserMaterials;
     }

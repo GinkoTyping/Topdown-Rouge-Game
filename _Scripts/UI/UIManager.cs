@@ -36,6 +36,7 @@ public class UIManager : MonoBehaviour
         equipmentInventoryUI = inventoryUI.transform.Find("Equipment").GetComponent<RectTransform>();
 
     }
+   
     private void Start()
     {
         playerInputEventHandler = Player.Instance.InputHandler;

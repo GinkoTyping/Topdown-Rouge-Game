@@ -15,8 +15,6 @@ using static UnityEditor.Progress;
 public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
-    private GameObject propPrefab;
-    [SerializeField]
     private float attributePadding;
 
     const float TOP_PADDING = 40.0f;
@@ -77,7 +75,6 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
         Hide();
 
         poolManager = GetComponent<PoolManager>();
-        poolManager.SetCurrrentObject(propPrefab);
     }
     
     private void OnEnable()

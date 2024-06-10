@@ -40,6 +40,13 @@ namespace Ginko.StateMachineSystem
                 player.InputHandler.UseInteractSignal();
                 interaction.InteractItem();
             }
+
+            if (player.InputHandler.Switch)
+            {
+                player.InputHandler.UseSwitchSignal();
+
+                interaction.SwitchInteratItem();
+            }
         }
     }
 }

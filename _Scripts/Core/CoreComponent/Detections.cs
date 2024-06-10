@@ -45,6 +45,7 @@ namespace Ginko.CoreSystem
         public Collider2D[] interactiveObjects;
 
         public Action<Collider2D[]> OnHidingBehind;
+        public Action<Collider2D[]> OnInteractionItemsChange;
 
         public bool GetDetections(float radius, LayerMask layerMask)
         {
@@ -54,13 +55,22 @@ namespace Ginko.CoreSystem
 
         public bool GetInteractions(out Collider2D[] detections)
         {
-            detections = Physics2D.OverlapBoxAll(transform.position + (Vector3)interactionOffset, interactionSize, 0, interactionLayer)
+
+            Collider2D[] newInteractItems = Physics2D.OverlapBoxAll(transform.position + (Vector3)interactionOffset, interactionSize, 0, interactionLayer)
                 .Where(x => 
                     x.tag == "Interactive" &&
                     (x.GetComponentInChildren<IInteractable>().isInteractive ||
                     x.GetComponent<IInteractable>().isInteractive)
                     )
                 .ToArray();
+
+            if (!interactiveObjects.SequenceEqual(newInteractItems))
+            {
+                OnInteractionItemsChange?.Invoke(newInteractItems);
+            }
+
+            detections = newInteractItems;
+
             return detections.Length > 0;
         }
 

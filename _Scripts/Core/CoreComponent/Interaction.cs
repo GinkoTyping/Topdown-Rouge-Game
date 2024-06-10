@@ -1,3 +1,4 @@
+using Ginko.PlayerSystem;
 using TMPro;
 using UnityEngine;
 
@@ -6,16 +7,26 @@ namespace Ginko.CoreSystem
     public class Interaction : CoreComponent
     {
         [SerializeField]
-        public LoopBar loopBar;
+        public GameObject interactHintPrefab;
         [SerializeField]
-        public GameObject textMesh;
+        private GameObject optionBoxPrefab;
+        [SerializeField]
+        private PoolManager indicatorPool;
+
+        public LoopBar loopBarPrefab { get; private set; }
 
         public IInteractable currentInteractingItem;
 
         private Detections detections;
-        private GameObject interactTextGO;
+
+        private GameObject interactHintGO;
+        private GameObject switchHintGO;
+
         private bool isShowInteractHint;
+        private bool isShowSwitchHint;
         private bool isInteracting;
+        private int switchIndex = 0;
+        private int switchAmount = 0;
 
         protected override void Awake()
         {
@@ -24,35 +35,70 @@ namespace Ginko.CoreSystem
             isShowInteractHint = false;
             isInteracting = false;
 
-            loopBar = GameObject.FindGameObjectWithTag("HintContainer").GetComponentInChildren<LoopBar>();
+            loopBarPrefab = GameObject.FindGameObjectWithTag("HintContainer").GetComponentInChildren<LoopBar>();
             detections = Core.GetCoreComponent<Detections>();
         }
 
-        public override void LogicUpdate()
+        public override void OnEnable()
         {
-            base.LogicUpdate();
+            base.OnEnable();
+
+            detections.OnInteractionItemsChange += HandleInteractionItemChange;
+        }
+
+        private void OnDisable()
+        {
+            detections.OnInteractionItemsChange -= HandleInteractionItemChange;
+        }
+
+        private void HandleInteractionItemChange(Collider2D[] colliders)
+        {
+            switchIndex = 0;
+            switchAmount = colliders.Length;
+        }
+
+        private void SwitchMultiItemHint(bool isShow)
+        {
+            if (isShow)
+            {
+                isShowSwitchHint = true;
+                string connectWord = switchAmount > 2 ? "among" : "between";
+                switchHintGO = indicatorPool.Pool.Get();
+                switchHintGO.GetComponent<ButtonIndicator>()
+                .Set(
+                    (Vector3)currentInteractingItem.interactionIconPos + Vector3.up * .5f,
+                    "Y",
+                    $"Switch {connectWord} {switchAmount}"
+                );
+            } else
+            {
+                isShowSwitchHint = false;
+
+                indicatorPool.Pool.Release(switchHintGO);
+                switchHintGO = null;
+            }
         }
 
         private void SwitchInteractHint(bool isShow)
         {
             // TODO: 是否需要对象池来创建字体？
-            if (isShow) {
+            if (isShow)
+            {
                 isShowInteractHint = true;
-                // TODO: 同时检测到多个可交互物品时，怎么处理？
-                if (detections.interactiveObjects?.Length == 1)
-                {
-                    interactTextGO = Instantiate(textMesh);
-                    interactTextGO.GetComponent<ButtonIndicator>()
-                        .Set(
-                            currentInteractingItem.interactionIconPos,
-                            currentInteractingItem.keyboardText,
-                            currentInteractingItem.hintText
-                        );
-                }
-            } else
+                
+                interactHintGO = indicatorPool.Pool.Get();
+                interactHintGO.GetComponent<ButtonIndicator>()
+                    .Set(
+                        currentInteractingItem.interactionIconPos,
+                        currentInteractingItem.keyboardText,
+                        currentInteractingItem.hintText
+                    );
+            }
+            else
             {
                 isShowInteractHint = false;
-                Destroy(interactTextGO);
+                indicatorPool.Pool.Release(interactHintGO);
+                interactHintGO = null;
             }
         }
 
@@ -61,17 +107,28 @@ namespace Ginko.CoreSystem
             if (detections.interactiveObjects?.Length == 1)
             {
                 currentInteractingItem = detections.interactiveObjects[0].GetComponentInChildren<IInteractable>();
+            } else
+            {
+                currentInteractingItem = null;
             }
         }
 
         private void InitLoopBar()
         {
-            loopBar.gameObject.SetActive(true);
-            loopBar.SetBar(currentInteractingItem.loadingTime, currentInteractingItem.interactionIconPos);
+            loopBarPrefab.gameObject.SetActive(true);
+            loopBarPrefab.SetBar(currentInteractingItem.loadingTime, currentInteractingItem.interactionIconPos);
         }
 
         public void CheckIfShowInteractHint()
         {
+            if (detections.interactiveObjects.Length > 1 && !isShowSwitchHint)
+            {
+                SwitchMultiItemHint(true);
+            } else if (detections.interactiveObjects.Length <= 1 && isShowSwitchHint)
+            {
+                SwitchMultiItemHint(false);
+            }
+
             if (detections.IsAbleToInteract && !isShowInteractHint && !isInteracting)
             {
                 UpdateCurrrentItem();
@@ -86,9 +143,9 @@ namespace Ginko.CoreSystem
         private void OnInteractEnd()
         {
             isInteracting = false;
-            loopBar.OnLoadingEnd -= OnInteractEnd;
+            loopBarPrefab.OnLoadingEnd -= OnInteractEnd;
         }
-        
+
         public void InteractItem()
         {
             if (currentInteractingItem == null)
@@ -103,10 +160,21 @@ namespace Ginko.CoreSystem
                 SwitchInteractHint(false);
                 InitLoopBar();
 
-                loopBar.OnLoadingEnd += OnInteractEnd;
+                loopBarPrefab.OnLoadingEnd += OnInteractEnd;
 
                 currentInteractingItem.Interact(this);
             }
+        }
+
+        public void SwitchInteratItem()
+        {
+            switchIndex = switchIndex + 1 >= detections.interactiveObjects.Length 
+                ? 0 
+                : switchIndex + 1;
+            currentInteractingItem = detections.interactiveObjects[switchIndex].GetComponentInChildren<IInteractable>();
+
+            SwitchInteractHint(false);
+            SwitchInteractHint(true);
         }
     }
 }

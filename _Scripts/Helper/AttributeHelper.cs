@@ -51,7 +51,7 @@ public class AttributeHelper : MonoBehaviour
         return name;
     }
 
-    public Color GetAttributeColor(Rarity rarity, bool isTransparent = true)
+    public Color GetAttributeColor(Rarity rarity, bool isTransparent)
     {
         Color color = colors[(int)rarity];
 
@@ -61,6 +61,18 @@ public class AttributeHelper : MonoBehaviour
         }
 
         return color;
+    }
+
+    public string GetAttributeColor(Rarity rarity)
+    {
+        Color color = GetAttributeColor(rarity, false);
+        return ColorToHex(color);
+    }
+
+    public string ColorToHex(Color32 color)
+    {
+        string hex = color.r.ToString("X2") + color.g.ToString("X2") + color.b.ToString("X2") + color.a.ToString("X2");
+        return hex;
     }
 
     public Material GetRarityColorMaterial(Rarity rarity)

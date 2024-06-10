@@ -112,7 +112,5 @@ namespace Ginko.CoreSystem
                 lootStorage.Clear();
             }
         }
-
-
     }
 }

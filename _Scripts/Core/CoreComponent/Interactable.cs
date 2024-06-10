@@ -68,8 +68,8 @@ namespace Ginko.CoreSystem
                 spriteRenderer.sprite = spriteOnInteractEnd;
             }
 
-            interactionComp.loopBar.OnLoadingEnd -= OpenChest;
-            interactionComp.loopBar.OnLoadingEnd -= lootsRespawning.OnLoots;
+            interactionComp.loopBarPrefab.OnLoadingEnd -= OpenChest;
+            interactionComp.loopBarPrefab.OnLoadingEnd -= lootsRespawning.OnLoots;
 
             SoundManager.Instance.StopSound();
             SoundManager.Instance.PlaySound(audioOnOpen);
@@ -81,8 +81,8 @@ namespace Ginko.CoreSystem
             {
                 interactionComp = comp;
 
-                comp.loopBar.OnLoadingEnd += OpenChest;
-                comp.loopBar.OnLoadingEnd += lootsRespawning.OnLoots;
+                comp.loopBarPrefab.OnLoadingEnd += OpenChest;
+                comp.loopBarPrefab.OnLoadingEnd += lootsRespawning.OnLoots;
 
                 SoundManager.Instance.PlaySound(audioOnSearch);
             }
