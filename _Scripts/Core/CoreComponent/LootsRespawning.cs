@@ -11,6 +11,7 @@ namespace Ginko.CoreSystem
 
         private Grid lootInventory;
         private InventoryController inventoryController;
+        private SearchItemController searchItemController;
         private Interactable interactable;
         private GameObject inventoryUI;
         private UIManager UIManager;
@@ -28,7 +29,10 @@ namespace Ginko.CoreSystem
             UIManager = GameObject.Find("UI").GetComponent<UIManager>();
             lootInventory = GameObject.Find("Loot").GetComponentInChildren<Grid>();
             inventoryUI = GameObject.Find("Inventory");
+
             inventoryController = inventoryUI.GetComponent<InventoryController>();
+            searchItemController = inventoryController.GetComponent<SearchItemController>();
+
             interactable = Core.GetCoreComponent<Interactable>();
         }
 
@@ -84,15 +88,15 @@ namespace Ginko.CoreSystem
                                 lootDetail.itemData, 
                                 lootDetail.rarity, 
                                 lootInventory,
-                                needSearching: true
+                                isVisible: false
                             );
 
-                            inventoryController.SetSearchingItem(item);
+                            searchItemController.SetSearchingItem(item);
                         }
                     }
                 }
 
-                inventoryController.SearchItems(lootInventory);
+                searchItemController.SearchItems(lootInventory);
             }
         }
         
@@ -106,6 +110,7 @@ namespace Ginko.CoreSystem
                     lootStorage.Add(new BaseLootData(item));
                 }
 
+                searchItemController.StopSearch();
                 inventoryController.ResetLootBox();
             }
         }
@@ -116,17 +121,26 @@ namespace Ginko.CoreSystem
             {
                 foreach (BaseLootData item in lootStorage)
                 {
-                    inventoryController.CreateItemInInventory(
+                    InventoryItem inventoryItem =  inventoryController.CreateItemInInventory(
                         item.data, 
                         item.rarity, 
                         lootInventory, 
-                        needSearching: false, 
+                        isVisible: false, 
                         item.bonusAttributes,
                         item.pivotPositionOnGrid
                     );
+                    if (item.needSearch)
+                    {
+                        searchItemController.SetSearchingItem(inventoryItem);
+                    }
+                    else
+                    {
+                        inventoryItem.SwitchItemVisible(true);
+                    }
                 }
-
                 lootStorage.Clear();
+
+                searchItemController.SearchItems(lootInventory);
             }
         }
     }

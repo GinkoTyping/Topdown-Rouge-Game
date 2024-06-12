@@ -10,12 +10,13 @@ public class SearchingItem : MonoBehaviour
 
     public event Action OnSearchingDone;
     public bool needSearch {  get; private set; }
+    public bool isSearching { get; private set; }
+
 
     private PoolManager searchingUIPool;
     private GameObject searchUI;
     private GameObject spinner;
 
-    private bool isSearching = false;
     private float totalTime;
     private float startTime;
 
@@ -24,6 +25,7 @@ public class SearchingItem : MonoBehaviour
     private void Awake()
     {
         needSearch = false;
+        isSearching = false;
     }
 
     private void Update()
@@ -100,11 +102,16 @@ public class SearchingItem : MonoBehaviour
             isSearching = false;
             needSearch = false;
 
-            spinner.SetActive(false);
-            SoundManager.Instance.StopSound();
-            searchingUIPool.Pool.Release(searchUI);
+            ClearSpinner();
 
             OnSearchingDone?.Invoke();
         }
+    }
+
+    public void ClearSpinner()
+    {
+        spinner.SetActive(false);
+        SoundManager.Instance.StopSound();
+        searchingUIPool.Pool.Release(searchUI);
     }
 }

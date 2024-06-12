@@ -137,6 +137,7 @@ public class BaseLootData
     public Vector2Int pivotPositionOnGrid;
     public Rarity rarity;
     public BonusAttribute[] bonusAttributes;
+    public bool needSearch;
 
     public BaseLootData(InventoryItem item)
     {
@@ -149,5 +150,8 @@ public class BaseLootData
             EquipmentItem equipment = item as EquipmentItem;
             bonusAttributes = equipment.bonusAttributes;
         }
+
+        SearchingItem searchingItem = item.GetComponent<SearchingItem>();
+        needSearch = searchingItem.needSearch;
     }
 }

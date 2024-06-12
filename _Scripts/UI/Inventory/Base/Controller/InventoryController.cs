@@ -231,7 +231,7 @@ public class InventoryController : MonoBehaviour
             {
                 hoverController.Hide();
             }
-            else if (item != hoverController.currentItem)
+            else if (item != hoverController.currentItem && !item.GetComponent<SearchingItem>().needSearch)
             {
                 RectTransform rect = item.GetComponent<RectTransform>();
                 hoverController.Set(item, rect);
@@ -368,7 +368,7 @@ public class InventoryController : MonoBehaviour
         InventoryItemSO itemData,
         Rarity rarity,
         Grid inventory,
-        bool needSearching,
+        bool isVisible,
         BonusAttribute[] bonusAttributes = null,
         Vector2Int? position = null
         )
@@ -389,7 +389,7 @@ public class InventoryController : MonoBehaviour
             inventory.tileSize
         );
 
-        inventoryItem.SwitchItemVisible(!needSearching);
+        inventoryItem.SwitchItemVisible(isVisible);
 
         EquipmentItem equipment = itemGO.GetComponent<EquipmentItem>();
         if (equipment != null)
@@ -407,36 +407,6 @@ public class InventoryController : MonoBehaviour
         }
 
         return inventoryItem;
-    }
-
-    public void SetSearchingItem(InventoryItem item)
-    {
-        SearchingItem searchingItem = item.GetComponent<SearchingItem>();
-        searchingItem.Set(item);
-    }
-
-    public void SearchItems(Grid inventory, bool autoSearchNext = true)
-    {
-        SearchingItem[] searchingItems = inventory.GetComponentsInChildren<SearchingItem>();
-
-        foreach (SearchingItem item in searchingItems)
-        {
-            if (item.needSearch)
-            {
-                if (autoSearchNext)
-                {
-                    autoSearchInventory = inventory;
-                    item.OnSearchingDone += HandleOnSearchDone;
-                }
-                item.StartSearch();
-                break;
-            }
-        }
-    }
-
-    private void HandleOnSearchDone()
-    {
-        SearchItems(autoSearchInventory);
     }
 
     #endregion
