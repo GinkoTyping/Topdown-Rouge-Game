@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Search;
 using UnityEngine;
 
 namespace Ginko.CoreSystem
@@ -79,10 +80,19 @@ namespace Ginko.CoreSystem
                         float possibility = Random.Range(0.0f, 1.0f);
                         if (possibility <= lootDetail.possibility)
                         {
-                            inventoryController.CreateItemInInventory(lootDetail.itemData, lootDetail.rarity, lootInventory);
+                            InventoryItem item =  inventoryController.CreateItemInInventory(
+                                lootDetail.itemData, 
+                                lootDetail.rarity, 
+                                lootInventory,
+                                needSearching: true
+                            );
+
+                            inventoryController.SetSearchingItem(item);
                         }
                     }
                 }
+
+                inventoryController.SearchItems(lootInventory);
             }
         }
         
@@ -106,7 +116,14 @@ namespace Ginko.CoreSystem
             {
                 foreach (BaseLootData item in lootStorage)
                 {
-                    inventoryController.CreateItemInInventory(item.data, item.rarity, lootInventory, item.bonusAttributes, item.pivotPositionOnGrid);
+                    inventoryController.CreateItemInInventory(
+                        item.data, 
+                        item.rarity, 
+                        lootInventory, 
+                        needSearching: false, 
+                        item.bonusAttributes,
+                        item.pivotPositionOnGrid
+                    );
                 }
 
                 lootStorage.Clear();

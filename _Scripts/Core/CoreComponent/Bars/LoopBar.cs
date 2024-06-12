@@ -46,6 +46,16 @@ public class LoopBar : MonoBehaviour
     public void SetBar(float time, Vector3 position)
     {
         SetBar(time);
+
+        if (time > 0)
+        {
+            spriteRenderer.sortingLayerName = "Status Bar";
+        }
+        else
+        {
+            spriteRenderer.sortingLayerName = "Default";
+        }
+        
         if (position != null)
         {
             transform.position = position;

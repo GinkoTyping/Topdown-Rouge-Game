@@ -13,6 +13,8 @@ namespace Ginko.CoreSystem
         [SerializeField]
         private PoolManager indicatorPool;
 
+        private static Vector3 SWITCH_HINT_BUTTON_OFFSET = Vector3.up *  0.5f;
+
         public LoopBar loopBarPrefab { get; private set; }
 
         public IInteractable currentInteractingItem;
@@ -66,11 +68,12 @@ namespace Ginko.CoreSystem
                 switchHintGO = indicatorPool.Pool.Get();
                 switchHintGO.GetComponent<ButtonIndicator>()
                 .Set(
-                    (Vector3)currentInteractingItem.interactionIconPos + Vector3.up * .5f,
+                    (Vector3)currentInteractingItem.interactionIconPos + SWITCH_HINT_BUTTON_OFFSET,
                     "Y",
                     $"Switch {connectWord} {switchAmount}"
                 );
-            } else
+            }
+            else
             {
                 isShowSwitchHint = false;
 
@@ -85,7 +88,7 @@ namespace Ginko.CoreSystem
             if (isShow)
             {
                 isShowInteractHint = true;
-                
+
                 interactHintGO = indicatorPool.Pool.Get();
                 interactHintGO.GetComponent<ButtonIndicator>()
                     .Set(
@@ -93,6 +96,10 @@ namespace Ginko.CoreSystem
                         currentInteractingItem.keyboardText,
                         currentInteractingItem.hintText
                     );
+                if (switchHintGO != null)
+                {
+                    switchHintGO.GetComponent<ButtonIndicator>().SetPosition((Vector3)currentInteractingItem.interactionIconPos + SWITCH_HINT_BUTTON_OFFSET);
+                }
             }
             else
             {
@@ -158,6 +165,7 @@ namespace Ginko.CoreSystem
                 isInteracting = true;
 
                 SwitchInteractHint(false);
+
                 InitLoopBar();
 
                 loopBarPrefab.OnLoadingEnd += OnInteractEnd;

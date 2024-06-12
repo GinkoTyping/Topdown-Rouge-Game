@@ -31,7 +31,7 @@ public class InventoryController : MonoBehaviour
 
     public event Action onInventoryChange;
 
-    public Grid selectedInventory {  get; private set; }
+    public Grid selectedInventory { get; private set; }
     public InventoryItem selectedItem { get; private set; }
     public int lootID { get; private set; }
     public float scaleParam { get; private set; }
@@ -49,6 +49,8 @@ public class InventoryController : MonoBehaviour
     private InventoryItemHoverController hoverController;
     private TextMeshProUGUI switchEquipemntPageButton;
     private bool isShowEquipmentPage;
+
+    private Grid autoSearchInventory;
 
     private void Awake()
     {
@@ -97,7 +99,7 @@ public class InventoryController : MonoBehaviour
     {
         UIManager.onInventoryUIClose -= HandleInventoryClose;
     }
-    
+
     private void UpdateSelectedItem()
     {
         if (selectedItem != null)
@@ -118,12 +120,13 @@ public class InventoryController : MonoBehaviour
         if (inventory == null)
         {
             indicatorController.HideIndicator();
-        } else
+        }
+        else
         {
             onInventoryChange?.Invoke();
         }
     }
-   
+
     public void SetSelectedItem(InventoryItem item)
     {
         selectedItem = item;
@@ -137,7 +140,7 @@ public class InventoryController : MonoBehaviour
     {
         pickupItemFrom = transform;
     }
-    
+
     public void SetLootID(LootsRespawning lootsRespawning)
     {
         lootID = lootsRespawning.GetInstanceID();
@@ -174,7 +177,8 @@ public class InventoryController : MonoBehaviour
                 {
                     selectedItem = null;
                     indicatorController.HideIndicator();
-                } else
+                }
+                else
                 {
                     SoundManager.Instance.Warning();
                 }
@@ -238,13 +242,14 @@ public class InventoryController : MonoBehaviour
             hoverController.Hide();
         }
     }
-    
+
     private void HandleSelectingItem()
     {
-        if(selectedInventory != null && selectedItem != null)
+        if (selectedInventory != null && selectedItem != null)
         {
             indicatorController.ShowIndicator(GetInventoryPosition(selectedItem), selectedItem);
-        } else
+        }
+        else
         {
             indicatorController.HideIndicator();
         }
@@ -255,7 +260,7 @@ public class InventoryController : MonoBehaviour
         RestorePickUpItem();
     }
     #endregion
-    
+
     public void ResetLootBox()
     {
         InventoryItem[] items = lootInventory.GetComponentsInChildren<InventoryItem>();
@@ -300,7 +305,7 @@ public class InventoryController : MonoBehaviour
 
         return selectedInventory.GetGridRelativePosition(relativePostion);
     }
-    
+
     public void Test()
     {
         if (playerInputEventHandler.Test)
@@ -322,8 +327,8 @@ public class InventoryController : MonoBehaviour
 
     #region Create
     public InventoryItem CreateItemOnMouse(
-        InventoryItemSO itemData, 
-        Rarity? rarity = null, 
+        InventoryItemSO itemData,
+        Rarity? rarity = null,
         Grid inventory = null)
     {
         if (inventory == null)
@@ -337,15 +342,15 @@ public class InventoryController : MonoBehaviour
         }
 
         GameObject itemGO = Instantiate(
-            itemData.itemType == ItemType.Equipment 
-            ? equipmentItemPrefab 
+            itemData.itemType == ItemType.Equipment
+            ? equipmentItemPrefab
             : inventoryItemPrefab
             );
 
         SetSelectedItem(itemGO.GetComponent<InventoryItem>());
 
-        Rarity setRarity = rarity == null 
-            ? itemData.defaultRarity 
+        Rarity setRarity = rarity == null
+            ? itemData.defaultRarity
             : (Rarity)rarity;
 
         InventoryItem inventoryItem = itemGO.GetComponent<InventoryItem>();
@@ -359,15 +364,32 @@ public class InventoryController : MonoBehaviour
         return selectedItem;
     }
 
-    public InventoryItem CreateItemInInventory(InventoryItemSO itemData, Rarity rarity,  Grid inventory, BonusAttribute[] bonusAttributes = null, Vector2Int? position = null)
+    public InventoryItem CreateItemInInventory(
+        InventoryItemSO itemData,
+        Rarity rarity,
+        Grid inventory,
+        bool needSearching,
+        BonusAttribute[] bonusAttributes = null,
+        Vector2Int? position = null
+        )
     {
         GameObject itemGO = Instantiate(
             itemData.itemType == ItemType.Equipment
             ? equipmentItemPrefab
             : inventoryItemPrefab
-            );
+        );
 
-        itemGO.GetComponent<InventoryItem>().Set(itemData, inventory.GetComponent<RectTransform>(), rarity, inventory.tileSize);
+
+        InventoryItem inventoryItem = itemGO.GetComponent<InventoryItem>();
+
+        inventoryItem.Set(
+            itemData,
+            inventory.GetComponent<RectTransform>(),
+            rarity,
+            inventory.tileSize
+        );
+
+        inventoryItem.SwitchItemVisible(!needSearching);
 
         EquipmentItem equipment = itemGO.GetComponent<EquipmentItem>();
         if (equipment != null)
@@ -375,22 +397,50 @@ public class InventoryController : MonoBehaviour
             equipment.SetBonusAttribute(bonusAttributes);
         }
 
-        InventoryItem newItem = itemGO.GetComponent<InventoryItem>();
-
         if (position == null)
         {
-            lootInventory.GetSpaceToPlaceItem(newItem);
+            lootInventory.GetSpaceToPlaceItem(inventoryItem, playAudio: false);
         }
         else
         {
-            lootInventory.PlaceItem(newItem, position);
-
+            lootInventory.PlaceItem(inventoryItem, position, false);
         }
 
-        return newItem;
+        return inventoryItem;
     }
+
+    public void SetSearchingItem(InventoryItem item)
+    {
+        SearchingItem searchingItem = item.GetComponent<SearchingItem>();
+        searchingItem.Set(item);
+    }
+
+    public void SearchItems(Grid inventory, bool autoSearchNext = true)
+    {
+        SearchingItem[] searchingItems = inventory.GetComponentsInChildren<SearchingItem>();
+
+        foreach (SearchingItem item in searchingItems)
+        {
+            if (item.needSearch)
+            {
+                if (autoSearchNext)
+                {
+                    autoSearchInventory = inventory;
+                    item.OnSearchingDone += HandleOnSearchDone;
+                }
+                item.StartSearch();
+                break;
+            }
+        }
+    }
+
+    private void HandleOnSearchDone()
+    {
+        SearchItems(autoSearchInventory);
+    }
+
     #endregion
-    
+
     public void OnSwitchEquipmentPage()
     {
         isShowEquipmentPage = !isShowEquipmentPage;

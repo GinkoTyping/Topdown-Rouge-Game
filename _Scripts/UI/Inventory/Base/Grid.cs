@@ -93,7 +93,7 @@ public class Grid : MonoBehaviour
         return GetGridObsolutePosition(item.pivotPositionOnGrid, item.width, item.height);
     }
 
-    public bool PlaceItem(InventoryItem item, Vector2Int? position)
+    public bool PlaceItem(InventoryItem item, Vector2Int? position, bool playAudio = true)
     {
         if (position == null)
         {
@@ -136,7 +136,10 @@ public class Grid : MonoBehaviour
 
         itemTransform.localPosition = GetGridObsolutePosition(item);
 
-        soundController.PlayPlaceItemAudio(item);
+        if (playAudio)
+        {
+            soundController.PlayPlaceItemAudio(item);
+        }
 
         return true;
     }
@@ -198,7 +201,7 @@ public class Grid : MonoBehaviour
         return item;
     }
     
-    public Vector2Int? GetSpaceToPlaceItem(InventoryItem item, bool autoPlace = true)
+    public Vector2Int? GetSpaceToPlaceItem(InventoryItem item, bool autoPlace = true, bool playAudio = true)
     {
         int maxWidth = inventorySize.x - item.width + 1;
         int maxHeight = inventorySize.y - item.height + 1;
@@ -225,7 +228,7 @@ public class Grid : MonoBehaviour
 
         if (postion != null && autoPlace)
         {
-            PlaceItem(item, postion);
+            PlaceItem(item, postion, playAudio);
         }
 
         return postion;

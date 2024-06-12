@@ -71,7 +71,6 @@ namespace Ginko.CoreSystem
             interactionComp.loopBarPrefab.OnLoadingEnd -= OpenChest;
             interactionComp.loopBarPrefab.OnLoadingEnd -= lootsRespawning.OnLoots;
 
-            SoundManager.Instance.StopSound();
             SoundManager.Instance.PlaySound(audioOnOpen);
         }
 
@@ -83,8 +82,6 @@ namespace Ginko.CoreSystem
 
                 comp.loopBarPrefab.OnLoadingEnd += OpenChest;
                 comp.loopBarPrefab.OnLoadingEnd += lootsRespawning.OnLoots;
-
-                SoundManager.Instance.PlaySound(audioOnSearch);
             }
         }
     }

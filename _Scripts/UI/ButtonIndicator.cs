@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 public class ButtonIndicator : MonoBehaviour
@@ -16,5 +17,10 @@ public class ButtonIndicator : MonoBehaviour
 
         keyText.text = key; 
         hintText.text = hint;
+    }
+
+    public void SetPosition(Vector3 position)
+    {
+        transform.position = position;
     }
 }
