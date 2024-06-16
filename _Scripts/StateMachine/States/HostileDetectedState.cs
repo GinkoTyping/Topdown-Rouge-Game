@@ -6,7 +6,8 @@ namespace Ginko.StateMachineSystem
 {
     public abstract class HostileDetectedState : State
     {
-        public bool IsToAttackState;
+        public bool IsToMeleeAttackState;
+        public bool IsToRangedAttackState;
         public bool IsToIdleState;
         public HostileDetectedState(Entity entity, FiniteStateMachine stateMachine) : base(entity, stateMachine)
         {
@@ -21,7 +22,8 @@ namespace Ginko.StateMachineSystem
         {
             base.Enter();
 
-            IsToAttackState = false;
+            IsToMeleeAttackState = false;
+            IsToRangedAttackState = false;
             IsToIdleState = false;
         }
 
@@ -29,9 +31,13 @@ namespace Ginko.StateMachineSystem
         {
             base.LogicUpdate();
 
-            if (IsToAttackState)
+            if (IsToMeleeAttackState)
             {
-                StateMachine.ChangeState(Entity.AttackState);
+                StateMachine.ChangeState(Entity.MeleeAttackState);
+            }
+            else if (IsToRangedAttackState)
+            {
+                StateMachine.ChangeState(Entity.RangedAttackState);
             }
             else if (IsToIdleState)
             {

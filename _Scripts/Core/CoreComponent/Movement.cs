@@ -29,6 +29,7 @@ namespace Ginko.CoreSystem
         {
             CurrentVelocity = RB.velocity;
         }
+        
         public void SetVelocity(float amount, Vector2 direction)
         {
             Vector2 normalizedDirection = direction.normalized;
@@ -60,11 +61,29 @@ namespace Ginko.CoreSystem
             FacingDirection *= -1;
             RB.transform.Rotate(0.0f, 180.0f, 0.0f);
         }
+        
         public void CheckIfShouldFlip()
         {
             if (CurrentVelocity.x != 0 && CurrentVelocity.x * FacingDirection < 0)
             {
                 Flip();
+            }
+        }
+
+        public void FaceToItem(Transform itemTransform)
+        {
+            if (transform.position.x < itemTransform.position.x)
+            {
+                if (FacingDirection < 0)
+                {
+                    Flip();
+                }
+            } else
+            {
+                if (FacingDirection > 0)
+                {
+                    Flip();
+                }
             }
         }
     }

@@ -11,6 +11,8 @@ namespace Ginko.StateMachineSystem
         public bool IsToIdleState;
         public bool IsToMoveState;
         public bool IsToHostileDetectedState;
+        public bool IsToRangedAttackState;
+        public bool IsToMeleeAttackState;
         public AttackState(Entity entity, FiniteStateMachine stateMachine) : base(entity, stateMachine)
         {
         }
@@ -21,13 +23,13 @@ namespace Ginko.StateMachineSystem
 
             IsToIdleState = false;
             IsToMoveState= false;
+
             IsToHostileDetectedState = false;
+
+            IsToRangedAttackState = false;
+            IsToMeleeAttackState = false;
         }
 
-        protected override void SetAnimBoolName()
-        {
-            AnimBoolName = AnimBoolName.Attack;
-        }
         public override void LogicUpdate()
         {
             base.LogicUpdate();
@@ -41,6 +43,14 @@ namespace Ginko.StateMachineSystem
                 else if (IsToMoveState)
                 {
                     StateMachine.ChangeState(Entity.MoveState);
+                }
+                else if (IsToRangedAttackState)
+                {
+                    StateMachine.ChangeState(Entity.RangedAttackState);
+                }
+                else if (IsToMeleeAttackState)
+                {
+                    StateMachine.ChangeState(Entity.MeleeAttackState);
                 }
                 else if (IsToHostileDetectedState)
                 {

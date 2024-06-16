@@ -34,7 +34,7 @@ namespace Ginko.StateMachineSystem
 
             if (IsToAttackState())
             {
-                StateMachine.ChangeState(Entity.AttackState);
+                StateMachine.ChangeState(Entity.MeleeAttackState);
             }
             if (IsToIdleState())
             {

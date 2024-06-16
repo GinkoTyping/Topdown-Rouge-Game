@@ -176,13 +176,17 @@ namespace Ginko.CoreSystem
 
         public void SwitchInteratItem()
         {
-            switchIndex = switchIndex + 1 >= detections.interactiveObjects.Length 
-                ? 0 
-                : switchIndex + 1;
-            currentInteractingItem = detections.interactiveObjects[switchIndex].GetComponentInChildren<IInteractable>();
+            if (detections.interactiveObjects.Length > 0)
+            {
+                switchIndex = switchIndex + 1 >= detections.interactiveObjects.Length
+    ? 0
+    : switchIndex + 1;
+                currentInteractingItem = detections.interactiveObjects[switchIndex].GetComponentInChildren<IInteractable>();
 
-            SwitchInteractHint(false);
-            SwitchInteractHint(true);
+                SwitchInteractHint(false);
+                SwitchInteractHint(true);
+            }
+
         }
     }
 }

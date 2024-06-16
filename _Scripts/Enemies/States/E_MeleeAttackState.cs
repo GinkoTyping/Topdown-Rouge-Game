@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Ginko.Weapons;
 using Ginko.CoreSystem;
+using System;
 
 namespace Ginko.StateMachineSystem
 {
-    public class E_AttackState : AttackState
+    public class E_MeleeAttackState : AttackState
     {
         private AnimationEventHandler animationEventHandler;
         private Attack attack;
 
-        public E_AttackState(Entity entity, FiniteStateMachine stateMachine) : base(entity, stateMachine)
+        public E_MeleeAttackState(Entity entity, FiniteStateMachine stateMachine) : base(entity, stateMachine)
         {
             animationEventHandler = entity.GetComponent<AnimationEventHandler>();
             attack = entity.Core.GetCoreComponent<Attack>();
@@ -36,16 +37,28 @@ namespace Ginko.StateMachineSystem
         {
             base.LogicUpdate();
 
-            if (!Entity.Detections.IsInMeleeAttackRange
-                && Entity.Detections.IsHostileDetected
-                && IsAnimationFinished)
+            if (IsAnimationFinished)
             {
-                IsToHostileDetectedState = true;
+                if (!Entity.Detections.IsInMeleeAttackRange 
+                    && Entity.Detections.IsInRangedAttackRange)
+                {
+                    IsToRangedAttackState = true;
+                }
+                else if (!Entity.Detections.IsInMeleeAttackRange
+                    && Entity.Detections.IsHostileDetected)
+                {
+                    IsToHostileDetectedState = true;
+                }
+                else if (!Entity.Detections.IsHostileDetected)
+                {
+                    IsToIdleState = true;
+                }
             }
-            else if (!Entity.Detections.IsHostileDetected)
-            {
-                IsToIdleState = true;
-            }
+        }
+
+        protected override void SetAnimBoolName()
+        {
+            AnimBoolName = AnimBoolName.MeleeAttack;
         }
 
         public override void RegisterEvents()
@@ -53,14 +66,15 @@ namespace Ginko.StateMachineSystem
             base.RegisterEvents();
 
             animationEventHandler.OnFinish += AddAttackCounter;
-            animationEventHandler.OnAttackAction += attack.InstaniateAttack;
+            animationEventHandler.OnAttackAction += attack.InstaniateMeleeAttack;
         }
+        
         public override void UnRegisterEvents()
         {
             base.UnRegisterEvents();
 
             animationEventHandler.OnFinish -= AddAttackCounter;
-            animationEventHandler.OnAttackAction -= attack.InstaniateAttack;
+            animationEventHandler.OnAttackAction -= attack.InstaniateMeleeAttack;
         }
 
         public void AddAttackCounter()
@@ -68,7 +82,7 @@ namespace Ginko.StateMachineSystem
             if (Entity.Detections.IsInMeleeAttackRange)
             {
                 int counter = Entity.Anim.GetInteger("AttackCounter") + 1;
-                if (counter > 1)
+                if (counter > Entity.Attack.attackDetails.Length - 1)
                 {
                     counter = 0;
                 }

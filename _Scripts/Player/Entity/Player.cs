@@ -49,7 +49,7 @@ namespace Ginko.PlayerSystem
         {
             IdleState = new P_IdleState(this, StateMachine);
             MoveState = new P_MoveState(this, StateMachine);
-            AttackState = new P_AttackState(this, StateMachine, primaryWeapon);
+            MeleeAttackState = new P_AttackState(this, StateMachine, primaryWeapon);
         }
 
         private void OnDisable()

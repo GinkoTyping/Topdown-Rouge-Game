@@ -29,7 +29,7 @@ namespace Ginko.CoreSystem
             animator = GetComponentInParent<Animator>();
         }
 
-        public void InstaniateAttack()
+        public void InstaniateMeleeAttack()
         {
             atttackCounter = animator.GetInteger("AttackCounter");
             AttackDetail currentAttack = attackDetails[atttackCounter];

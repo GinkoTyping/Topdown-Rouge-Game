@@ -71,10 +71,14 @@ namespace Ginko.StateMachineSystem
 
             if (Entity.Detections.IsInMeleeAttackRange)
             {
-                IsToAttackState = true;
+                IsToMeleeAttackState = true;
                 Entity.Movement.SetVelocityZero();
             } 
-            else if (Entity.Detections.IsHostileDetected)
+            else if (Entity.Detections.IsInRangedAttackRange && Entity.RangedAttackState != null)
+            {
+                IsToRangedAttackState = true;
+            }
+            else if (Entity.Detections.IsHostileDetected && !Entity.Detections.IsInRangedAttackRange)
             {
                 pathLeftToGo = Entity.Pathfinding.GetMoveCommand(playerPos);
 

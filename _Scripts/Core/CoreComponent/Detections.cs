@@ -17,7 +17,8 @@ namespace Ginko.CoreSystem
         [Header("Hostile Detection")]
         [SerializeField] public bool ActiveHostileDetection;
         [SerializeField] public float hostileDetectionRadius;
-        [SerializeField] public float closeRangeAttackRadius;
+        [SerializeField] public float meleeAttackRadius;
+        [SerializeField] public float rangedAttackRadius;
         [SerializeField] public LayerMask hostileLayer;
 
         [Header("Sprite Render")]
@@ -39,6 +40,7 @@ namespace Ginko.CoreSystem
 
         public bool IsHostileDetected {  get; private set; }
         public bool IsInMeleeAttackRange { get; private set; }
+        public bool IsInRangedAttackRange { get; private set; }
         public bool IsCollidingUpper { get; private set; }
         public bool IsAbleToInteract { get; private set; }
 
@@ -85,7 +87,8 @@ namespace Ginko.CoreSystem
             if (ActiveHostileDetection)
             {
                 IsHostileDetected = GetDetections(hostileDetectionRadius, hostileLayer);
-                IsInMeleeAttackRange = GetDetections(closeRangeAttackRadius, hostileLayer);
+                IsInMeleeAttackRange = GetDetections(meleeAttackRadius, hostileLayer);
+                IsInRangedAttackRange = GetDetections(rangedAttackRadius, hostileLayer);
             }
 
             if (ActiveSpriteRenderDetection)
@@ -112,9 +115,13 @@ namespace Ginko.CoreSystem
         {
             if (IsDebug)
             {
-                Gizmos.color = Color.green;
+                Gizmos.color = Color.grey;
                 Gizmos.DrawWireSphere(transform.position, hostileDetectionRadius);
-                Gizmos.DrawWireSphere(transform.position, closeRangeAttackRadius);
+
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(transform.position, meleeAttackRadius);
+                Gizmos.DrawWireSphere(transform.position, rangedAttackRadius);
+
                 Gizmos.DrawWireCube(transform.position + (Vector3)hidingDetectionOffset, hidingDetectionSize);
                 Gizmos.DrawWireCube(transform.position + (Vector3)interactionOffset, interactionSize);
                 Gizmos.DrawWireCube(transform.position + upperDetectionOffset, upperDetectionSize);

@@ -6,6 +6,9 @@ namespace Ginko.CoreSystem
     {
         [SerializeField]
         private float tintFadeSpeed;
+        [SerializeField]
+        public Color warningColor;
+
         public Detections Detections
         {
             get => detections ??= Core.GetCoreComponent<Detections>();
@@ -20,7 +23,8 @@ namespace Ginko.CoreSystem
         private bool hasAddedSortingOrder;
 
         private bool hasChangedColor;
-        private float resetColorTime;
+        private Color tintColor;
+        private int tintCurrentCount;
 
         private Collider2D[] lastHidingObjects;
 
@@ -45,8 +49,10 @@ namespace Ginko.CoreSystem
             SetSpriteRenderOrder();
             UpdateSprite();
         }
-        private void OnEnable()
+        public override void OnEnable()
         {
+            base.OnEnable();
+
             ChangeSpritesColor(Color.clear);
             Detections.OnHidingBehind += HidingBehindSprite;
         }
@@ -92,14 +98,23 @@ namespace Ginko.CoreSystem
                 }
                 else
                 {
-                    hasChangedColor = false;
+                    tintCurrentCount--;
+                    if (tintCurrentCount == 0)
+                    {
+                        hasChangedColor = false;
+                    } else
+                    {
+                        ChangeSpritesColor(tintColor);
+                    }
                 }
             }
         }
 
-        public void TintSprite(Color color)
+        public void TintSprite(Color color, int repeatCount = 1)
         {
+            tintColor = color;
             hasChangedColor = true;
+            tintCurrentCount = repeatCount;
             ChangeSpritesColor(color);
         }
 
@@ -109,6 +124,7 @@ namespace Ginko.CoreSystem
             baseWeaponSpriteRenderer?.material.SetColor("_Tint", color);
             weaponSpriteRenderer?.material.SetColor("_Tint", color);
         }
+       
         public void HidingBehindSprite(Collider2D[] colliders)
         {
             if (colliders.Length > 0)

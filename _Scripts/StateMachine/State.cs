@@ -1,5 +1,6 @@
 ﻿using Ginko.CoreSystem;
 using Ginko.PlayerSystem;
+using Ginko.Weapons;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,12 +12,16 @@ namespace Ginko.StateMachineSystem
         protected FiniteStateMachine StateMachine { get; private set; }
         public AnimBoolName AnimBoolName;
         public bool IsAnimationFinished;
+        public AnimationEventHandler animEventHandler { get; private set; }
+
         protected float StartTime { get; private set; }
 
         public State(Entity entity, FiniteStateMachine stateMachine)
         {
             Entity = entity;
             StateMachine = stateMachine;
+
+            animEventHandler = entity.GetComponent<AnimationEventHandler>();
             SetAnimBoolName();
         }
         protected abstract void SetAnimBoolName();
@@ -43,15 +48,27 @@ namespace Ginko.StateMachineSystem
 
         public virtual void DoChecks() { }
 
-        public virtual void RegisterEvents() { }
-        public virtual void UnRegisterEvents() { }
+        public virtual void RegisterEvents() 
+        {
+            animEventHandler.OnFinish += HandleAniFinish;
+        }
+        public virtual void UnRegisterEvents() {
+            animEventHandler.OnFinish -= HandleAniFinish;
+        }
+
+        private void HandleAniFinish()
+        {
+            IsAnimationFinished = true;
+        }
     }
 
     public enum AnimBoolName
     {
         Idle,
         Move,
-        Attack,
+        Charge,
+        MeleeAttack,
+        RangedAttack,
         HostileDetected
     }
 }

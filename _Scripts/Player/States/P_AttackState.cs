@@ -36,6 +36,11 @@ namespace Ginko.StateMachineSystem
             IsToMoveState = player.MoveDirection != Vector2.zero;
         }
 
+        protected override void SetAnimBoolName()
+        {
+            AnimBoolName = AnimBoolName.MeleeAttack;
+        }
+
         private void ExitHandler()
         {
             IsAnimationFinished = true;

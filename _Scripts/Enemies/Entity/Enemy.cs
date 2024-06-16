@@ -2,26 +2,15 @@
 using Ginko.StateMachineSystem;
 using Ginko.Weapons;
 using System;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace Ginko.EnemySystem
 {
-    public class Enemy : Entity
+    public abstract class Enemy : Entity
     {
         public Action OnObstaclesCollision;
-        public AnimationEventHandler AnimationEventHandler;
-
-        protected override void InitiateBasicStates()
-        {
-            IdleState = new E_IdleState(this, StateMachine);
-            HostileDetectedState = new E_HostileDetectedState(this, StateMachine);
-            AttackState = new E_AttackState(this, StateMachine);
-        }
-
-        protected override void InitiateStateMachine()
-        {
-            StateMachine.Initialize(IdleState);
-        }
+        public AnimationEventHandler AnimationEventHandler { get; private set; }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {

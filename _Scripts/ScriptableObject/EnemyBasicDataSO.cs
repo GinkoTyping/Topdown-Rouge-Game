@@ -18,5 +18,7 @@ namespace Ginko.Data
 
         [Header("Attack State")]
         public float attackDistance;
+        public float attackChargeTime;
+
     }
 }

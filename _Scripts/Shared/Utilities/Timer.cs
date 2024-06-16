@@ -9,14 +9,16 @@ namespace Shared.Utilities
     {
         public event Action OnTimerDone;
 
+        public bool isActive;
+
         private float startTime;
         private float duration;
         private float targetTime;
-        private bool isActive;
 
         public Timer(float duration)
         {
             this.duration = duration;
+            isActive = false;
         }
 
         public void StartTimer() {

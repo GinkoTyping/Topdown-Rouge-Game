@@ -25,16 +25,31 @@ namespace Ginko.StateMachineSystem
             get => particleManager ??= Core.GetCoreComponent<ParticleManager>();
         }
         private ParticleManager particleManager;
-
         public Pathfinding Pathfinding
         {
             get => pathfinding ??= Core.GetCoreComponent<Pathfinding>();
         }
         private Pathfinding pathfinding;
-
+        public Attack Attack
+        {
+            get => attack ??= Core.GetCoreComponent<Attack>();
+        }
+        private Attack attack;
         public IdleState IdleState;
         public MoveState MoveState;
-        public AttackState AttackState;
+        public AttackState MeleeAttackState;
+        public AttackState RangedAttackState;
+        public CollideAttack CollideAttack
+        {
+            get => collideAttack ??= Core.GetCoreComponent<CollideAttack>();
+        }
+        private CollideAttack collideAttack;
+        public PerspecrtiveSprite SpriteHandler
+        {
+            get => spriteHandler ??= Core.GetCoreComponent<PerspecrtiveSprite>();
+        }
+        private PerspecrtiveSprite spriteHandler;
+
         public HostileDetectedState HostileDetectedState;
         public FiniteStateMachine StateMachine { get; private set; }
 
