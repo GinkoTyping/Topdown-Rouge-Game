@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Ginko.EnemySystem;
 using Ginko.StateMachineSystem;
+using System;
 
 namespace Ginko.CoreSystem
 {
@@ -24,6 +25,9 @@ namespace Ginko.CoreSystem
         }
         private ParticleManager particleManager;
         private Stats stats;
+
+        public event Action OnDeath;
+        
         public void Die()
         {
             foreach (var particle in deathParticles)
@@ -35,6 +39,8 @@ namespace Ginko.CoreSystem
 
             GameObject GO = Core.transform.parent.gameObject;
             Entity obj = GO.GetComponent<Entity>();
+
+            OnDeath?.Invoke();
 
             if (obj)
             {
@@ -57,8 +63,10 @@ namespace Ginko.CoreSystem
             }
         }
 
-        private void OnEnable()
+        public override void OnEnable()
         {
+            base.OnEnable();
+
             Stats.Health.OnCurrentValueZero += Die;
         }
         private void OnDisable()

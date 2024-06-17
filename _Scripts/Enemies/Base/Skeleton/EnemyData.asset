@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: EnemyData
   m_EditorClassIdentifier: 
   moveVelocity: 1
+  dashVelocity: 0
+  dashDuaration: 0
   idleTimeDuration: 1.5
   AlertIcon: {fileID: 77653638809551699, guid: 02d57dbafc9fe2847a07e5f02a8747dc, type: 3}
+  chaseVelocity: 2
   attackDistance: 3
+  attackChargeTime: 0

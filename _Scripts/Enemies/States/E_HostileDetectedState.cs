@@ -13,10 +13,12 @@ namespace Ginko.StateMachineSystem
         private List<Vector2> pathLeftToGo;
         private Vector3 playerPos;
         private GameObject alertIcon;
+        private float chaseVelocity;
 
         public E_HostileDetectedState(Entity entity, FiniteStateMachine stateMachine) : base(entity, stateMachine)
         {
             EnemyBasicData = (EnemyBasicDataSO)Entity.EntityData;
+            chaseVelocity = EnemyBasicData.chaseVelocity > 0 ? EnemyBasicData.chaseVelocity : EnemyBasicData.moveVelocity * 1.25f;
         }
 
         public override void Enter()
@@ -32,6 +34,7 @@ namespace Ginko.StateMachineSystem
             base.Exit();
 
             Entity.Anim.SetBool(AnimBoolName.Move.ToString(), false);
+            Entity.Anim.SetBool(AnimBoolName.Chase.ToString(), false);
         }
 
         private void InitMovementSetting()
@@ -82,10 +85,10 @@ namespace Ginko.StateMachineSystem
             {
                 pathLeftToGo = Entity.Pathfinding.GetMoveCommand(playerPos);
 
-                Entity.Movement.MoveByPathList(pathLeftToGo, Entity.EntityData.moveVelocity);
+                Entity.Movement.MoveByPathList(pathLeftToGo, chaseVelocity);
 
                 Entity.Anim.SetBool(AnimBoolName.HostileDetected.ToString(), false);
-                Entity.Anim.SetBool(AnimBoolName.Move.ToString(), true);
+                Entity.Anim.SetBool(AnimBoolName.Chase.ToString(), true);
             } 
             else
             {

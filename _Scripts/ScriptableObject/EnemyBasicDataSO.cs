@@ -15,6 +15,7 @@ namespace Ginko.Data
 
         [Header("Detected State")]
         public GameObject AlertIcon;
+        public float chaseVelocity;
 
         [Header("Attack State")]
         public float attackDistance;

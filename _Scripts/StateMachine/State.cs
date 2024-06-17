@@ -66,6 +66,7 @@ namespace Ginko.StateMachineSystem
     {
         Idle,
         Move,
+        Chase,
         Charge,
         MeleeAttack,
         RangedAttack,

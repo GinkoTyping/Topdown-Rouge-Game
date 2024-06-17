@@ -19,16 +19,22 @@ namespace Ginko.CoreSystem
         {
             HealthGO = transform.Find("Health").gameObject;
             HealthImage = HealthGO.GetComponent<Image>();
+
+            stats = transform.parent.GetComponent<StatusBar>().Stats;
         }
         private void ChangeHealthBar(float currentHealth, float maxHealth)
         {
             HealthImage.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, currentHealth / maxHealth);
         }
 
+
         private void Start()
         {
-            stats = transform.parent.GetComponent<StatusBar>().Stats;
+            
+        }
 
+        private void OnEnable()
+        {
             stats.Health.OnCurrentValueChange += ChangeHealthBar;
         }
 

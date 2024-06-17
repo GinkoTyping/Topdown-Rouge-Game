@@ -141,7 +141,7 @@ public class InventoryController : MonoBehaviour
         pickupItemFrom = transform;
     }
 
-    public void SetLootID(LootsRespawning lootsRespawning)
+    public void SetLootID(LootsSpawning lootsRespawning)
     {
         lootID = lootsRespawning.GetInstanceID();
     }

@@ -38,7 +38,7 @@ namespace Ginko.CoreSystem
 
         private Interaction interactionComp;
         private SpriteRenderer spriteRenderer;
-        private LootsRespawning lootsRespawning;
+        private LootsSpawning lootsRespawning;
 
 
         private bool hasOpened;
@@ -52,7 +52,7 @@ namespace Ginko.CoreSystem
             hintText = HintText;
 
             spriteRenderer = GetComponentInParent<SpriteRenderer>();
-            lootsRespawning = Core.GetCoreComponent<LootsRespawning>();
+            lootsRespawning = Core.GetCoreComponent<LootsSpawning>();
 
             isInteractive = true;
         }

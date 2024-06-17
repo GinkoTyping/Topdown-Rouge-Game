@@ -17,7 +17,10 @@ namespace Ginko.CoreSystem
         [Header("Hostile Detection")]
         [SerializeField] public bool ActiveHostileDetection;
         [SerializeField] public float hostileDetectionRadius;
+
+        [SerializeField] private Vector3 meleeAttackOffset;
         [SerializeField] public float meleeAttackRadius;
+
         [SerializeField] public float rangedAttackRadius;
         [SerializeField] public LayerMask hostileLayer;
 
@@ -49,9 +52,9 @@ namespace Ginko.CoreSystem
         public Action<Collider2D[]> OnHidingBehind;
         public Action<Collider2D[]> OnInteractionItemsChange;
 
-        public bool GetDetections(float radius, LayerMask layerMask)
+        public bool GetDetections(float radius, LayerMask layerMask, Vector3 offset)
         {
-            Collider2D[] detections = Physics2D.OverlapCircleAll(transform.position, radius, layerMask);
+            Collider2D[] detections = Physics2D.OverlapCircleAll(transform.position + offset, radius, layerMask);
             return detections.Length > 0;
         }
 
@@ -86,9 +89,9 @@ namespace Ginko.CoreSystem
         {
             if (ActiveHostileDetection)
             {
-                IsHostileDetected = GetDetections(hostileDetectionRadius, hostileLayer);
-                IsInMeleeAttackRange = GetDetections(meleeAttackRadius, hostileLayer);
-                IsInRangedAttackRange = GetDetections(rangedAttackRadius, hostileLayer);
+                IsHostileDetected = GetDetections(hostileDetectionRadius, hostileLayer, Vector3.zero);
+                IsInMeleeAttackRange = GetDetections(meleeAttackRadius, hostileLayer, meleeAttackOffset);
+                IsInRangedAttackRange = GetDetections(rangedAttackRadius, hostileLayer, Vector3.zero);
             }
 
             if (ActiveSpriteRenderDetection)
@@ -119,7 +122,7 @@ namespace Ginko.CoreSystem
                 Gizmos.DrawWireSphere(transform.position, hostileDetectionRadius);
 
                 Gizmos.color = Color.red;
-                Gizmos.DrawWireSphere(transform.position, meleeAttackRadius);
+                Gizmos.DrawWireSphere(transform.position + meleeAttackOffset, meleeAttackRadius);
                 Gizmos.DrawWireSphere(transform.position, rangedAttackRadius);
 
                 Gizmos.DrawWireCube(transform.position + (Vector3)hidingDetectionOffset, hidingDetectionSize);

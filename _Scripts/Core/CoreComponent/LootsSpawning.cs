@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Ginko.CoreSystem
 {
-    public class LootsRespawning : CoreComponent
+    public class LootsSpawning : CoreComponent
     {
         [SerializeField]
         public LootListDataSO lootSetting;
