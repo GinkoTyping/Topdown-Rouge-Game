@@ -111,7 +111,7 @@ namespace Ginko.CoreSystem
         {
             Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + (Vector3)hidingDetectionOffset, hidingDetectionSize, 0, bigObjectLayer);
 
-            OnHidingBehind.Invoke(colliders);
+            OnHidingBehind?.Invoke(colliders);
         }
 
         private void OnDrawGizmos()

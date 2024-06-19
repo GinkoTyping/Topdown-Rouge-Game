@@ -12,13 +12,7 @@ namespace Ginko.StateMachineSystem
 {
     public class E_RangedAttackState : AttackState
     {
-        private Vector3 dashDir;
-        private float dashStart;
-
-        private Status statusIndex;
-
         private Timer timer;
-        private EnemyBasicDataSO data;
 
         private enum Status
         {
@@ -29,7 +23,6 @@ namespace Ginko.StateMachineSystem
 
         public E_RangedAttackState(Entity entity, FiniteStateMachine stateMachine) : base(entity, stateMachine)
         {
-            data = (EnemyBasicDataSO)entity.EntityData;
         }
         
         protected override void SetAnimBoolName()
@@ -57,7 +50,7 @@ namespace Ginko.StateMachineSystem
             Entity.Anim.SetInteger("AttackCounter", 0);
 
             SetTimer();
-            SetDashSetting();
+            Entity.RangedAttack.Set();
         }
 
         public override void Exit()
@@ -65,7 +58,8 @@ namespace Ginko.StateMachineSystem
             base.Exit();
 
             timer.StopTimer();
-            Entity.CollideAttack.StartDetection(false);
+            Entity.RangedAttack.SetAllowDetection(false);
+            //Entity.CollideAttack.StartDetection(false);
 
             Entity.Anim.SetBool(AnimBoolName.Idle.ToString(), false);
             Entity.Anim.SetBool(AnimBoolName.Charge.ToString(), false);
@@ -78,9 +72,9 @@ namespace Ginko.StateMachineSystem
         {
             base.LogicUpdate();
 
-            DashAttack();
+            Entity.RangedAttack.Attack();
 
-            UpdateAnim();
+            UpdateAnimByAttackStatus();
 
             if (timer.isActive)
             {
@@ -88,12 +82,12 @@ namespace Ginko.StateMachineSystem
             } 
             else if (IsAnimationFinished)
             {
-                Entity.CollideAttack.StartDetection(false);
+                Entity.RangedAttack.SetAllowDetection(false);
 
                 if (!Entity.Detections.IsInRangedAttackRange)
                 {
                     timer.StopTimer();
-                    UpdateAnim(isClear: true);
+                    UpdateAnimByAttackStatus(isClear: true);
                 }
 
                 if (Entity.Detections.IsInMeleeAttackRange)
@@ -107,8 +101,8 @@ namespace Ginko.StateMachineSystem
                         IsAnimationFinished = false;
                         timer.StartTimer();
 
-                        SetStatus(Status.Idle);
-                        UpdateAnim();
+                        Entity.RangedAttack.SetStatus(RangedAttack.RangedAttackStatus.Idle);
+                        UpdateAnimByAttackStatus();
                     }
                 }
                 else if (Entity.Detections.IsHostileDetected)
@@ -122,37 +116,7 @@ namespace Ginko.StateMachineSystem
             }
         }
 
-        private void DashAttack()
-        {
-            if (dashStart != 0)
-            {
-                if (Time.time < dashStart + data.attackChargeTime) 
-                {
-                    SetStatus(Status.Charge);
-                    Entity.Movement.FaceToItem(Player.Instance.transform);
-                }
-                else if (Time.time >= dashStart + data.attackChargeTime 
-                    && Time.time < dashStart + data.attackChargeTime + data.dashDuaration)
-                {
-                    SetStatus(Status.Attack);
-                    Entity.Movement.SetVelocity(Entity.EntityData.dashVelocity, (Vector2)dashDir);
-                }
-                else
-                {
-                    SetDashSetting(isDefault: true);
-                }
-            }
-        }
-
-        private void SetStatus(Status status)
-        {
-            if (statusIndex != status)
-            {
-                statusIndex = status;
-            }
-        }
-
-        private void UpdateAnim(bool isClear = false)
+        private void UpdateAnimByAttackStatus(bool isClear = false)
         {
             if (isClear)
             {
@@ -162,29 +126,9 @@ namespace Ginko.StateMachineSystem
             }
             else
             {
-                Entity.Anim.SetBool(AnimBoolName.Idle.ToString(), statusIndex == Status.Idle);
-                Entity.Anim.SetBool(AnimBoolName.Charge.ToString(), statusIndex == Status.Charge);
-                Entity.Anim.SetBool(AnimBoolName.RangedAttack.ToString(), statusIndex == Status.Attack);
-            }
-        }
-
-        private void SetDashSetting(bool isDefault = false)
-        {
-            if (isDefault)
-            {
-                Entity.Movement.SetVelocityZero();
-                dashStart = 0;
-                dashDir = Vector3.zero;
-            } else
-            {
-                Entity.CollideAttack.StartDetection(true);
-                Entity.SpriteHandler.TintSprite(Entity.SpriteHandler.warningColor, 3);
-
-                Vector3 playerPos = Player.Instance.transform.position;
-                dashDir = playerPos - Entity.transform.position;
-                dashStart = Time.time;
-
-                statusIndex = Status.Idle;
+                Entity.Anim.SetBool(AnimBoolName.Idle.ToString(), Entity.RangedAttack.statusIndex == RangedAttack.RangedAttackStatus.Idle);
+                Entity.Anim.SetBool(AnimBoolName.Charge.ToString(), Entity.RangedAttack.statusIndex == RangedAttack.RangedAttackStatus.Charge);
+                Entity.Anim.SetBool(AnimBoolName.RangedAttack.ToString(), Entity.RangedAttack.statusIndex == RangedAttack.RangedAttackStatus.Attack);
             }
         }
 
@@ -196,12 +140,12 @@ namespace Ginko.StateMachineSystem
 
         private void HandleTimerDone()
         {
-            SetDashSetting();
+            Entity.RangedAttack.Set();
         }
 
         private void HandleStartAttack()
         {
-            SoundManager.Instance.PlaySound(Entity.CollideAttack.attackSound);
+            SoundManager.Instance.PlaySound(Entity.RangedAttack.attackSound);
         }
     }
 }

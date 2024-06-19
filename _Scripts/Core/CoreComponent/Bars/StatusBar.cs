@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Ginko.CoreSystem
 {
-    public class StatusBar :CoreComponent
+    public class StatusBar : CoreComponent
     {
         public Movement Movement
         {
@@ -16,9 +16,35 @@ namespace Ginko.CoreSystem
         {
             get => stats ??= Core.GetCoreComponent<Stats>();
         }
-        private Stats stats;
+        public Stats stats { get; private set; }
+
+        private HealthBar healthBar;
 
         private bool flipped = false;
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            healthBar = GetComponentInChildren<HealthBar>();
+        }
+
+        public override void OnEnable()
+        {
+            base.OnEnable();
+
+            Stats.Health.OnCurrentValueChange += healthBar.ChangeHealthBar;
+        }
+
+        private void OnDisable()
+        {
+            Stats.Health.OnCurrentValueChange -= healthBar.ChangeHealthBar;
+        }
+
+        public Stats GetStats()
+        {
+            return Core.GetCoreComponent<Stats>();
+        }
 
         public override void LogicUpdate()
         {

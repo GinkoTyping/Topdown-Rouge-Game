@@ -10,8 +10,6 @@ namespace Ginko.CoreSystem
 {
     public class HealthBar : MonoBehaviour
     {
-        private Stats stats;
-
         private GameObject HealthGO;
         private Image HealthImage;
 
@@ -19,28 +17,10 @@ namespace Ginko.CoreSystem
         {
             HealthGO = transform.Find("Health").gameObject;
             HealthImage = HealthGO.GetComponent<Image>();
-
-            stats = transform.parent.GetComponent<StatusBar>().Stats;
         }
-        private void ChangeHealthBar(float currentHealth, float maxHealth)
+        public void ChangeHealthBar(float currentHealth, float maxHealth)
         {
             HealthImage.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, currentHealth / maxHealth);
-        }
-
-
-        private void Start()
-        {
-            
-        }
-
-        private void OnEnable()
-        {
-            stats.Health.OnCurrentValueChange += ChangeHealthBar;
-        }
-
-        private void OnDisable()
-        {
-            stats.Health.OnCurrentValueChange -= ChangeHealthBar;
         }
     }
 }

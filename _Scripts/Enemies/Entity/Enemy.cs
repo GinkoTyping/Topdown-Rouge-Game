@@ -7,10 +7,22 @@ using UnityEngine;
 
 namespace Ginko.EnemySystem
 {
-    public abstract class Enemy : Entity
+    public class Enemy : Entity
     {
         public Action OnObstaclesCollision;
         public AnimationEventHandler AnimationEventHandler { get; private set; }
+        protected override void InitiateBasicStates()
+        {
+            IdleState = new E_IdleState(this, StateMachine);
+            HostileDetectedState = new E_HostileDetectedState(this, StateMachine);
+            MeleeAttackState = new E_MeleeAttackState(this, StateMachine);
+            RangedAttackState = new E_RangedAttackState(this, StateMachine);
+        }
+
+        protected override void InitiateStateMachine()
+        {
+            StateMachine.Initialize(IdleState);
+        }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {

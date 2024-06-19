@@ -15,9 +15,6 @@ public class OptionsBox : MonoBehaviour
 
     private Transform container;
 
-    private InteractOptionItem[] options;
-    private int currentIndex = -1;
-
     private void Awake()
     {
         container = GameObject.Find("GameplayUI").transform;
@@ -32,9 +29,6 @@ public class OptionsBox : MonoBehaviour
     {
         transform.SetParent(container);
         transform.position = position;
-
-        this.options = options;
-        currentIndex = 0;
 
         if (options.Length > 1)
         {

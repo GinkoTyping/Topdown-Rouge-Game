@@ -17,7 +17,7 @@ namespace Ginko.CoreSystem
 
         private Stats stats;
         private ParticleManager particleManager;
-        private PerspecrtiveSprite spriteHandler;
+        private SpriteEffect spriteHandler;
 
         public void Damage(float amount)
         {
@@ -33,7 +33,7 @@ namespace Ginko.CoreSystem
 
             stats = Core.GetCoreComponent<Stats>();
             particleManager = Core.GetCoreComponent<ParticleManager>();
-            spriteHandler = Core.GetCoreComponent<PerspecrtiveSprite>();
+            spriteHandler = Core.GetCoreComponent<SpriteEffect>();
         }
     }
 }

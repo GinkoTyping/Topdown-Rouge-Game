@@ -63,7 +63,7 @@ namespace Ginko.CoreSystem
                     obj.transform.position = transform.position + GetRamdonPos(spawnRadius);
 
                     Enemy enemy = obj.GetComponent<Enemy>();
-                    enemy.Core.GetCoreComponent<SpawnEnemyOnDeath>().SetSpawnCount(spawnCount--);
+                    enemy.Core.GetCoreComponent<SpawnEnemyOnDeath>().SetSpawnCount(spawnCount - 1);
                 }
             }
         }

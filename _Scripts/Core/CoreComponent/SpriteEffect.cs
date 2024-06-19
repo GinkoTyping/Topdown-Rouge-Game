@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Ginko.CoreSystem
 {
-    public class PerspecrtiveSprite : CoreComponent
+    public class SpriteEffect : CoreComponent
     {
         [SerializeField]
         private float tintFadeSpeed;
