@@ -70,6 +70,7 @@ namespace Ginko.StateMachineSystem
         Charge,
         MeleeAttack,
         RangedAttack,
-        HostileDetected
+        HostileDetected,
+        Death
     }
 }

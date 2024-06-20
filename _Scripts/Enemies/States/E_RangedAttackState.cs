@@ -59,7 +59,6 @@ namespace Ginko.StateMachineSystem
 
             timer.StopTimer();
             Entity.RangedAttack.SetAllowDetection(false);
-            //Entity.CollideAttack.StartDetection(false);
 
             Entity.Anim.SetBool(AnimBoolName.Idle.ToString(), false);
             Entity.Anim.SetBool(AnimBoolName.Charge.ToString(), false);
@@ -134,7 +133,7 @@ namespace Ginko.StateMachineSystem
 
         private void SetTimer()
         {
-            timer = new Timer(1.0f);
+            timer = new Timer(Entity.RangedAttack.attackInterval);
             timer.OnTimerDone += HandleTimerDone;
         }
 

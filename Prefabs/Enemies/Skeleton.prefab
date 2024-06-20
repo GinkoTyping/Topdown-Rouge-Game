@@ -995,9 +995,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3918966684780897516}
-  - component: {fileID: 6114438584804950469}
+  - component: {fileID: 6997107637539477352}
   m_Layer: 8
-  m_Name: PerspectiveSprite
+  m_Name: SpriteEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1018,7 +1018,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5365253013194603596}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6114438584804950469
+--- !u!114 &6997107637539477352
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1027,11 +1027,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8391395244383025040}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2788393608b31e344a4632722379458a, type: 3}
+  m_Script: {fileID: 11500000, guid: 381611422c5aa244383367392c059d8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tintFadeSpeed: 5
-  warningColor: {r: 0, g: 0, b: 0, a: 0}
+  warningColor: {r: 1, g: 0, b: 0, a: 0.5882353}
 --- !u!1 &8543728829367535400
 GameObject:
   m_ObjectHideFlags: 0

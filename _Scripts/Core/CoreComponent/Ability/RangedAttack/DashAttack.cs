@@ -83,12 +83,12 @@ namespace Ginko.CoreSystem
 
         public void DetectAttack()
         {
-            if (allowCollideAttack)
+            if (allowAttackDetection)
             {
                 Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + collideOffset, collideSize, 0, hostileLayer);
                 if (colliders.Length > 0)
                 {
-                    allowCollideAttack = false;
+                    allowAttackDetection = false;
                     IDamageable damageble = colliders[0].transform.parent.GetComponent<IDamageable>();
                     if (damageble != null)
                     {

@@ -17,6 +17,7 @@ namespace Ginko.EnemySystem
             HostileDetectedState = new E_HostileDetectedState(this, StateMachine);
             MeleeAttackState = new E_MeleeAttackState(this, StateMachine);
             RangedAttackState = new E_RangedAttackState(this, StateMachine);
+            DeathState = new DeathState(this, StateMachine);
         }
 
         protected override void InitiateStateMachine()

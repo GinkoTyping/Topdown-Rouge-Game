@@ -41,11 +41,6 @@ namespace Ginko.CoreSystem
             Stats.Health.OnCurrentValueChange -= healthBar.ChangeHealthBar;
         }
 
-        public Stats GetStats()
-        {
-            return Core.GetCoreComponent<Stats>();
-        }
-
         public override void LogicUpdate()
         {
             base.LogicUpdate();

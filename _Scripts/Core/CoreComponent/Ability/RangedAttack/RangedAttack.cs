@@ -6,23 +6,28 @@ namespace Ginko.CoreSystem
 {
     public abstract class RangedAttack : CoreComponent
     {
-        [SerializeField]
-        protected float attackDamage;
-        [SerializeField]
-        public AudioClip attackSound;
-        [SerializeField]
-        protected LayerMask hostileLayer;
-        [SerializeField]
-        protected bool isDebug;
+        [SerializeField] protected bool isDebug;
+        [Header("Base")]
+        [SerializeField] protected LayerMask hostileLayer;
+        [SerializeField] protected float attackDamage;
+        [SerializeField] public float attackInterval;
+        [SerializeField] public AudioClip attackSound;
 
         public RangedAttackStatus statusIndex {  get; protected set; }
-        public bool allowCollideAttack {  get; protected set; }
-
+        public bool allowAttackDetection {  get; protected set; }
+        protected AnimationEventHandler animationEventHandler;
         public enum RangedAttackStatus
         {
             Idle,
             Charge,
             Attack,
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            animationEventHandler = Core.transform.parent.GetComponent<AnimationEventHandler>();
         }
 
         public void SetStatus(RangedAttackStatus status)
@@ -35,7 +40,7 @@ namespace Ginko.CoreSystem
 
         public void SetAllowDetection(bool isAllow)
         {
-            allowCollideAttack = isAllow;
+            allowAttackDetection = isAllow;
         }
 
         public abstract void Set(bool isDefault = false);

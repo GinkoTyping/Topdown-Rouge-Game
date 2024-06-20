@@ -47,7 +47,13 @@ namespace Ginko.CoreSystem
                 // 如果是 enemy， 使用对象池
                 if (GO.GetComponent<Enemy>())
                 {
-                    obj.pool.Release(obj.gameObject);
+                    if (GO.GetComponent<Entity>().pool == null)
+                    {
+                        Destroy(GO);
+                    } else
+                    {
+                        obj.pool.Release(obj.gameObject);
+                    }
                 }
                 // 如果是玩家
                 else
@@ -67,11 +73,17 @@ namespace Ginko.CoreSystem
         {
             base.OnEnable();
 
-            Stats.Health.OnCurrentValueZero += Die;
+            Stats.Health.OnCurrentValueZero += HandleOnDeath;
         }
         private void OnDisable()
         {
-            Stats.Health.OnCurrentValueZero -= Die;
+            Stats.Health.OnCurrentValueZero -= HandleOnDeath;
+        }
+
+        private void HandleOnDeath()
+        {
+            Entity entity = Core.transform.parent.GetComponent<Entity>();
+            entity.StateMachine.ChangeState(entity.DeathState);
         }
     }
 }

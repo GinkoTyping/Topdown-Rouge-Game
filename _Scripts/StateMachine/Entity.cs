@@ -46,19 +46,24 @@ namespace Ginko.StateMachineSystem
             get => rangedAttack ??= Core.GetCoreComponent<RangedAttack>();
         }
         private RangedAttack rangedAttack;
-
-        public IdleState IdleState;
-        public MoveState MoveState;
-        public AttackState MeleeAttackState;
-        public AttackState RangedAttackState;
-
         public SpriteEffect SpriteHandler
         {
             get => spriteHandler ??= Core.GetCoreComponent<SpriteEffect>();
         }
         private SpriteEffect spriteHandler;
+        public Death Death
+        {
+            get => death ??= Core.GetCoreComponent<Death>();
+        }
+        private Death death;
 
+        public IdleState IdleState;
+        public MoveState MoveState;
+        public AttackState MeleeAttackState;
+        public AttackState RangedAttackState;
         public HostileDetectedState HostileDetectedState;
+        public DeathState DeathState;
+
         public FiniteStateMachine StateMachine { get; private set; }
 
         public ObjectPool<GameObject> pool {  get; private set; }
