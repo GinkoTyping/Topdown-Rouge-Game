@@ -982,7 +982,10 @@ MonoBehaviour:
   attackDamage: 0
   attackInterval: 5
   attackSound: {fileID: 8300000, guid: 6e769e16d4685cc48aca99ff1170a61d, type: 3}
-  sommonPrefab: {fileID: 5617566462948286229, guid: b94fa729510911f45a11591b4513f580,
+  magicAuraPrefab: {fileID: 3280519133390621005, guid: a71be3e7990efb040a07565c43cbb198,
+    type: 3}
+  auarTime: 2
+  sommonPrefab: {fileID: 5617566462948286229, guid: 55c9b8844851ff243bf53491aad7797f,
     type: 3}
   sommonArea: 2
 --- !u!1 &8220471014344229959

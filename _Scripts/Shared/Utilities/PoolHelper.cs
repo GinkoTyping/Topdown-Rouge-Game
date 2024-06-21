@@ -13,14 +13,14 @@ namespace Shared.Utilities
         {
             PoolManager poolManager;
 
-            Transform poolTransform = poolContainer.Find($"{prefab.name}Pool");
+            Transform poolTransform = poolContainer.Find($"{prefab.name}_Pool");
             if (poolTransform == null)
             {
                 poolManager = Instantiate(defaultPool, poolContainer).GetComponent<PoolManager>();
-                poolManager.gameObject.name = $"{prefab.name}Pool";
+                poolManager.gameObject.name = $"{prefab.name}_Pool";
 
                 poolManager.SetCurrrentObject(prefab);
-                poolManager.SetCurrentParrent(poolContainer);
+                poolManager.SetCurrentParrent(poolManager.transform);
             }
             else
             {

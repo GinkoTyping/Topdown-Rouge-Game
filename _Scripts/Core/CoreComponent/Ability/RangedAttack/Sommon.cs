@@ -9,13 +9,20 @@ namespace Ginko.CoreSystem
     public class Sommon : RangedAttack
     {
         [Header("Sommon")]
+        [SerializeField] private GameObject magicAuraPrefab;
+        [SerializeField] private float auarTime;
         [SerializeField] private GameObject sommonPrefab;
         [SerializeField] private float sommonArea;
 
         private PoolHelper poolHelper;
-        private PoolManager poolManager;
+        private PoolManager sommonPoolManager;
+        private PoolManager auraPoolManager;
 
         private Transform entityTransform;
+        private Transform containersTransform;
+
+        private List<GameObject> activeAuras = new List<GameObject>();
+        private List<Timer> activeTimers = new List<Timer>();
 
         protected override void Awake()
         {
@@ -23,6 +30,20 @@ namespace Ginko.CoreSystem
 
             poolHelper = GameObject.Find("Helper").GetComponent<PoolHelper>();
             entityTransform = Core.transform.parent.parent;
+            containersTransform = GameObject.Find("Containers").transform;
+        }
+
+        public override void LogicUpdate()
+        {
+            base.LogicUpdate();
+
+            if (activeAuras.Count > 0)
+            {
+                for (int i = 0; i < activeTimers.Count; i++)
+                {
+                    activeTimers[i].Tick();
+                }
+            }
         }
 
         public override void Attack()
@@ -43,15 +64,37 @@ namespace Ginko.CoreSystem
         {
             animationEventHandler.OnAttackAction -= SommonEnemy;
 
-            if (poolManager == null)
+            if (auraPoolManager == null)
             {
-                poolManager = poolHelper.GetPoolByPrefab(entityTransform, sommonPrefab);
+                auraPoolManager = poolHelper.GetPoolByPrefab(containersTransform, magicAuraPrefab);
             }
 
-            GameObject sommonnedGO = poolManager.Pool.Get();
+            GameObject auraGO = auraPoolManager.Pool.Get();
+            activeAuras.Add(auraGO);
 
-            sommonnedGO.transform.position = transform.position + new Vector3(Random.Range(-sommonArea, sommonArea), Random.Range(-sommonArea, sommonArea), 0);
+            auraGO.transform.eulerAngles = new Vector3 (-30, 0, 0);
+            auraGO.transform.position = transform.position + new Vector3(Random.Range(-sommonArea, sommonArea), Random.Range(-sommonArea, sommonArea), 0);
+
+            Timer timer = new Timer(auarTime);
+            timer.OnTimerDone += InstaniateEnemyOnAura;
+            timer.StartTimer();
+            activeTimers.Add(timer);
         }
 
+        private void InstaniateEnemyOnAura()
+        {
+            if (sommonPoolManager == null)
+            {
+                sommonPoolManager = poolHelper.GetPoolByPrefab(entityTransform, sommonPrefab);
+            }
+            GameObject sommonnedGO = sommonPoolManager.Pool.Get();
+            sommonnedGO.transform.position = activeAuras[0].transform.position;
+
+            auraPoolManager.Pool.Release(activeAuras[0]);
+            activeAuras.RemoveAt(0);
+            activeTimers.RemoveAt(0);
+        }
     }
+
+
 }
