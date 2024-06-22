@@ -12,8 +12,6 @@ namespace Ginko.StateMachineSystem
 {
     public class E_RangedAttackState : AttackState
     {
-        private Timer timer;
-
         private enum Status
         {
             Idle,
@@ -27,19 +25,27 @@ namespace Ginko.StateMachineSystem
         
         protected override void SetAnimBoolName()
         {
-            AnimBoolName = AnimBoolName.Charge;
+            AnimBoolName = AnimBoolName.Idle;
         }
 
         public override void RegisterEvents()
         {
             base.RegisterEvents();
+
+            animEventHandler.OnFinish += HandleOnAttackAnimFinished;
+
             animEventHandler.OnAttackAction += HandleStartAttack;
+            Entity.RangedAttack.OnStatusChange += UpdateAnim;
         }
 
         public override void UnRegisterEvents()
         {
             base.UnRegisterEvents();
+
+            animEventHandler.OnFinish -= HandleOnAttackAnimFinished;
+
             animEventHandler.OnAttackAction -= HandleStartAttack;
+            Entity.RangedAttack.OnStatusChange -= UpdateAnim;
         }
 
         public override void Enter()
@@ -49,15 +55,14 @@ namespace Ginko.StateMachineSystem
             Entity.Movement.SetVelocityZero();
             Entity.Anim.SetInteger("AttackCounter", 0);
 
-            SetTimer();
-            Entity.RangedAttack.Set();
+            Entity.RangedAttack.Set(true);
         }
 
         public override void Exit()
         {
             base.Exit();
 
-            timer.StopTimer();
+            Entity.RangedAttack.StopAttack();
             Entity.RangedAttack.SetAllowDetection(false);
 
             Entity.Anim.SetBool(AnimBoolName.Idle.ToString(), false);
@@ -71,22 +76,15 @@ namespace Ginko.StateMachineSystem
         {
             base.LogicUpdate();
 
-            Entity.RangedAttack.Attack();
+            Entity.RangedAttack.CheckIfAttack();
 
-            UpdateAnimByAttackStatus();
-
-            if (timer.isActive)
-            {
-                timer.Tick();
-            } 
-            else if (IsAnimationFinished)
+            if (IsAnimationFinished)
             {
                 Entity.RangedAttack.SetAllowDetection(false);
 
                 if (!Entity.Detections.IsInRangedAttackRange)
                 {
-                    timer.StopTimer();
-                    UpdateAnimByAttackStatus(isClear: true);
+                    ClearAnim();
                 }
 
                 if (Entity.Detections.IsInMeleeAttackRange)
@@ -95,14 +93,7 @@ namespace Ginko.StateMachineSystem
                 }
                 else if (Entity.Detections.IsInRangedAttackRange)
                 {
-                    if (!timer.isActive)
-                    {
-                        IsAnimationFinished = false;
-                        timer.StartTimer();
 
-                        Entity.RangedAttack.SetStatus(RangedAttack.RangedAttackStatus.Idle);
-                        UpdateAnimByAttackStatus();
-                    }
                 }
                 else if (Entity.Detections.IsHostileDetected)
                 {
@@ -115,31 +106,28 @@ namespace Ginko.StateMachineSystem
             }
         }
 
-        private void UpdateAnimByAttackStatus(bool isClear = false)
+        private void UpdateAnim(RangedAttack.RangedAttackStatus status)
         {
-            if (isClear)
+            if (status != RangedAttack.RangedAttackStatus.Idle)
             {
-                Entity.Anim.SetBool(AnimBoolName.Idle.ToString(), false);
-                Entity.Anim.SetBool(AnimBoolName.Charge.ToString(), false);
-                Entity.Anim.SetBool(AnimBoolName.RangedAttack.ToString(), false);
+                IsAnimationFinished = false;
             }
-            else
-            {
-                Entity.Anim.SetBool(AnimBoolName.Idle.ToString(), Entity.RangedAttack.statusIndex == RangedAttack.RangedAttackStatus.Idle);
-                Entity.Anim.SetBool(AnimBoolName.Charge.ToString(), Entity.RangedAttack.statusIndex == RangedAttack.RangedAttackStatus.Charge);
-                Entity.Anim.SetBool(AnimBoolName.RangedAttack.ToString(), Entity.RangedAttack.statusIndex == RangedAttack.RangedAttackStatus.Attack);
-            }
+
+            Entity.Anim.SetBool(AnimBoolName.Idle.ToString(), status == RangedAttack.RangedAttackStatus.Idle);
+            Entity.Anim.SetBool(AnimBoolName.Charge.ToString(), status == RangedAttack.RangedAttackStatus.Charge);
+            Entity.Anim.SetBool(AnimBoolName.RangedAttack.ToString(), status == RangedAttack.RangedAttackStatus.Attack);
         }
 
-        private void SetTimer()
+        private void ClearAnim()
         {
-            timer = new Timer(Entity.RangedAttack.attackInterval);
-            timer.OnTimerDone += HandleTimerDone;
+            Entity.Anim.SetBool(AnimBoolName.Idle.ToString(), false);
+            Entity.Anim.SetBool(AnimBoolName.Charge.ToString(), false);
+            Entity.Anim.SetBool(AnimBoolName.RangedAttack.ToString(), false);
         }
 
-        private void HandleTimerDone()
+        private void HandleOnAttackAnimFinished()
         {
-            Entity.RangedAttack.Set();
+            Entity.RangedAttack.SetStatus(RangedAttack.RangedAttackStatus.Idle);
         }
 
         private void HandleStartAttack()

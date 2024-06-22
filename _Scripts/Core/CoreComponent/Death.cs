@@ -13,6 +13,8 @@ namespace Ginko.CoreSystem
         private GameObject[] deathParticles;
         [SerializeField]
         private AudioClip deathAudioClip;
+        [SerializeField]
+        private IDeathrattle[] deathrattles;
 
         private ParticleManager ParticleManager
         {

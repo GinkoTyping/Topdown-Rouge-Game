@@ -10,6 +10,7 @@ namespace Shared.Utilities
         public event Action OnTimerDone;
 
         public bool isActive;
+        public float restTime;
 
         private float startTime;
         private float duration;
@@ -23,6 +24,7 @@ namespace Shared.Utilities
 
         public void StartTimer() {
             startTime = Time.time;
+            restTime = duration;
             targetTime = startTime + duration;
             isActive = true;
         }
@@ -38,9 +40,13 @@ namespace Shared.Utilities
             {
                 return;
             }
+            
             if (Time.time > targetTime) {
                 OnTimerDone?.Invoke();
                 StopTimer();
+            } else
+            {
+                restTime = targetTime - Time.time;
             }
         }
     }

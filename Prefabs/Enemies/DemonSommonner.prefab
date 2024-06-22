@@ -940,7 +940,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8974626735641710401}
-  - component: {fileID: 2674806993050274851}
+  - component: {fileID: 9009936057970513824}
+  - component: {fileID: 901305616904485287}
   m_Layer: 0
   m_Name: RangedAttack
   m_TagString: Untagged
@@ -963,7 +964,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5365253013194603596}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2674806993050274851
+--- !u!114 &9009936057970513824
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -972,19 +973,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 8058925560246919856}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eada2b21fda3f4d489054fe688d722b3, type: 3}
+  m_Script: {fileID: 11500000, guid: efd777a9a3cf4414fbe5e9dc99b356dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isDebug: 0
+  isAutoAnim: 1
   hostileLayer:
     serializedVersion: 2
     m_Bits: 1024
-  attackDamage: 0
+  attackDamage: 10
   attackInterval: 5
-  attackSound: {fileID: 8300000, guid: 6e769e16d4685cc48aca99ff1170a61d, type: 3}
+  attackSound: {fileID: 8300000, guid: 366d7f650bbaec94c9847d2c70bf0c7d, type: 3}
+  cooldownTime: 0
+--- !u!114 &901305616904485287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8058925560246919856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c55a59beecbb66242aa67b1b8c5460b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   magicAuraPrefab: {fileID: 3280519133390621005, guid: a71be3e7990efb040a07565c43cbb198,
     type: 3}
   auarTime: 2
+  sommonPoolParent: {fileID: 0}
   sommonPrefab: {fileID: 5617566462948286229, guid: 55c9b8844851ff243bf53491aad7797f,
     type: 3}
   sommonArea: 2

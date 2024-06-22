@@ -16,7 +16,10 @@ public class DeathState : State
     {
         base.Enter();
 
-        deathrattleAbility.Deathrattle();
+
+        deathrattleAbility?.Deathrattle();
+        Debug.Log("xx");
+
     }
 
     public override void RegisterEvents()

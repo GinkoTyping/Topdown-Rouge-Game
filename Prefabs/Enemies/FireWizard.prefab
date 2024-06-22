@@ -115,9 +115,9 @@ Transform:
   - {fileID: 2771962164299163042}
   - {fileID: 3458299922496797295}
   - {fileID: 6236325743871239190}
+  - {fileID: 3918966684780897516}
   - {fileID: 5599842859742074821}
   - {fileID: 8974626735641710401}
-  - {fileID: 3918966684780897516}
   m_Father: {fileID: 6580303063066957341}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2695511270423761253
@@ -940,7 +940,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8974626735641710401}
-  - component: {fileID: 8759721176157099084}
+  - component: {fileID: 174634404881937409}
+  - component: {fileID: 498208998729585855}
   m_Layer: 8
   m_Name: RangedAttack
   m_TagString: Untagged
@@ -963,7 +964,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5365253013194603596}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8759721176157099084
+--- !u!114 &174634404881937409
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -972,16 +973,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 8058925560246919856}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e782d713d9bc5194fb04e5189e666f38, type: 3}
+  m_Script: {fileID: 11500000, guid: efd777a9a3cf4414fbe5e9dc99b356dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isDebug: 0
+  isAutoAnim: 1
   hostileLayer:
     serializedVersion: 2
     m_Bits: 1024
   attackDamage: 10
-  attackInterval: 0.5
-  attackSound: {fileID: 8300000, guid: 646427e6b9cddc5458dba52c366e8fc3, type: 3}
+  attackInterval: 2
+  attackSound: {fileID: 8300000, guid: 1499954a98c0b2342b8b862b99fe7772, type: 3}
+  cooldownTime: 0
+--- !u!114 &498208998729585855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8058925560246919856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8337e40eff70f6549966c44b5f67bf52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackDamage: 10
   fireDuaration: 1
   fireVelocity: 6
   startOffset: {x: 1.4, y: 0.4, z: 0}
