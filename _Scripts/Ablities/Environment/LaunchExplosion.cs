@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaunchExplosion : MonoBehaviour
+public class LaunchExplosion : BaseAbility
 {
-    public void Activate()
+    public override void Activate()
     {
-
+        
     }
 }

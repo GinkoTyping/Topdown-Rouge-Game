@@ -978,13 +978,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDebug: 0
   isAutoAnim: 1
-  hostileLayer:
-    serializedVersion: 2
-    m_Bits: 1024
-  attackDamage: 10
   totalCooldownTime: 5
   attackSound: {fileID: 8300000, guid: 366d7f650bbaec94c9847d2c70bf0c7d, type: 3}
-  restCooldownTime: 0
 --- !u!114 &901305616904485287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -997,6 +992,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55a59beecbb66242aa67b1b8c5460b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDebug: 0
+  abilityAudio: {fileID: 8300000, guid: 366d7f650bbaec94c9847d2c70bf0c7d, type: 3}
+  attackDamage: 0
+  hostileLayer:
+    serializedVersion: 2
+    m_Bits: 1024
   magicAuraPrefab: {fileID: 3280519133390621005, guid: a71be3e7990efb040a07565c43cbb198,
     type: 3}
   auarTime: 2

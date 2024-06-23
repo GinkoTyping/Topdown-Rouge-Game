@@ -4,8 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SommoningSpell : MonoBehaviour, IAblity
+public class SommoningSpell : BaseAbility
 {
+    [Header("Sommon")]
     [SerializeField] private GameObject magicAuraPrefab;
     [SerializeField] private float auarTime;
     [SerializeField] private GameObject sommonPrefab;
@@ -39,7 +40,7 @@ public class SommoningSpell : MonoBehaviour, IAblity
         }
     }
 
-    public void Activate()
+    public override void Activate()
     {
         if (auraPoolManager == null)
         {

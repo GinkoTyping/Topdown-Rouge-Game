@@ -10,19 +10,17 @@ using UnityEditor;
 
 namespace Ginko.StateMachineSystem
 {
+    /* 目前仅负责
+     * 1.调用 RangedAttack
+     * 2.切换至其他state
+     */
     public class E_RangedAttackState : AttackState
     {
-        private enum Status
-        {
-            Idle,
-            Charge,
-            Attack,
-        }
-
         public E_RangedAttackState(Entity entity, FiniteStateMachine stateMachine) : base(entity, stateMachine)
         {
         }
-        
+
+        // 因为具体动画由不同的Ability决定，所以默认使用Idle动画
         protected override void SetAnimBoolName()
         {
             AnimBoolName = AnimBoolName.Idle;
@@ -31,17 +29,13 @@ namespace Ginko.StateMachineSystem
         public override void RegisterEvents()
         {
             base.RegisterEvents();
-
-            animEventHandler.OnAttackAction += HandleStartAttack;
-            Entity.RangedAttack.OnStatusChange += UpdateAnim;
+            Entity.RangedAttack.OnAnimChange += UpdateAnim;
         }
 
         public override void UnRegisterEvents()
         {
             base.UnRegisterEvents();
-
-            animEventHandler.OnAttackAction -= HandleStartAttack;
-            Entity.RangedAttack.OnStatusChange -= UpdateAnim;
+            Entity.RangedAttack.OnAnimChange -= UpdateAnim;
         }
 
         public override void Enter()
@@ -95,28 +89,21 @@ namespace Ginko.StateMachineSystem
             }
         }
 
-        private void UpdateAnim(RangedAttack.RangedAttackStatus status)
+        private void UpdateAnim(AnimBoolName name)
         {
-            if (status != RangedAttack.RangedAttackStatus.Idle)
-            {
-                IsAnimationFinished = false;
-            }
-
-            Entity.Anim.SetBool(AnimBoolName.Idle.ToString(), status == RangedAttack.RangedAttackStatus.Idle);
-            Entity.Anim.SetBool(AnimBoolName.Charge.ToString(), status == RangedAttack.RangedAttackStatus.Charge);
-            Entity.Anim.SetBool(AnimBoolName.RangedAttack.ToString(), status == RangedAttack.RangedAttackStatus.Attack);
+            Entity.Anim.SetBool(AnimBoolName.Idle.ToString(), name == AnimBoolName.Idle);
+            Entity.Anim.SetBool(AnimBoolName.Charge.ToString(), name == AnimBoolName.Charge);
+            Entity.Anim.SetBool(AnimBoolName.RangedAttack.ToString(), name == AnimBoolName.RangedAttack);
         }
 
         private void ClearAnim()
         {
-            Entity.Anim.SetBool(AnimBoolName.Idle.ToString(), false);
-            Entity.Anim.SetBool(AnimBoolName.Charge.ToString(), false);
-            Entity.Anim.SetBool(AnimBoolName.RangedAttack.ToString(), false);
-        }
-
-        private void HandleStartAttack()
-        {
-            SoundManager.Instance.PlaySound(Entity.RangedAttack.attackSound);
+            Entity.Anim.SetBool(AnimBoolName.Idle.ToString(), 
+                false);
+            Entity.Anim.SetBool(AnimBoolName.Charge.ToString(), 
+                false);
+            Entity.Anim.SetBool(AnimBoolName.RangedAttack.ToString(), 
+                false);
         }
     }
 }

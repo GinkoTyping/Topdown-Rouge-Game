@@ -976,15 +976,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efd777a9a3cf4414fbe5e9dc99b356dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDebug: 0
   isAutoAnim: 1
-  hostileLayer:
-    serializedVersion: 2
-    m_Bits: 1024
-  attackDamage: 10
   totalCooldownTime: 2
-  attackSound: {fileID: 8300000, guid: 1499954a98c0b2342b8b862b99fe7772, type: 3}
-  restCooldownTime: 0
 --- !u!114 &498208998729585855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -997,7 +990,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8337e40eff70f6549966c44b5f67bf52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDebug: 0
+  abilityAudio: {fileID: 8300000, guid: 1499954a98c0b2342b8b862b99fe7772, type: 3}
   attackDamage: 10
+  hostileLayer:
+    serializedVersion: 2
+    m_Bits: 1024
   fireDuaration: 1
   fireVelocity: 6
   startOffset: {x: 1.4, y: 0.4, z: 0}

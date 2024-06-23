@@ -4,12 +4,9 @@ using Ginko.StateMachineSystem;
 using System;
 using UnityEngine;
 
-public class DashingAttack : MonoBehaviour,IAblity
+public class DashingAttack : BaseAbility
 {
-    [SerializeField] private bool isDebug;
-    [SerializeField] protected LayerMask hostileLayer;
-    [SerializeField] protected float attackDamage;
-
+    [Header("Dashing Attack")]
     [SerializeField] private Vector2 collideSize;
     [SerializeField] private Vector3 collideOffset;
     [SerializeField] private float attackChargeTime;
@@ -42,7 +39,7 @@ public class DashingAttack : MonoBehaviour,IAblity
         UpdateDashAttack();
     }
 
-    public void Activate()
+    public override void Activate()
     {
         allowAttackDetection = true;
 

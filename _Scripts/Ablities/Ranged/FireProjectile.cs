@@ -5,9 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireProjectile : MonoBehaviour, IAblity
+public class FireProjectile : BaseAbility
 {
-    [SerializeField] private float attackDamage;
+    [Header("Fire Projectile")]
     [SerializeField] private float fireDuaration;
     [SerializeField] private float fireVelocity;
     [SerializeField] private Vector3 startOffset;
@@ -28,7 +28,7 @@ public class FireProjectile : MonoBehaviour, IAblity
         movement = GetComponentInParent<Core>().GetCoreComponent<Movement>();
     }
 
-    public void Activate()
+    public override void Activate()
     {
         movement.FaceToItem(Player.Instance.transform);
 

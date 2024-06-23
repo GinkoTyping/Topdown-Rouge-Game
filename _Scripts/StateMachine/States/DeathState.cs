@@ -6,20 +6,23 @@ using UnityEngine;
 
 public class DeathState : State
 {
-    private IDeathrattle deathrattleAbility;
+    private BaseAbility[] deathrattles;
     public DeathState(Entity entity, FiniteStateMachine stateMachine) : base(entity, stateMachine)
     {
-        deathrattleAbility = entity.GetComponentInChildren<IDeathrattle>();
+        deathrattles = entity.Core.GetCoreComponent<Death>().GetComponentsInChildren<BaseAbility>();
     }
 
     public override void Enter()
     {
         base.Enter();
 
-
-        deathrattleAbility?.Deathrattle();
-        Debug.Log("xx");
-
+        if (deathrattles.Length > 0)
+        {
+            foreach (BaseAbility ability in deathrattles)
+            {
+                ability.Activate();
+            }
+        }
     }
 
     public override void RegisterEvents()

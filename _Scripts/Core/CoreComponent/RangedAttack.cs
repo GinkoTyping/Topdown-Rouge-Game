@@ -1,35 +1,30 @@
+using Ginko.StateMachineSystem;
 using Shared.Utilities;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Ginko.CoreSystem
 {
+    /*
+     * 1. 根据冷却时间调用 Ability
+     */
     public class RangedAttack : CoreComponent
     {
-        [SerializeField] protected bool isDebug;
         [Header("Base")]
         [SerializeField] private bool isAutoAnim;
-        [SerializeField] public float totalCooldownTime;
-        [SerializeField] public AudioClip attackSound;
+        [SerializeField] private float totalCooldownTime;
 
         private Timer cooldownTimer;
-        public bool isDuringCooldown { get; private set; }
-        public float restCooldownTime { get; private set; }
+        private AnimationEventHandler animationEventHandler;
+        private BaseAbility ablity;
 
-        public event Action<RangedAttackStatus> OnStatusChange;
-        public RangedAttackStatus statusIndex {  get; protected set; }
-        public bool allowAttackDetection {  get; protected set; }
-        protected AnimationEventHandler animationEventHandler;
-        private IAblity ablity;
-        public enum RangedAttackStatus
-        {
-            Idle,
-            Charge,
-            Attack,
-        }
+        private bool isDuringCooldown;
+        private float restCooldownTime;
+        private AnimBoolName currentAnim;
 
+        public event Action<AnimBoolName> OnAnimChange;
+
+        #region Hooks
         protected override void Awake()
         {
             base.Awake();
@@ -37,18 +32,20 @@ namespace Ginko.CoreSystem
             cooldownTimer = new Timer(totalCooldownTime);
             cooldownTimer.OnTimerDone += HandleCooldownTimerDone;
 
-            ablity = GetComponent<IAblity>();
+            ablity = GetComponent<BaseAbility>();
 
             animationEventHandler = Core.transform.parent.GetComponent<AnimationEventHandler>();
         }
 
         public override void OnEnable()
         {
+            animationEventHandler.OnAttackAction += PlayAttackSound;
             animationEventHandler.OnFinish += HandleOnAttackFinished;
         }
 
         private void OnDisable()
         {
+            animationEventHandler.OnAttackAction -= PlayAttackSound;
             animationEventHandler.OnFinish -= HandleOnAttackFinished;
         }
 
@@ -59,6 +56,7 @@ namespace Ginko.CoreSystem
             cooldownTimer.Tick();
             restCooldownTime = cooldownTimer.restTime;
         }
+        #endregion
 
         public virtual void CheckIfAttack()
         {
@@ -70,7 +68,7 @@ namespace Ginko.CoreSystem
             StartAttack();
         }
 
-        public virtual void StartAttack()
+        private void StartAttack()
         {
             isDuringCooldown = true;
 
@@ -79,7 +77,7 @@ namespace Ginko.CoreSystem
             // 直接播放攻击动画，攻击动画的事件再触发技能
             if (isAutoAnim)
             {
-                SetStatus(RangedAttackStatus.Attack);
+                SetAnimState(AnimBoolName.RangedAttack);
                 animationEventHandler.OnAttackAction += HandleOnAttack;
             }
 
@@ -90,18 +88,18 @@ namespace Ginko.CoreSystem
             }
         }
         
-        private void SetStatus(RangedAttackStatus status)
+        private void SetAnimState(AnimBoolName name)
         {
-            if (statusIndex != status)
+            if (currentAnim != name)
             {
-                statusIndex = status;
-                OnStatusChange?.Invoke(status);
+                currentAnim = name;
+                OnAnimChange?.Invoke(name);
             }
         }
 
         private void HandleOnAttackFinished()
         {
-            SetStatus(RangedAttackStatus.Idle);
+            SetAnimState(AnimBoolName.Idle);
         }
 
         private void HandleOnAttack()
@@ -114,6 +112,11 @@ namespace Ginko.CoreSystem
         private void HandleCooldownTimerDone()
         {
             isDuringCooldown = false;   
+        }
+
+        private void PlayAttackSound()
+        {
+            SoundManager.Instance.PlaySound(ablity.abilityAudio);
         }
     }
 }

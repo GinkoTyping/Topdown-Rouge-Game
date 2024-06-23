@@ -47,13 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDebug: 0
   isAutoAnim: 0
-  hostileLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  attackDamage: 0
   totalCooldownTime: 3
   attackSound: {fileID: 8300000, guid: 646427e6b9cddc5458dba52c366e8fc3, type: 3}
-  restCooldownTime: 0
 --- !u!114 &8710945929912815282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,10 +62,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDebug: 0
+  abilityAudio: {fileID: 8300000, guid: 646427e6b9cddc5458dba52c366e8fc3, type: 3}
+  attackDamage: 10
   hostileLayer:
     serializedVersion: 2
     m_Bits: 1024
-  attackDamage: 10
   collideSize: {x: 1, y: 1}
   collideOffset: {x: 0, y: 0, z: 0}
   attackChargeTime: 0.5
