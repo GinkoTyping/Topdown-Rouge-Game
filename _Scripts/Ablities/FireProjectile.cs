@@ -16,11 +16,7 @@ public class FireProjectile : MonoBehaviour, IAblity
     private Vector3 fireDirection;
 
     private CommonPool poolManager;
-
     private Movement movement;
-
-    public event Action OnCharge;
-    public event Action OnAttack;
 
     private void Awake()
     {

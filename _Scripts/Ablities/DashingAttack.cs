@@ -1,11 +1,8 @@
 using Ginko.CoreSystem;
 using Ginko.PlayerSystem;
+using Ginko.StateMachineSystem;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
-using static Ginko.CoreSystem.RangedAttack;
 
 public class DashingAttack : MonoBehaviour,IAblity
 {
@@ -13,34 +10,27 @@ public class DashingAttack : MonoBehaviour,IAblity
     [SerializeField] protected LayerMask hostileLayer;
     [SerializeField] protected float attackDamage;
 
-    [SerializeField]
-    private Vector2 collideSize;
-    [SerializeField]
-    private Vector3 collideOffset;
-    [SerializeField]
-    private float attackChargeTime;
-    [SerializeField]
-    private float dashDuaration;
-    [SerializeField]
-    private float dashVelocity;
+    [SerializeField] private Vector2 collideSize;
+    [SerializeField] private Vector3 collideOffset;
+    [SerializeField] private float attackChargeTime;
+    [SerializeField] private float dashDuaration;
+    [SerializeField] private float dashVelocity;
 
     private Core core;
-
     private Movement movement;
     private SpriteEffect spriteEffect;
+    private Animator animator;
 
     private float dashStart;
     private Vector3 dashDir;
-
-    public event Action OnCharge;
-    public event Action OnAttack;
-
     private bool allowAttackDetection;
 
     private void Awake()
     {
         core = GetComponentInParent<Core>();
+        animator = GetComponentInParent<Entity>().GetComponent<Animator>();
     }
+    
     private void Start()
     {
         movement = core.GetCoreComponent<Movement>();
@@ -54,7 +44,12 @@ public class DashingAttack : MonoBehaviour,IAblity
 
     public void Activate()
     {
-        Set();
+        allowAttackDetection = true;
+
+        spriteEffect.TintSprite(spriteEffect.warningColor, 3);
+        Vector3 playerPos = Player.Instance.transform.position;
+        dashDir = playerPos - movement.RB.transform.position;
+        dashStart = Time.time;
     }
 
     private void UpdateDashAttack()
@@ -63,48 +58,43 @@ public class DashingAttack : MonoBehaviour,IAblity
         {
             if (Time.time < dashStart + attackChargeTime)
             {
-                OnCharge?.Invoke();
-
+                UpdateAnim(AnimBoolName.Charge);
                 movement.FaceToItem(Player.Instance.transform);
             }
             else if (Time.time >= dashStart + attackChargeTime
                 && Time.time < dashStart + attackChargeTime + dashDuaration)
             {
-                OnAttack?.Invoke();
-
+                UpdateAnim(AnimBoolName.RangedAttack);
                 movement.SetVelocity(dashVelocity, (Vector2)dashDir);
-                DetectAttack();
+                DetectDamegable();
             }
             else
             {
-                Set(isDefault: true);
+                OnDashEnd();
             }
         }
     }
 
-    public void Set(bool isDefault = false)
+    private void UpdateAnim(AnimBoolName animBoolName)
     {
-        if (isDefault)
-        {
-            allowAttackDetection = false;
-
-            movement.SetVelocityZero();
-            dashStart = 0;
-            dashDir = Vector3.zero;
-        }
-        else
-        {
-            allowAttackDetection = true;
-
-            spriteEffect.TintSprite(spriteEffect.warningColor, 3);
-
-            Vector3 playerPos = Player.Instance.transform.position;
-            dashDir = playerPos - movement.RB.transform.position;
-            dashStart = Time.time;
-        }
+        animator.SetBool(AnimBoolName.Idle.ToString(), 
+            animBoolName == AnimBoolName.Idle);
+        animator.SetBool(AnimBoolName.Charge.ToString(), 
+            animBoolName == AnimBoolName.Charge);
+        animator.SetBool(AnimBoolName.RangedAttack.ToString(), 
+            animBoolName == AnimBoolName.RangedAttack);
     }
 
-    public void DetectAttack()
+    private void OnDashEnd()
+    {
+        allowAttackDetection = false;
+
+        movement.SetVelocityZero();
+        dashStart = 0;
+        dashDir = Vector3.zero;
+    }
+
+    private void DetectDamegable()
     {
         if (allowAttackDetection)
         {

@@ -982,9 +982,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   attackDamage: 10
-  attackInterval: 2
+  totalCooldownTime: 2
   attackSound: {fileID: 8300000, guid: 1499954a98c0b2342b8b862b99fe7772, type: 3}
-  cooldownTime: 0
+  restCooldownTime: 0
 --- !u!114 &498208998729585855
 MonoBehaviour:
   m_ObjectHideFlags: 0

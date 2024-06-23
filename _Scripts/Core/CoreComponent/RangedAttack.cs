@@ -11,14 +11,12 @@ namespace Ginko.CoreSystem
         [SerializeField] protected bool isDebug;
         [Header("Base")]
         [SerializeField] private bool isAutoAnim;
-        [SerializeField] protected LayerMask hostileLayer;
-        [SerializeField] protected float attackDamage;
-        [SerializeField] public float attackInterval;
+        [SerializeField] public float totalCooldownTime;
         [SerializeField] public AudioClip attackSound;
 
         private Timer cooldownTimer;
-        protected bool isDuringCooldown;
-        public float cooldownTime;
+        public bool isDuringCooldown { get; private set; }
+        public float restCooldownTime { get; private set; }
 
         public event Action<RangedAttackStatus> OnStatusChange;
         public RangedAttackStatus statusIndex {  get; protected set; }
@@ -36,8 +34,8 @@ namespace Ginko.CoreSystem
         {
             base.Awake();
 
-            cooldownTimer = new Timer(attackInterval);
-            cooldownTimer.OnTimerDone += OnCooldownTimerDone;
+            cooldownTimer = new Timer(totalCooldownTime);
+            cooldownTimer.OnTimerDone += HandleCooldownTimerDone;
 
             ablity = GetComponent<IAblity>();
 
@@ -46,23 +44,12 @@ namespace Ginko.CoreSystem
 
         public override void OnEnable()
         {
-            if (ablity != null)
-            {
-                ablity.OnAttack += OnAblityAttack;
-            }
+            animationEventHandler.OnFinish += HandleOnAttackFinished;
         }
 
         private void OnDisable()
         {
-            if (ablity != null)
-            {
-                ablity.OnAttack -= OnAblityAttack;
-            }
-        }
-
-        private void OnAblityAttack()
-        {
-            SetStatus(RangedAttackStatus.Attack);
+            animationEventHandler.OnFinish -= HandleOnAttackFinished;
         }
 
         public override void LogicUpdate()
@@ -70,26 +57,7 @@ namespace Ginko.CoreSystem
             base.LogicUpdate();
 
             cooldownTimer.Tick();
-            cooldownTime = cooldownTimer.restTime;
-        }
-
-        public void SetStatus(RangedAttackStatus status)
-        {
-            if (statusIndex != status)
-            {
-                statusIndex = status;
-                OnStatusChange?.Invoke(status);
-            }
-        }
-
-        public void SetAllowDetection(bool isAllow)
-        {
-            allowAttackDetection = isAllow;
-        }
-
-        public virtual void Set(bool isDefault = false)
-        {
-
+            restCooldownTime = cooldownTimer.restTime;
         }
 
         public virtual void CheckIfAttack()
@@ -105,18 +73,35 @@ namespace Ginko.CoreSystem
         public virtual void StartAttack()
         {
             isDuringCooldown = true;
-            
+
             cooldownTimer.StartTimer();
 
+            // 直接播放攻击动画，攻击动画的事件再触发技能
             if (isAutoAnim)
             {
                 SetStatus(RangedAttackStatus.Attack);
                 animationEventHandler.OnAttackAction += HandleOnAttack;
             }
+
+            // 直接施法技能， 技能内部控制动画
             else
             {
                 ablity.Activate();
             }
+        }
+        
+        private void SetStatus(RangedAttackStatus status)
+        {
+            if (statusIndex != status)
+            {
+                statusIndex = status;
+                OnStatusChange?.Invoke(status);
+            }
+        }
+
+        private void HandleOnAttackFinished()
+        {
+            SetStatus(RangedAttackStatus.Idle);
         }
 
         private void HandleOnAttack()
@@ -125,12 +110,8 @@ namespace Ginko.CoreSystem
 
             ablity.Activate();
         }
-        public virtual void StopAttack()
-        {
-            //cooldownTimer?.StopTimer();
-        }
 
-        private void OnCooldownTimerDone()
+        private void HandleCooldownTimerDone()
         {
             isDuringCooldown = false;   
         }

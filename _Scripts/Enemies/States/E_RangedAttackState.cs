@@ -32,8 +32,6 @@ namespace Ginko.StateMachineSystem
         {
             base.RegisterEvents();
 
-            animEventHandler.OnFinish += HandleOnAttackAnimFinished;
-
             animEventHandler.OnAttackAction += HandleStartAttack;
             Entity.RangedAttack.OnStatusChange += UpdateAnim;
         }
@@ -41,8 +39,6 @@ namespace Ginko.StateMachineSystem
         public override void UnRegisterEvents()
         {
             base.UnRegisterEvents();
-
-            animEventHandler.OnFinish -= HandleOnAttackAnimFinished;
 
             animEventHandler.OnAttackAction -= HandleStartAttack;
             Entity.RangedAttack.OnStatusChange -= UpdateAnim;
@@ -54,16 +50,11 @@ namespace Ginko.StateMachineSystem
 
             Entity.Movement.SetVelocityZero();
             Entity.Anim.SetInteger("AttackCounter", 0);
-
-            Entity.RangedAttack.Set(true);
         }
 
         public override void Exit()
         {
             base.Exit();
-
-            Entity.RangedAttack.StopAttack();
-            Entity.RangedAttack.SetAllowDetection(false);
 
             Entity.Anim.SetBool(AnimBoolName.Idle.ToString(), false);
             Entity.Anim.SetBool(AnimBoolName.Charge.ToString(), false);
@@ -80,8 +71,6 @@ namespace Ginko.StateMachineSystem
 
             if (IsAnimationFinished)
             {
-                Entity.RangedAttack.SetAllowDetection(false);
-
                 if (!Entity.Detections.IsInRangedAttackRange)
                 {
                     ClearAnim();
@@ -123,11 +112,6 @@ namespace Ginko.StateMachineSystem
             Entity.Anim.SetBool(AnimBoolName.Idle.ToString(), false);
             Entity.Anim.SetBool(AnimBoolName.Charge.ToString(), false);
             Entity.Anim.SetBool(AnimBoolName.RangedAttack.ToString(), false);
-        }
-
-        private void HandleOnAttackAnimFinished()
-        {
-            Entity.RangedAttack.SetStatus(RangedAttack.RangedAttackStatus.Idle);
         }
 
         private void HandleStartAttack()

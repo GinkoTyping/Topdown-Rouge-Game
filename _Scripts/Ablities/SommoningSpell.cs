@@ -21,9 +21,6 @@ public class SommoningSpell : MonoBehaviour, IAblity
     private List<GameObject> activeAuras = new List<GameObject>();
     private List<Timer> activeTimers = new List<Timer>();
 
-    public event Action OnCharge;
-    public event Action OnAttack;
-
     private void Awake()
     {
         poolHelper = GameObject.Find("Helper").GetComponent<PoolHelper>();
