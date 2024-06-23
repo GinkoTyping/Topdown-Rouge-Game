@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5398409648141773387}
-  - component: {fileID: 1619680649899630503}
+  - component: {fileID: 40993223842167426}
   - component: {fileID: 8710945929912815282}
   m_Layer: 8
   m_Name: RangedAttack
@@ -33,7 +33,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5365253013194603596}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1619680649899630503
+--- !u!114 &40993223842167426
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,13 +42,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 201814021335754772}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efd777a9a3cf4414fbe5e9dc99b356dd, type: 3}
+  m_Script: {fileID: 11500000, guid: 50e0656d17425104e858fdc5646a6e2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDebug: 0
   isAutoAnim: 0
+  defaultAttackAnimBoolName: 5
   totalCooldownTime: 3
-  attackSound: {fileID: 8300000, guid: 646427e6b9cddc5458dba52c366e8fc3, type: 3}
 --- !u!114 &8710945929912815282
 MonoBehaviour:
   m_ObjectHideFlags: 0

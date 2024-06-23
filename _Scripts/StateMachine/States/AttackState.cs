@@ -28,6 +28,9 @@ namespace Ginko.StateMachineSystem
 
             IsToRangedAttackState = false;
             IsToMeleeAttackState = false;
+
+            Entity.Movement.SetVelocityZero();
+            Entity.Anim.SetInteger("AttackCounter", 0);
         }
 
         public override void LogicUpdate()

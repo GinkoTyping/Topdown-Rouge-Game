@@ -16,16 +16,16 @@ public class DashingAttack : BaseAbility
     private Core core;
     private Movement movement;
     private SpriteEffect spriteEffect;
-    private Animator animator;
 
     private float dashStart;
     private Vector3 dashDir;
     private bool allowAttackDetection;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         core = GetComponentInParent<Core>();
-        animator = GetComponentInParent<Entity>().GetComponent<Animator>();
     }
     
     private void Start()
@@ -70,16 +70,6 @@ public class DashingAttack : BaseAbility
                 OnDashEnd();
             }
         }
-    }
-
-    private void UpdateAnim(AnimBoolName animBoolName)
-    {
-        animator.SetBool(AnimBoolName.Idle.ToString(), 
-            animBoolName == AnimBoolName.Idle);
-        animator.SetBool(AnimBoolName.Charge.ToString(), 
-            animBoolName == AnimBoolName.Charge);
-        animator.SetBool(AnimBoolName.RangedAttack.ToString(), 
-            animBoolName == AnimBoolName.RangedAttack);
     }
 
     private void OnDashEnd()

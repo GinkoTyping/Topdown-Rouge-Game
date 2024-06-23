@@ -20,11 +20,6 @@ namespace Ginko.StateMachineSystem
             get => detections ??= Core.GetCoreComponent<Detections>();
         }
         private Detections detections;
-        public ParticleManager ParticleManager
-        {
-            get => particleManager ??= Core.GetCoreComponent<ParticleManager>();
-        }
-        private ParticleManager particleManager;
         public Pathfinding Pathfinding
         {
             get => pathfinding ??= Core.GetCoreComponent<Pathfinding>();
@@ -35,22 +30,6 @@ namespace Ginko.StateMachineSystem
             get => attack ??= Core.GetCoreComponent<Attack>();
         }
         private Attack attack;
-        public CollideAttack CollideAttack
-        {
-            get => collideAttack ??= Core.GetCoreComponent<CollideAttack>();
-        }
-        private CollideAttack collideAttack;
-
-        public RangedAttack RangedAttack
-        {
-            get => rangedAttack ??= Core.GetCoreComponent<RangedAttack>();
-        }
-        private RangedAttack rangedAttack;
-        public SpriteEffect SpriteHandler
-        {
-            get => spriteHandler ??= Core.GetCoreComponent<SpriteEffect>();
-        }
-        private SpriteEffect spriteHandler;
         public Death Death
         {
             get => death ??= Core.GetCoreComponent<Death>();

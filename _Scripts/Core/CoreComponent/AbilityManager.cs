@@ -8,10 +8,11 @@ namespace Ginko.CoreSystem
     /*
      * 1. 根据冷却时间调用 Ability
      */
-    public class RangedAttack : CoreComponent
+    public class AbilityManager : CoreComponent
     {
         [Header("Base")]
         [SerializeField] private bool isAutoAnim;
+        [SerializeField] private AnimBoolName defaultAttackAnimBoolName;
         [SerializeField] private float totalCooldownTime;
 
         private Timer cooldownTimer;
@@ -41,12 +42,16 @@ namespace Ginko.CoreSystem
         {
             animationEventHandler.OnAttackAction += PlayAttackSound;
             animationEventHandler.OnFinish += HandleOnAttackFinished;
+
+            ablity.BeforeActivate();
         }
 
         private void OnDisable()
         {
             animationEventHandler.OnAttackAction -= PlayAttackSound;
             animationEventHandler.OnFinish -= HandleOnAttackFinished;
+
+            ablity.Deactivate();
         }
 
         public override void LogicUpdate()
@@ -58,17 +63,17 @@ namespace Ginko.CoreSystem
         }
         #endregion
 
-        public virtual void CheckIfAttack()
+        public void CheckIfAttack()
         {
             if (isDuringCooldown)
             {
                 return;
             }
 
-            StartAttack();
+            InitiateAttack();
         }
 
-        private void StartAttack()
+        private void InitiateAttack()
         {
             isDuringCooldown = true;
 
@@ -77,7 +82,7 @@ namespace Ginko.CoreSystem
             // 直接播放攻击动画，攻击动画的事件再触发技能
             if (isAutoAnim)
             {
-                SetAnimState(AnimBoolName.RangedAttack);
+                SetAnimState(defaultAttackAnimBoolName);
                 animationEventHandler.OnAttackAction += HandleOnAttack;
             }
 
@@ -96,7 +101,12 @@ namespace Ginko.CoreSystem
                 OnAnimChange?.Invoke(name);
             }
         }
-
+        
+        private void PlayAttackSound()
+        {
+            SoundManager.Instance.PlaySound(ablity.abilityAudio);
+        }
+        
         private void HandleOnAttackFinished()
         {
             SetAnimState(AnimBoolName.Idle);
@@ -112,11 +122,6 @@ namespace Ginko.CoreSystem
         private void HandleCooldownTimerDone()
         {
             isDuringCooldown = false;   
-        }
-
-        private void PlayAttackSound()
-        {
-            SoundManager.Instance.PlaySound(ablity.abilityAudio);
         }
     }
 }

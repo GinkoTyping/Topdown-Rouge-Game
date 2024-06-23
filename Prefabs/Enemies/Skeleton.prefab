@@ -115,8 +115,8 @@ Transform:
   - {fileID: 2771962164299163042}
   - {fileID: 3458299922496797295}
   - {fileID: 6236325743871239190}
-  - {fileID: 5599842859742074821}
   - {fileID: 3918966684780897516}
+  - {fileID: 5599842859742074821}
   m_Father: {fileID: 6580303063066957341}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2695511270423761253
@@ -717,7 +717,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5599842859742074821}
-  - component: {fileID: 1849791597065853946}
+  - component: {fileID: 7656142804945674644}
+  - component: {fileID: 8517080164359767397}
   m_Layer: 8
   m_Name: Attack
   m_TagString: Untagged
@@ -740,7 +741,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5365253013194603596}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1849791597065853946
+--- !u!114 &7656142804945674644
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -749,9 +750,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 6040960515651592941}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8055ff2b34ae3d9438e6e0989118d300, type: 3}
+  m_Script: {fileID: 11500000, guid: 50e0656d17425104e858fdc5646a6e2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAutoAnim: 1
+  defaultAttackAnimBoolName: 0
+  totalCooldownTime: 0
+--- !u!114 &8517080164359767397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6040960515651592941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3f9b506c78c94a45a55d81a42ea4560, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDebug: 0
+  abilityAudio: {fileID: 8300000, guid: 1499954a98c0b2342b8b862b99fe7772, type: 3}
+  attackDamage: 0
+  hostileLayer:
+    serializedVersion: 2
+    m_Bits: 1024
   attackDetails:
   - isDebug: 0
     damageAmount: 10
@@ -765,7 +787,7 @@ MonoBehaviour:
     hitBoxOffset: {x: 1, y: 0.6}
   hostileLayer:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 0
 --- !u!1 &6216908440910580063
 GameObject:
   m_ObjectHideFlags: 0

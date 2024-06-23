@@ -18,14 +18,6 @@ namespace Ginko.StateMachineSystem
             attack = entity.Core.GetCoreComponent<Attack>();
         }
 
-        public override void Enter()
-        {
-            base.Enter();
-
-            Entity.Movement.SetVelocityZero();
-            Entity.Anim.SetInteger("AttackCounter", 0);
-        }
-
         public override void Exit()
         {
             base.Exit();

@@ -14,10 +14,12 @@ namespace Ginko.StateMachineSystem
      * 1.调用 RangedAttack
      * 2.切换至其他state
      */
-    public class E_RangedAttackState : AttackState
+    public class E_AttackState : AttackState
     {
-        public E_RangedAttackState(Entity entity, FiniteStateMachine stateMachine) : base(entity, stateMachine)
+        private AbilityManager abilityManager;
+        public E_AttackState(Entity entity, FiniteStateMachine stateMachine, AttackStateType attackStateType) : base(entity, stateMachine)
         {
+            abilityManager = Entity.Core.transform.Find(attackStateType.ToString())?.GetComponent<AbilityManager>();
         }
 
         // 因为具体动画由不同的Ability决定，所以默认使用Idle动画
@@ -29,31 +31,20 @@ namespace Ginko.StateMachineSystem
         public override void RegisterEvents()
         {
             base.RegisterEvents();
-            Entity.RangedAttack.OnAnimChange += UpdateAnim;
+            abilityManager.OnAnimChange += UpdateAnim;
         }
 
         public override void UnRegisterEvents()
         {
             base.UnRegisterEvents();
-            Entity.RangedAttack.OnAnimChange -= UpdateAnim;
-        }
-
-        public override void Enter()
-        {
-            base.Enter();
-
-            Entity.Movement.SetVelocityZero();
-            Entity.Anim.SetInteger("AttackCounter", 0);
+            abilityManager.OnAnimChange -= UpdateAnim;
         }
 
         public override void Exit()
         {
             base.Exit();
 
-            Entity.Anim.SetBool(AnimBoolName.Idle.ToString(), false);
-            Entity.Anim.SetBool(AnimBoolName.Charge.ToString(), false);
-            Entity.Anim.SetBool(AnimBoolName.RangedAttack.ToString(), false);
-
+            ClearAnim();
             Entity.Anim.SetInteger("AttackCounter", -1);
         }
 
@@ -61,22 +52,17 @@ namespace Ginko.StateMachineSystem
         {
             base.LogicUpdate();
 
-            Entity.RangedAttack.CheckIfAttack();
+            abilityManager.CheckIfAttack();
 
             if (IsAnimationFinished)
             {
-                if (!Entity.Detections.IsInRangedAttackRange)
-                {
-                    ClearAnim();
-                }
-
                 if (Entity.Detections.IsInMeleeAttackRange)
                 {
                     IsToMeleeAttackState = true;
                 }
                 else if (Entity.Detections.IsInRangedAttackRange)
                 {
-
+                    IsToRangedAttackState = true;
                 }
                 else if (Entity.Detections.IsHostileDetected)
                 {
@@ -102,8 +88,16 @@ namespace Ginko.StateMachineSystem
                 false);
             Entity.Anim.SetBool(AnimBoolName.Charge.ToString(), 
                 false);
+            Entity.Anim.SetBool(AnimBoolName.MeleeAttack.ToString(),
+                false);
             Entity.Anim.SetBool(AnimBoolName.RangedAttack.ToString(), 
                 false);
         }
+    }
+    
+    public enum AttackStateType
+    {
+        Attack,
+        RangedAttack
     }
 }

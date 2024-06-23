@@ -22,8 +22,10 @@ public class SommoningSpell : BaseAbility
     private List<GameObject> activeAuras = new List<GameObject>();
     private List<Timer> activeTimers = new List<Timer>();
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         poolHelper = GameObject.Find("Helper").GetComponent<PoolHelper>();
         sommonPoolParent = transform.parent.parent.parent.transform;
         containersTransform = GameObject.Find("Containers").transform;

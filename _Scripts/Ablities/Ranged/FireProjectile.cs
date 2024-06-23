@@ -18,8 +18,10 @@ public class FireProjectile : BaseAbility
     private CommonPool poolManager;
     private Movement movement;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+        
         poolManager = GameObject.Find("Containers").transform.Find("AnimatedProjectiles").GetComponent<CommonPool>();
     }
 

@@ -17,9 +17,12 @@ namespace Ginko.StateMachineSystem
         }
         public void ChangeState(State state)
         {
-            CurrentState.Exit();
-            CurrentState = state;
-            CurrentState.Enter();
+            if (CurrentState != state)
+            {
+                CurrentState.Exit();
+                CurrentState = state;
+                CurrentState.Enter();
+            }
         }
     }
 }

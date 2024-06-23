@@ -536,7 +536,7 @@ GameObject:
   - component: {fileID: 7140552942097378852}
   - component: {fileID: 3839069633614073556}
   m_Layer: 8
-  m_Name: Slime
+  m_Name: Slime_Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
