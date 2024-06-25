@@ -40,10 +40,11 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void Set(Vector3 position, Vector3 direction, float damageAmount)
+    public void Set(Vector3 position, Vector3 direction, float damageAmount, LayerMask layer)
     {
         this.direction = direction.normalized;
         this.damageAmount = damageAmount;
+        detectionLayer = layer;
 
         transform.position = position;
         transform.eulerAngles = new Vector3(0, 0 , Vector2.SignedAngle(Vector2.right, this.direction));
@@ -64,7 +65,7 @@ public class Projectile : MonoBehaviour
 
     private void DetectCollision()
     {
-        Collider2D collider = Physics2D.OverlapBox(transform.position + detectionOffset, detectionSize, detectionLayer);
+        Collider2D collider = Physics2D.OverlapBox(transform.position + detectionOffset, detectionSize, 0, detectionLayer);
 
         IDamageable damageable = collider?.GetComponentInParent<IDamageable>();
         if (damageable != null)
