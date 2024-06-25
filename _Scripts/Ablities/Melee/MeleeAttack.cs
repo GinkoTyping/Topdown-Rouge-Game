@@ -15,7 +15,7 @@ public class MeleeAttack : BaseAbility
     private Movement movement;
     private Detections detections;
 
-    private void Start()
+    protected override void Start()
     {
         movement = GetComponentInParent<Core>().GetCoreComponent<Movement>();
         detections = GetComponentInParent<Core>().GetCoreComponent<Detections>();
@@ -24,17 +24,17 @@ public class MeleeAttack : BaseAbility
         stateMachine = GetComponentInParent<Entity>().StateMachine;
     }
 
-    public override void BeforeActivate()
+    protected override void OnEnable()
     {
-        base.BeforeActivate();
+        base.OnEnable();
 
         animationEventHandler.OnFinish += AddAttackCounter;
         animationEventHandler.OnAttackAction += DetectDamegable;
     }
 
-    public override void Deactivate()
+    protected override void OnDisable()
     {
-        base.Deactivate();
+        base.OnDisable();
 
         animationEventHandler.OnFinish -= AddAttackCounter;
         animationEventHandler.OnAttackAction -= DetectDamegable;
@@ -70,6 +70,7 @@ public class MeleeAttack : BaseAbility
             {
                 counter = 0;
                 UpdateAnim(AnimBoolName.Idle);
+                stateMachine.CurrentState.IsAnimationFinished = true;
             }
             else
             {

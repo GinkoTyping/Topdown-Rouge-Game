@@ -28,8 +28,10 @@ public class DashingAttack : BaseAbility
         core = GetComponentInParent<Core>();
     }
     
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+
         movement = core.GetCoreComponent<Movement>();
         spriteEffect = core.GetCoreComponent<SpriteEffect>();
     }

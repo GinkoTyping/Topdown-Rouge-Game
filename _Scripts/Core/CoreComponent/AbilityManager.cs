@@ -40,18 +40,12 @@ namespace Ginko.CoreSystem
 
         public override void OnEnable()
         {
-            animationEventHandler.OnAttackAction += PlayAttackSound;
             animationEventHandler.OnFinish += HandleOnAttackFinished;
-
-            ablity.BeforeActivate();
         }
 
         private void OnDisable()
         {
-            animationEventHandler.OnAttackAction -= PlayAttackSound;
             animationEventHandler.OnFinish -= HandleOnAttackFinished;
-
-            ablity.Deactivate();
         }
 
         public override void LogicUpdate()
@@ -100,11 +94,6 @@ namespace Ginko.CoreSystem
                 currentAnim = name;
                 OnAnimChange?.Invoke(name);
             }
-        }
-        
-        private void PlayAttackSound()
-        {
-            SoundManager.Instance.PlaySound(ablity.abilityAudio);
         }
         
         private void HandleOnAttackFinished()

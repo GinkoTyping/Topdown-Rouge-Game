@@ -753,9 +753,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50e0656d17425104e858fdc5646a6e2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAutoAnim: 1
+  isAutoAnim: 0
   defaultAttackAnimBoolName: 0
-  totalCooldownTime: 0
+  totalCooldownTime: 6
 --- !u!114 &8517080164359767397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -785,9 +785,6 @@ MonoBehaviour:
     moveVelocity: 0
     hitBoxSize: {x: 2.5, y: 2.7}
     hitBoxOffset: {x: 1, y: 0.6}
-  hostileLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &6216908440910580063
 GameObject:
   m_ObjectHideFlags: 0

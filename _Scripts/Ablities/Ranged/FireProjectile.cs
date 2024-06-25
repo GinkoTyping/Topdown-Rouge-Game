@@ -25,7 +25,7 @@ public class FireProjectile : BaseAbility
         poolManager = GameObject.Find("Containers").transform.Find("AnimatedProjectiles").GetComponent<CommonPool>();
     }
 
-    private void Start()
+    protected override void Start()
     {
         movement = GetComponentInParent<Core>().GetCoreComponent<Movement>();
     }

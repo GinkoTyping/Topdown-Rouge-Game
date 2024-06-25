@@ -11,34 +11,52 @@ public abstract class BaseAbility : MonoBehaviour
     [SerializeField] protected float attackDamage;
     [SerializeField] protected LayerMask hostileLayer;
 
+    protected Entity entity;
+    protected FiniteStateMachine stateMachine;
     protected Animator animator;
     protected AnimationEventHandler animationEventHandler;
+
+    protected bool isAbleToActivate;
 
     protected virtual void Awake()
     {
         animator = GetComponentInParent<Animator>();
         animationEventHandler = GetComponentInParent<AnimationEventHandler>();
+        entity = GetComponentInParent<Entity>();
     }
 
-    /// <summary>
-    /// 注册 Ability 相关的动画事件
-    /// </summary>
-    public virtual void BeforeActivate() { }
+    protected virtual void Update()
+    {
+        
+    }
 
-    /// <summary>
-    /// 取消注册 Ability 相关的动画事件
-    /// </summary>
-    public virtual void Deactivate() { }
+    protected virtual void OnEnable()
+    {
+        SwitchAbleToActivate(true);
+        animationEventHandler.OnAttackAction += PlayAbilitySound;
+    }
+
+    protected virtual void OnDisable()
+    {
+        animationEventHandler.OnAttackAction -= PlayAbilitySound;
+    }
+
+    protected virtual void Start()
+    {
+        stateMachine = GetComponentInParent<Entity>().StateMachine;
+    }
+
+    public void SwitchAbleToActivate(bool isAble)
+    {
+        isAbleToActivate = isAble;
+    }
 
     public abstract void Activate();
 
     protected void UpdateAnim(AnimBoolName animBoolName)
     {
-        
         animator.SetBool(AnimBoolName.Idle.ToString(),
             animBoolName == AnimBoolName.Idle);
-
-        Debug.Log($"{animBoolName}, {animator.GetBool(AnimBoolName.Idle.ToString())}");
 
         animator.SetBool(AnimBoolName.Charge.ToString(),
             animBoolName == AnimBoolName.Charge);
@@ -48,5 +66,12 @@ public abstract class BaseAbility : MonoBehaviour
 
         animator.SetBool(AnimBoolName.MeleeAttack.ToString(),
             animBoolName == AnimBoolName.MeleeAttack);
+    }
+    private void PlayAbilitySound()
+    {
+        if (abilityAudio != null)
+        {
+            SoundManager.Instance.PlaySound(abilityAudio);
+        }
     }
 }

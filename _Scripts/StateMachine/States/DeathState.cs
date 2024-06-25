@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class DeathState : State
 {
-    private BaseAbility[] deathrattles;
+    public BaseAbility[] deathrattles;
     public DeathState(Entity entity, FiniteStateMachine stateMachine) : base(entity, stateMachine)
     {
         deathrattles = entity.Core.GetCoreComponent<Death>().GetComponentsInChildren<BaseAbility>();
@@ -15,14 +15,6 @@ public class DeathState : State
     public override void Enter()
     {
         base.Enter();
-
-        if (deathrattles.Length > 0)
-        {
-            foreach (BaseAbility ability in deathrattles)
-            {
-                ability.Activate();
-            }
-        }
     }
 
     public override void RegisterEvents()
@@ -41,7 +33,18 @@ public class DeathState : State
     {
         animEventHandler.OnFinish -= OnDeathAnimFinish;
 
+        InitiateDeathRattles();
         Exit();
         Entity.Death.Die();
+    }
+    private void InitiateDeathRattles()
+    {
+        if (deathrattles.Length > 0)
+        {
+            foreach (BaseAbility ability in deathrattles)
+            {
+                ability.Activate();
+            }
+        }
     }
 }
