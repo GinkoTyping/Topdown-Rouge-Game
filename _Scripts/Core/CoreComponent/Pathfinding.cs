@@ -10,7 +10,6 @@ namespace Ginko.CoreSystem
         [Header("Navigator options")]
         [SerializeField] float gridSize = 0.5f; //increase patience or gridSize for larger maps
 
-
         Pathfinder<Vector2> pathfinder; //the pathfinder object that stores the methods and patience
         [Tooltip("The layers that the navigator can not pass through.")]
         [SerializeField] LayerMask obstacles;
@@ -21,6 +20,8 @@ namespace Ginko.CoreSystem
         [Tooltip("Deactivate to make the navigator to stop at the nearest point on the grid.")]
         [SerializeField]
         public bool snapToGrid = false;
+        [SerializeField] private PathFindingType pathfindingType;
+        [SerializeField] private float alignDistance;
 
         [SerializeField] bool drawDebugLines;
 
@@ -33,12 +34,18 @@ namespace Ginko.CoreSystem
         }
         private Movement movement;
 
+        private enum PathFindingType
+        {
+            Target,
+            Target_Align,
+        }
 
         private void Start()
         {
             pathfinder = new Pathfinder<Vector2>(GetDistance, GetNeighbourNodes, 1000); //increase patience or gridSize for larger maps
         }
-        public List<Vector2> GetMoveCommand(Vector2 target)
+        
+        private List<Vector2> GetPathList(Vector2 target)
         {
             Vector2 closestNode = GetClosestNode(Movement.RB.transform.position);
             if (pathfinder.GenerateAstarPath(closestNode, GetClosestNode(target), out path)) //Generate path between two points on grid that are close to the transform position and the assigned target.
@@ -62,6 +69,41 @@ namespace Ginko.CoreSystem
             return pathLeftToGo;
         }
 
+        public List<Vector2> GetMoveCommand(Vector2 relativePos)
+        {
+            if (pathfindingType == PathFindingType.Target)
+            {
+                return GetPathList(relativePos);
+            }
+
+            Vector3 basePosition = transform.position;
+            if ((transform.position - (Vector3)relativePos).sqrMagnitude > alignDistance * alignDistance)
+            {
+                basePosition = relativePos + ((Vector2)transform.position - relativePos).normalized * alignDistance;
+            }
+
+            Vector2 pendingPosA = new Vector2(basePosition.x, relativePos.y);
+            Vector2 pendingPosB = new Vector2(relativePos.x, basePosition.y);
+
+            List<Vector2> pendingListA = GetPathList(pendingPosA);
+            List<Vector2> pendingListB = GetPathList(pendingPosB);
+
+            return CalculateSqrPathDistance(pendingListA) > CalculateSqrPathDistance(pendingListB)
+                ? pendingListB
+                : pendingListA;
+        }
+
+        private float CalculateSqrPathDistance(List<Vector2> path)
+        {
+            float output = 0f;
+
+            for(int i = 0;i < path.Count - 1;i++)
+            {
+                output += GetDistance(path[i], path[i + 1]);
+            }
+
+            return output;
+        }
 
         /// <summary>
         /// Finds closest point on the grid
@@ -83,7 +125,6 @@ namespace Ginko.CoreSystem
         {
             return (A - B).sqrMagnitude; //Uses square magnitude to lessen the CPU time.
         }
-
         /// <summary>
         /// Finds possible conenctions and the distances to those connections on the grid.
         /// </summary>
@@ -109,7 +150,6 @@ namespace Ginko.CoreSystem
             return neighbours;
         }
 
-
         List<Vector2> ShortenPath(List<Vector2> path)
         {
             List<Vector2> newPath = new List<Vector2>();
@@ -131,6 +171,5 @@ namespace Ginko.CoreSystem
             newPath.Add(path[path.Count - 1]);
             return newPath;
         }
-
     }
 }

@@ -664,6 +664,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EntityData: {fileID: 11400000, guid: be73e25ba9f5fc940b6f8a3f10a9bf6b, type: 2}
+  isDebugStateMachine: 0
 --- !u!1 &5668986103364519429
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,7 +1001,7 @@ MonoBehaviour:
   magicAuraPrefab: {fileID: 3280519133390621005, guid: a71be3e7990efb040a07565c43cbb198,
     type: 3}
   auarTime: 2
-  sommonPrefab: {fileID: 5617566462948286229, guid: 55c9b8844851ff243bf53491aad7797f,
+  sommonPrefab: {fileID: 5617566462948286229, guid: 70dec78767f8dfe49a08848a661a1072,
     type: 3}
   sommonArea: 2
 --- !u!1 &8220471014344229959

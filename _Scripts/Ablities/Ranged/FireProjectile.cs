@@ -10,18 +10,18 @@ using static UnityEngine.GridBrushBase;
 public class FireProjectile : BaseAbility
 {
     [Header("Fire Projectile")]
+    [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private ShotType shotType;
     [SerializeField] private float fireDuaration;
     [SerializeField] private float fireVelocity;
     [SerializeField] private Vector3 startOffset;
     [SerializeField] private float offsetSize;
 
-    private Vector3 startPosition;
-    private Vector3 fireDirection;
-
-    private CommonPool poolManager;
+    private PoolManager poolManager;
     private Movement movement;
     private VectorHelper vectorHelper;
+    private PoolHelper poolHelper;
+    private Transform projectilePoolContainer;
 
     private enum ShotType
     {
@@ -29,6 +29,7 @@ public class FireProjectile : BaseAbility
         Single_Aligned,
         Tripple,
         Tripple_Aligned,
+        Up_Down_Left_Right
     }
 
     private class ProjectileData
@@ -48,12 +49,19 @@ public class FireProjectile : BaseAbility
         base.Awake();
 
         vectorHelper = new VectorHelper();
-        poolManager = GameObject.Find("Containers").transform.Find("AnimatedProjectiles").GetComponent<CommonPool>();
+        projectilePoolContainer = GameObject.Find("Containers").transform;
+        poolHelper = GameObject.Find("Helper").GetComponent<PoolHelper>();
+        //poolManager = GameObject.Find("Containers").transform.Find("AnimatedProjectiles").GetComponent<CommonPool>();
     }
 
     protected override void Start()
     {
         movement = GetComponentInParent<Core>().GetCoreComponent<Movement>();
+
+        if (poolManager == null)
+        {
+            poolManager = poolHelper.GetPoolByPrefab(projectilePoolContainer, projectilePrefab);
+        }
     }
 
     public override void Activate()
@@ -69,11 +77,6 @@ public class FireProjectile : BaseAbility
             projectile.Set(data.startPosition, data.fireDirection, attackDamage, hostileLayer);
             projectile.Fire(fireVelocity, fireDuaration);
         }
-    }
-
-    public Vector3 GetStartPostion(Vector3 direction)
-    {
-        return transform.position + direction.normalized * offsetSize;
     }
 
     private List<ProjectileData> GetFireDirection()
@@ -123,8 +126,28 @@ public class FireProjectile : BaseAbility
                     negaRotation * nearesetDirection,
                     GetStartPostion(negaRotation * nearesetDirection)));
                 break;
+            
+            case ShotType.Up_Down_Left_Right:
+                projectileData.Add(new ProjectileData(
+                    Vector3.up,
+                    GetStartPostion(Vector3.up)));
+                projectileData.Add(new ProjectileData(
+                    Vector3.down,
+                    GetStartPostion(Vector3.down)));
+                projectileData.Add(new ProjectileData(
+                    Vector3.left,
+                    GetStartPostion(Vector3.left)));
+                projectileData.Add(new ProjectileData(
+                    Vector3.right,
+                    GetStartPostion(Vector3.right)));
+                break;
         }
 
         return projectileData;
+    }
+    
+    private Vector3 GetStartPostion(Vector3 direction)
+    {
+        return transform.position + direction.normalized * offsetSize;
     }
 }

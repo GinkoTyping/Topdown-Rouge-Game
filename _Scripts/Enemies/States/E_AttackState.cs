@@ -58,19 +58,19 @@ namespace Ginko.StateMachineSystem
             {
                 if (Entity.Detections.IsInMeleeAttackRange)
                 {
-                    IsToMeleeAttackState = true;
+                    StateMachine.ChangeState(Entity.MeleeAttackState);
                 }
                 else if (Entity.Detections.IsInRangedAttackRange)
                 {
-                    IsToRangedAttackState = true;
+                    StateMachine.ChangeState(Entity.RangedAttackState);
                 }
                 else if (Entity.Detections.IsHostileDetected)
                 {
-                    IsToHostileDetectedState = true;
+                    StateMachine.ChangeState(Entity.HostileDetectedState);
                 }
                 else if (!Entity.Detections.IsHostileDetected)
                 {
-                    IsToIdleState = true;
+                    StateMachine.ChangeState(Entity.IdleState);
                 }
             }
         }

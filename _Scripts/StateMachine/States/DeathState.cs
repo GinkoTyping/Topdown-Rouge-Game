@@ -1,8 +1,5 @@
 using Ginko.CoreSystem;
 using Ginko.StateMachineSystem;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class DeathState : State
 {
@@ -37,6 +34,7 @@ public class DeathState : State
         Exit();
         Entity.Death.Die();
     }
+    
     private void InitiateDeathRattles()
     {
         if (deathrattles.Length > 0)

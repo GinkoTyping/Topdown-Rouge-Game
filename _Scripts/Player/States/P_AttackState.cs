@@ -21,6 +21,7 @@ namespace Ginko.StateMachineSystem
 
             player = (Player)entity;
         }
+        
         public override void Enter()
         {
             base.Enter();
@@ -32,8 +33,17 @@ namespace Ginko.StateMachineSystem
         {
             base.LogicUpdate();
 
-            IsToIdleState = player.MoveDirection == Vector2.zero;
-            IsToMoveState = player.MoveDirection != Vector2.zero;
+            if (IsAnimationFinished)
+            {
+                if (player.MoveDirection == Vector2.zero)
+                {
+                    StateMachine.ChangeState(Entity.IdleState);
+                }
+                else
+                {
+                    StateMachine.ChangeState(Entity.MoveState);
+                }
+            }
         }
 
         protected override void SetAnimBoolName()

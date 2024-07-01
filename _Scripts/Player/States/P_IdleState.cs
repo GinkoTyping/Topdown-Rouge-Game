@@ -30,21 +30,24 @@ namespace Ginko.StateMachineSystem
         {
             base.LogicUpdate();
 
-            IsToAttackState = player.IsAttackInput;
-            IsToMoveState = player.MoveDirection != Vector2.zero;
-
             interaction.CheckIfShowInteractHint();
 
-            if (player.InputHandler.Interact)
+            if (player.IsAttackInput)
+            {
+                StateMachine.ChangeState(Entity.MeleeAttackState);
+            } 
+            else if (player.MoveDirection != Vector2.zero)
+            {
+                StateMachine.ChangeState(Entity.MoveState);
+            }
+            else if (player.InputHandler.Interact)
             {
                 player.InputHandler.UseInteractSignal();
                 interaction.InteractItem();
-            }
-
-            if (player.InputHandler.Switch)
+            } 
+            else if (player.InputHandler.Switch)
             {
                 player.InputHandler.UseSwitchSignal();
-
                 interaction.SwitchInteratItem();
             }
         }

@@ -524,7 +524,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 90b79a938a074aa4a86928e50972746c, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -664,6 +664,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EntityData: {fileID: 11400000, guid: be73e25ba9f5fc940b6f8a3f10a9bf6b, type: 2}
+  isDebugStateMachine: 0
 --- !u!1 &5668986103364519429
 GameObject:
   m_ObjectHideFlags: 0
@@ -886,6 +887,8 @@ MonoBehaviour:
     m_Bits: 128
   searchShortcut: 0
   snapToGrid: 0
+  pathfindingType: 0
+  alignDistance: 0
   drawDebugLines: 1
 --- !u!1 &7561167008074533706
 GameObject:
@@ -997,9 +1000,13 @@ MonoBehaviour:
   hostileLayer:
     serializedVersion: 2
     m_Bits: 1024
-  fireDuaration: 1
+  projectilePrefab: {fileID: 681933164312349124, guid: c65fd01e46f43bf4d8ba32ef53bb7ad8,
+    type: 3}
+  shotType: 3
+  fireDuaration: 1.2
   fireVelocity: 6
   startOffset: {x: 1.4, y: 0.4, z: 0}
+  offsetSize: 0.5
 --- !u!1 &8220471014344229959
 GameObject:
   m_ObjectHideFlags: 0

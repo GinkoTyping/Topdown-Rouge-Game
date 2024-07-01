@@ -32,13 +32,16 @@ namespace Ginko.CoreSystem
         public override void OnEnable()
         {
             base.OnEnable();
+            gameObject.SetActive(true);
 
             Stats.Health.OnCurrentValueChange += healthBar.ChangeHealthBar;
+            Stats.Health.OnCurrentValueZero += HandleDeath;
         }
 
         private void OnDisable()
         {
             Stats.Health.OnCurrentValueChange -= healthBar.ChangeHealthBar;
+            Stats.Health.OnCurrentValueZero -= HandleDeath;
         }
 
         public override void LogicUpdate()
@@ -50,6 +53,11 @@ namespace Ginko.CoreSystem
                 transform.Rotate(0, 180, 0);
                 flipped = !flipped;
             }
+        }
+    
+        private void HandleDeath()
+        {
+            gameObject.SetActive(false);
         }
     }
 }

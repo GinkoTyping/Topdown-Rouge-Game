@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Ginko.EnemySystem;
 using Ginko.StateMachineSystem;
@@ -27,6 +25,24 @@ namespace Ginko.CoreSystem
         private Stats stats;
 
         public event Action OnDeath;
+
+        public override void OnEnable()
+        {
+            base.OnEnable();
+
+            Stats.Health.OnCurrentValueZero += HandleOnDeath;
+        }
+        
+        private void OnDisable()
+        {
+            Stats.Health.OnCurrentValueZero -= HandleOnDeath;
+        }
+        
+        private void HandleOnDeath()
+        {
+            Entity entity = Core.transform.parent.GetComponent<Entity>();
+            entity.StateMachine.ChangeState(entity.DeathState);
+        }
         
         public void Die()
         {
@@ -67,23 +83,6 @@ namespace Ginko.CoreSystem
             {
                 Destroy(GO);
             }
-        }
-
-        public override void OnEnable()
-        {
-            base.OnEnable();
-
-            Stats.Health.OnCurrentValueZero += HandleOnDeath;
-        }
-        private void OnDisable()
-        {
-            Stats.Health.OnCurrentValueZero -= HandleOnDeath;
-        }
-
-        private void HandleOnDeath()
-        {
-            Entity entity = Core.transform.parent.GetComponent<Entity>();
-            entity.StateMachine.ChangeState(entity.DeathState);
         }
     }
 }

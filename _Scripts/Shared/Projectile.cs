@@ -7,8 +7,8 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] private Vector3 detectionOffset;
     [SerializeField] private Vector3 detectionSize;
-    [SerializeField] private LayerMask detectionLayer;
-
+    
+    private LayerMask detectionLayer;
     private float velocity;
     private float damageAmount;
     private Vector3 direction;

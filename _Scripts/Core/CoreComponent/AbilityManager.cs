@@ -21,7 +21,7 @@ namespace Ginko.CoreSystem
 
         private bool isDuringCooldown;
         private float restCooldownTime;
-        private AnimBoolName currentAnim;
+        private Animator animator;
 
         public event Action<AnimBoolName> OnAnimChange;
 
@@ -36,6 +36,7 @@ namespace Ginko.CoreSystem
             ablity = GetComponent<BaseAbility>();
 
             animationEventHandler = Core.transform.parent.GetComponent<AnimationEventHandler>();
+            animator = Core.GetComponentInParent<Animator>();
         }
 
         public override void OnEnable()
@@ -89,9 +90,9 @@ namespace Ginko.CoreSystem
         
         private void SetAnimState(AnimBoolName name)
         {
-            if (currentAnim != name)
+            // TODO: 直接修改动画状态
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName(name.ToString()))
             {
-                currentAnim = name;
                 OnAnimChange?.Invoke(name);
             }
         }

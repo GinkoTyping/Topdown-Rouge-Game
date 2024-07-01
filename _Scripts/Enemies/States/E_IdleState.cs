@@ -41,7 +41,7 @@ public class E_IdleState : IdleState
         timer.Tick();
         if (Entity.Detections.IsHostileDetected)
         {
-            IsToHostileDetectedState = true;
+            StateMachine.ChangeState(Entity.HostileDetectedState);
         }
         else if (isPatrolling)
         {

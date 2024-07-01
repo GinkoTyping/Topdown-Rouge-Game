@@ -74,12 +74,12 @@ namespace Ginko.StateMachineSystem
 
             if (Entity.Detections.IsInMeleeAttackRange)
             {
-                IsToMeleeAttackState = true;
+                StateMachine.ChangeState(Entity.MeleeAttackState);
                 Entity.Movement.SetVelocityZero();
             } 
             else if (Entity.Detections.IsInRangedAttackRange && Entity.RangedAttackState != null)
             {
-                IsToRangedAttackState = true;
+                StateMachine.ChangeState(Entity.RangedAttackState);
             }
             else if (Entity.Detections.IsHostileDetected && !Entity.Detections.IsInRangedAttackRange)
             {
@@ -92,8 +92,7 @@ namespace Ginko.StateMachineSystem
             } 
             else
             {
-                IsToIdleState = true;
-                Entity.Movement.SetVelocityZero();
+                StateMachine.ChangeState(Entity.IdleState);
             }
         }
     }

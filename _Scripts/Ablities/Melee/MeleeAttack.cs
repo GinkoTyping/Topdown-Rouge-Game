@@ -10,7 +10,6 @@ public class MeleeAttack : BaseAbility
     [SerializeField] public AttackDetail[] attackDetails;
 
     private int atttackCounter;
-    private FiniteStateMachine stateMachine;
 
     private Movement movement;
     private Detections detections;
