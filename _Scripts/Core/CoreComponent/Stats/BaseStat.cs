@@ -9,6 +9,7 @@ namespace Ginko.CoreSystem
     public abstract class BaseStat
     {
         [field: SerializeField] public float MaxValue { get; private set; }
+        [field: SerializeField] public float MinValue { get; private set; }
 
         public event Action OnCurrentValueZero;
         public event Action<float, float> OnCurrentValueChange;
@@ -19,7 +20,7 @@ namespace Ginko.CoreSystem
             get => currentValue;
             set
             {
-                currentValue = Mathf.Clamp(value, 0f, MaxValue);
+                currentValue = Mathf.Clamp(value, MinValue, MaxValue);
                 if (currentValue <= 0)
                 {
                     OnCurrentValueZero?.Invoke();

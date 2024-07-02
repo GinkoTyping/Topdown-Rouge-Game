@@ -8,12 +8,20 @@ using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PlayerInputEventHandler : MonoBehaviour
 {
+    public Vector2 MousePosition { get; private set; }
+    public Vector2 AimPosition { get; private set; }
+
+    public void OnMouseMove(InputAction.CallbackContext context)
+    {
+        MousePosition = Camera.main.ScreenToWorldPoint((Vector3)context.ReadValue<Vector2>());
+        AimPosition = MousePosition - (Vector2)transform.position;
+    }
+
     #region GamePlay
     public Vector2 Direction { get; private set; }
     public bool PrimaryAttack {  get; private set; }
     public bool Dash { get; private set; }
     public bool Interact { get; private set; }
-
     public bool Switch { get; private set; }
 
 
@@ -29,7 +37,7 @@ public class PlayerInputEventHandler : MonoBehaviour
         }
         else if (context.performed)
         {
-            
+            PrimaryAttack = true;
         }
         else if (context.canceled)
         {
@@ -104,7 +112,6 @@ public class PlayerInputEventHandler : MonoBehaviour
     #endregion
 
     #region UI
-    public Vector2 MousePosition { get; private set; }
     public bool Select { get; private set; }
     public bool DeSelect { get; private set; }
     public bool Test { get; private set; }
@@ -113,10 +120,6 @@ public class PlayerInputEventHandler : MonoBehaviour
     public bool HoldCombineKey { get; private set; }
 
     public bool SwitchInventory { get; private set; }
-    public void OnMouseMove(InputAction.CallbackContext context)
-    {
-        MousePosition = Camera.main.ScreenToWorldPoint((Vector3)context.ReadValue<Vector2>());
-    }
 
     public void OnSelect(InputAction.CallbackContext context)
     {

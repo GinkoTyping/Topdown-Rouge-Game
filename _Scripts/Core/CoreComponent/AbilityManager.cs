@@ -58,6 +58,14 @@ namespace Ginko.CoreSystem
         }
         #endregion
 
+        public void SetCooldown(float cooldownTime)
+        {
+            totalCooldownTime = cooldownTime;
+
+            cooldownTimer = new Timer(cooldownTime);
+            cooldownTimer.OnTimerDone += HandleCooldownTimerDone;
+        }
+
         public void CheckIfAttack()
         {
             if (isDuringCooldown)

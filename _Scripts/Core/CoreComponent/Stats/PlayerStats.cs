@@ -34,5 +34,10 @@ namespace Ginko.CoreSystem
 
             return output;
         }
+
+        private float GetAttackSpeed()
+        {
+            return 0;
+        }
     }
 }

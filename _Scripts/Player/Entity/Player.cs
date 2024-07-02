@@ -24,8 +24,7 @@ namespace Ginko.PlayerSystem
             Instance = this;
 
             InputHandler = GetComponent<PlayerInputEventHandler>();
-            primaryWeapon = transform.Find("PrimaryWeapon").GetComponent<Weapon>();
-            primaryWeapon.SetCore(Core);
+
             InputAction = GetComponent<PlayerInput>();
         }
         protected override void Start()
@@ -49,7 +48,7 @@ namespace Ginko.PlayerSystem
         {
             IdleState = new P_IdleState(this, StateMachine);
             MoveState = new P_MoveState(this, StateMachine);
-            MeleeAttackState = new P_AttackState(this, StateMachine, primaryWeapon);
+            MeleeAttackState = new P_AttackState(this, StateMachine);
             DeathState = new DeathState(this, StateMachine);
         }
 

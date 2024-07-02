@@ -1,39 +1,47 @@
-﻿using Ginko.PlayerSystem;
+﻿using Ginko.CoreSystem;
+using Ginko.PlayerSystem;
 using Ginko.Weapons;
+using Shared.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Ginko.StateMachineSystem
 {
     public class P_AttackState : AttackState
     {
-        private Weapon weapon;
         private Player player;
+        private AbilityManager abilityManager;
 
-        public P_AttackState(Entity entity, FiniteStateMachine stateMachine, Weapon weapon) : base(entity, stateMachine)
+        private AttributeStat attackInterval;
+
+        public P_AttackState(Entity entity, FiniteStateMachine stateMachine) : base(entity, stateMachine)
         {
-            this.weapon = weapon;
-            weapon.OnExit += ExitHandler;
-
             player = (Player)entity;
+            
+            abilityManager = entity.Core.GetCoreComponent<AbilityManager>();
         }
         
         public override void Enter()
         {
             base.Enter();
 
-            weapon.Enter();
+            attackInterval = Entity.Core.GetCoreComponent<PlayerStats>().GetAttribute(AttributeType.AttackInterval);
+
+            abilityManager.SetCooldown(attackInterval.CurrentValue);
         }
 
         public override void LogicUpdate()
         {
             base.LogicUpdate();
 
-            if (IsAnimationFinished)
+            abilityManager.CheckIfAttack();
+
+            if (!player.IsAttackInput)
             {
                 if (player.MoveDirection == Vector2.zero)
                 {
@@ -48,12 +56,7 @@ namespace Ginko.StateMachineSystem
 
         protected override void SetAnimBoolName()
         {
-            AnimBoolName = AnimBoolName.MeleeAttack;
-        }
-
-        private void ExitHandler()
-        {
-            IsAnimationFinished = true;
+            AnimBoolName = AnimBoolName.RangedAttack;
         }
     }
 }

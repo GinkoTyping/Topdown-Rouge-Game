@@ -11,6 +11,7 @@ public class FireProjectile : BaseAbility
 {
     [Header("Fire Projectile")]
     [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private TargetType targetType;
     [SerializeField] private ShotType shotType;
     [SerializeField] private float fireDuaration;
     [SerializeField] private float fireVelocity;
@@ -29,7 +30,15 @@ public class FireProjectile : BaseAbility
         Single_Aligned,
         Tripple,
         Tripple_Aligned,
-        Up_Down_Left_Right
+        Up_Down_Left_Right,
+
+        Manual,
+    }
+
+    private enum TargetType
+    {
+        ToPlayer,
+        Aim,
     }
 
     private class ProjectileData
@@ -51,7 +60,6 @@ public class FireProjectile : BaseAbility
         vectorHelper = new VectorHelper();
         projectilePoolContainer = GameObject.Find("Containers").transform;
         poolHelper = GameObject.Find("Helper").GetComponent<PoolHelper>();
-        //poolManager = GameObject.Find("Containers").transform.Find("AnimatedProjectiles").GetComponent<CommonPool>();
     }
 
     protected override void Start()
@@ -82,12 +90,15 @@ public class FireProjectile : BaseAbility
     private List<ProjectileData> GetFireDirection()
     {
         List<ProjectileData> projectileData = new List<ProjectileData>();
-        Vector3 basicDirection = Player.Instance.transform.position - transform.position;
-        Vector3 nearesetDirection = vectorHelper.GetNearestVector(basicDirection);
 
+        Vector3 basicDirection =
+            targetType == TargetType.ToPlayer
+            ? Player.Instance.transform.position - transform.position
+            : Player.Instance.InputHandler.AimPosition;
+
+        Vector3 nearesetDirection = vectorHelper.GetNearestVector(basicDirection);
         Quaternion posRotation = Quaternion.Euler(0, 0, 20f);
         Quaternion negaRotation = Quaternion.Euler(0, 0, -20f);
-
 
         switch (shotType)
         {

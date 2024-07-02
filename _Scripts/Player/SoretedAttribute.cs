@@ -61,4 +61,6 @@ public enum AttributeType
 
     HealthRegeneration,
     HealthRecovery,
+
+    AttackInterval,
 }
