@@ -5527,8 +5527,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.026049972, y: 0.03819999, z: 0}
-    m_Extent: {x: 1.12165, y: 0.9733, z: 0}
+    m_Center: {x: -0.022900045, y: 0.0388, z: 0}
+    m_Extent: {x: 1.1217, y: 0.9714, z: 0}
   m_PointLightInnerAngle: 360.00003
   m_PointLightOuterAngle: 360.00003
   m_PointLightInnerRadius: 0
@@ -13129,6 +13129,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDebug: 0
+  playAudioByAnim: 0
+  playAudioOnActivate: 1
   abilityAudio: {fileID: 8300000, guid: 6739c01659ad96d47987f4ddee226b36, type: 3}
   attackDamage: 0
   hostileLayer:
@@ -13138,7 +13140,7 @@ MonoBehaviour:
     type: 3}
   targetType: 1
   shotType: 0
-  fireDuaration: 0.5
+  fireDuaration: 0.8
   fireVelocity: 10
   startOffset: {x: 0, y: 0, z: 0}
   offsetSize: 0

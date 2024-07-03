@@ -7,6 +7,8 @@ public abstract class BaseAbility : MonoBehaviour
 {
     [Header("Base")]
     [SerializeField] protected bool isDebug;
+    [SerializeField] protected bool playAudioByAnim = true;
+    [SerializeField] protected bool playAudioOnActivate;
     [SerializeField] public AudioClip abilityAudio;
     [SerializeField] protected float attackDamage;
     [SerializeField] protected LayerMask hostileLayer;
@@ -34,12 +36,18 @@ public abstract class BaseAbility : MonoBehaviour
     protected virtual void OnEnable()
     {
         SwitchAbleToActivate(true);
-        animationEventHandler.OnAttackAction += PlayAbilitySound;
+        if (playAudioByAnim)
+        {
+            animationEventHandler.OnAttackAction += PlayAbilitySound;
+        }
     }
 
     protected virtual void OnDisable()
     {
-        animationEventHandler.OnAttackAction -= PlayAbilitySound;
+        if (playAudioByAnim)
+        {
+            animationEventHandler.OnAttackAction -= PlayAbilitySound;
+        }
     }
 
     protected virtual void Start()
@@ -68,7 +76,8 @@ public abstract class BaseAbility : MonoBehaviour
         animator.SetBool(AnimBoolName.MeleeAttack.ToString(),
             animBoolName == AnimBoolName.MeleeAttack);
     }
-    private void PlayAbilitySound()
+    
+    protected void PlayAbilitySound()
     {
         if (abilityAudio != null)
         {

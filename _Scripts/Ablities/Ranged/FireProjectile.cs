@@ -5,7 +5,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GridBrushBase;
 
 public class FireProjectile : BaseAbility
 {
@@ -77,6 +76,12 @@ public class FireProjectile : BaseAbility
         movement.FaceToItem(Player.Instance.transform);
 
         List<ProjectileData> datas = GetFireDirection();
+
+        if (datas.Count > 0 && playAudioOnActivate)
+        {
+            PlayAbilitySound();
+        }
+
         foreach (ProjectileData data in datas)
         {
             Projectile projectile = poolManager.Pool.Get().GetComponent<Projectile>();
