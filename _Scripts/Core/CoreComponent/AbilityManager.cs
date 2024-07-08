@@ -1,3 +1,4 @@
+using Ginko.PlayerSystem;
 using Ginko.StateMachineSystem;
 using Shared.Utilities;
 using System;
@@ -18,6 +19,7 @@ namespace Ginko.CoreSystem
         private Timer cooldownTimer;
         private AnimationEventHandler animationEventHandler;
         private BaseAbility ablity;
+        private Player player;
 
         private bool isDuringCooldown;
         private float restCooldownTime;
@@ -41,6 +43,8 @@ namespace Ginko.CoreSystem
 
         public override void OnEnable()
         {
+            player = Core.GetComponentInParent<Player>();
+
             animationEventHandler.OnFinish += HandleOnAttackFinished;
         }
 

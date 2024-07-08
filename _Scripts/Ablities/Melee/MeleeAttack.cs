@@ -1,7 +1,6 @@
 using Ginko.CoreSystem;
 using Ginko.StateMachineSystem;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class MeleeAttack : BaseAbility
@@ -93,5 +92,26 @@ public class MeleeAttack : BaseAbility
                 Gizmos.DrawWireCube(center, attackDetail.hitBoxSize);
             }
         }
+    }
+}
+
+[Serializable]
+public class AttackDetail
+{
+    [SerializeField]
+    public bool isDebug;
+
+    [SerializeField]
+    public float damageAmount;
+    [SerializeField]
+    public float moveVelocity;
+    [SerializeField]
+    public Vector2 hitBoxSize;
+    [SerializeField]
+    public Vector2 hitBoxOffset;
+
+    public Vector2 GetCenterPoint(Vector3 origin, int facingDirection)
+    {
+        return new Vector2(origin.x + hitBoxOffset.x * facingDirection, origin.y + hitBoxOffset.y);
     }
 }

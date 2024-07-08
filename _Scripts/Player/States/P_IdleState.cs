@@ -30,13 +30,10 @@ namespace Ginko.StateMachineSystem
         {
             base.LogicUpdate();
 
+            CheckIfFlip();
             interaction.CheckIfShowInteractHint();
 
-            if (player.IsAttackInput)
-            {
-                StateMachine.ChangeState(Entity.MeleeAttackState);
-            } 
-            else if (player.MoveDirection != Vector2.zero)
+            if (player.MoveDirection != Vector2.zero)
             {
                 StateMachine.ChangeState(Entity.MoveState);
             }
@@ -49,6 +46,17 @@ namespace Ginko.StateMachineSystem
             {
                 player.InputHandler.UseSwitchSignal();
                 interaction.SwitchInteratItem();
+            }
+        }
+
+        private void CheckIfFlip()
+        {
+            if (player.IsAttackInput)
+            {
+                if (player.InputHandler.MousePosition.x > player.transform.position.x && player.Movement.FacingDirection < 0)
+                {
+                    player.Movement.Flip();
+                }
             }
         }
     }

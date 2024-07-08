@@ -25,11 +25,7 @@ namespace Ginko.StateMachineSystem
             get => pathfinding ??= Core.GetCoreComponent<Pathfinding>();
         }
         private Pathfinding pathfinding;
-        public Attack Attack
-        {
-            get => attack ??= Core.GetCoreComponent<Attack>();
-        }
-        private Attack attack;
+
         public Death Death
         {
             get => death ??= Core.GetCoreComponent<Death>();

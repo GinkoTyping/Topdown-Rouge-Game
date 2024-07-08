@@ -32,7 +32,6 @@ public abstract class BaseAbility : MonoBehaviour
         
     }
 
-    // TODO: 音效和动画解除绑定
     protected virtual void OnEnable()
     {
         SwitchAbleToActivate(true);

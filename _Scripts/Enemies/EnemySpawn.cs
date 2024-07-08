@@ -1,3 +1,4 @@
+using Shared.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 public class EnemySpawn : MonoBehaviour
 {
     [SerializeField]
-    public GameObject skeleton;
+    public GameObject enemyPrefab;
     [SerializeField]
     public bool isSpawning;
     [SerializeField]
@@ -13,15 +14,23 @@ public class EnemySpawn : MonoBehaviour
     [SerializeField]
     public Vector2[] spawnPositions;
 
-    private EnemyPool poolManager;
+    private PoolManager poolManager;
+    private PoolHelper poolHelper;
+    private Transform enemyPoolsContainer;
+
+    private void Awake()
+    {
+        poolHelper = GameObject.Find("Helper").GetComponent<PoolHelper>();
+        enemyPoolsContainer = GameObject.Find("Enemies").transform;
+    }
 
     private void Start()
     {
-        poolManager = GameObject.Find("Enemies").GetComponent<EnemyPool>();
+        poolManager = poolHelper.GetPoolByPrefab(enemyPoolsContainer, enemyPrefab);
 
         if (spawnPositions.Length > 0 && isSpawning)
         {
-            poolManager.SetCurrrentObject(skeleton);
+            poolManager.SetCurrrentObject(enemyPrefab);
             foreach (Vector2 pos in spawnPositions)
             {
                 GameObject enemy = poolManager.Pool.Get();

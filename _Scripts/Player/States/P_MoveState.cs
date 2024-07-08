@@ -41,9 +41,10 @@ namespace Ginko.StateMachineSystem
             float velocity = Time.time <= dashEndTime ? Entity.EntityData.dashVelocity : Entity.EntityData.moveVelocity;
             Entity.Movement.SetVelocity(velocity, player.MoveDirection);
         }
+
         protected override bool IsToAttackState()
         {
-            return player.IsAttackInput;
+            return false;
         }
     }
 }

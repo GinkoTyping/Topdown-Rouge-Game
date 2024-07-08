@@ -61,6 +61,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDebug: 0
+  playAudioByAnim: 1
+  playAudioOnActivate: 0
   abilityAudio: {fileID: 8300000, guid: 646427e6b9cddc5458dba52c366e8fc3, type: 3}
   attackDamage: 10
   hostileLayer:
@@ -595,7 +597,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 90b79a938a074aa4a86928e50972746c, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -736,6 +738,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EntityData: {fileID: 11400000, guid: 2862e1a09c5c4c843a2cdbe4a3cb468b, type: 2}
+  isDebugStateMachine: 0
 --- !u!1 &5668986103364519429
 GameObject:
   m_ObjectHideFlags: 0
@@ -824,15 +827,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8055ff2b34ae3d9438e6e0989118d300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDetails:
-  - isDebug: 0
-    damageAmount: 10
-    moveVelocity: 0
-    hitBoxSize: {x: 2.5, y: 1.6}
-    hitBoxOffset: {x: 1, y: 0}
-  hostileLayer:
-    serializedVersion: 2
-    m_Bits: 1024
+  normalMaterial: {fileID: 0}
+  glowMaterial: {fileID: 0}
 --- !u!1 &6216908440910580063
 GameObject:
   m_ObjectHideFlags: 0
@@ -958,6 +954,8 @@ MonoBehaviour:
     m_Bits: 128
   searchShortcut: 0
   snapToGrid: 0
+  pathfindingType: 0
+  alignDistance: 0
   drawDebugLines: 1
 --- !u!1 &7561167008074533706
 GameObject:
@@ -1049,9 +1047,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Health>k__BackingField:
     <MaxValue>k__BackingField: 10
+    <MinValue>k__BackingField: 0
     <RecoveryRate>k__BackingField: 0
   <Poise>k__BackingField:
     <MaxValue>k__BackingField: 30
+    <MinValue>k__BackingField: 0
     <RecoveryRate>k__BackingField: 0
 --- !u!1 &8543728829367535400
 GameObject:
@@ -1106,20 +1106,15 @@ MonoBehaviour:
   hostileLayer:
     serializedVersion: 2
     m_Bits: 512
-  ActiveSpriteRenderDetection: 0
-  hidingDetectionSize: {x: 0, y: 0}
-  hidingDetectionOffset: {x: 0, y: 0}
-  upperDetectionOffset: {x: 0, y: 0, z: 0}
-  upperDetectionSize: {x: 0, y: 0, z: 0}
+  hidingBehindBoundary: {fileID: 0}
+  upperCollideBoundary: {fileID: 0}
   obstableLayer:
     serializedVersion: 2
     m_Bits: 2048
   bigObjectLayer:
     serializedVersion: 2
     m_Bits: 0
-  ActiveInteractionDetection: 0
-  interactionSize: {x: 0, y: 0}
-  interactionOffset: {x: 0, y: 0}
+  interactBoundary: {fileID: 0}
   interactionLayer:
     serializedVersion: 2
     m_Bits: 0

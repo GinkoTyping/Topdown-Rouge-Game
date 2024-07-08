@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_Glow
+  m_Name: Shader Graphs_Glow_Player
   m_Shader: {fileID: -6465566751694194690, guid: e978e720252481b4ba384e23ec70ceba,
     type: 3}
   m_Parent: {fileID: 0}
@@ -60,5 +60,5 @@ Material:
     m_Ints: []
     m_Floats: []
     m_Colors:
-    - _Color: {r: 8, g: 0.27894595, b: 0, a: 0}
+    - _Color: {r: 7.958114, g: 7.958114, b: 0.41509438, a: 1}
   m_BuildTextureStacks: []

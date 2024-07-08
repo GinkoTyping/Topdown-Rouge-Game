@@ -41,7 +41,14 @@ namespace Ginko.CoreSystem
         private void HandleOnDeath()
         {
             Entity entity = Core.transform.parent.GetComponent<Entity>();
-            entity.StateMachine.ChangeState(entity.DeathState);
+            if (entity == null)
+            {
+                Die();
+            }
+            else
+            {
+                entity.StateMachine.ChangeState(entity.DeathState);
+            }
         }
         
         public void Die()

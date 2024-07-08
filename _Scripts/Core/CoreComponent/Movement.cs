@@ -62,7 +62,7 @@ namespace Ginko.CoreSystem
             RB.transform.Rotate(0.0f, 180.0f, 0.0f);
         }
         
-        public void CheckIfShouldFlip()
+        private void CheckIfShouldFlip()
         {
             if (CurrentVelocity.x != 0 && CurrentVelocity.x * FacingDirection < 0)
             {

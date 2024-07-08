@@ -523,7 +523,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 90b79a938a074aa4a86928e50972746c, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -664,6 +664,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EntityData: {fileID: 11400000, guid: 8a6b414ab210c9e45b717a76c237fd52, type: 2}
+  isDebugStateMachine: 0
 --- !u!1 &5668986103364519429
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,6 +770,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDebug: 0
+  playAudioByAnim: 1
+  playAudioOnActivate: 0
   abilityAudio: {fileID: 8300000, guid: 1499954a98c0b2342b8b862b99fe7772, type: 3}
   attackDamage: 0
   hostileLayer:
@@ -910,6 +913,8 @@ MonoBehaviour:
     m_Bits: 128
   searchShortcut: 0
   snapToGrid: 0
+  pathfindingType: 0
+  alignDistance: 0
   drawDebugLines: 1
 --- !u!1 &7561167008074533706
 GameObject:
@@ -1001,9 +1006,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Health>k__BackingField:
     <MaxValue>k__BackingField: 30
+    <MinValue>k__BackingField: 0
     <RecoveryRate>k__BackingField: 0
   <Poise>k__BackingField:
     <MaxValue>k__BackingField: 30
+    <MinValue>k__BackingField: 0
     <RecoveryRate>k__BackingField: 0
 --- !u!1 &8391395244383025040
 GameObject:
@@ -1104,20 +1111,15 @@ MonoBehaviour:
   hostileLayer:
     serializedVersion: 2
     m_Bits: 512
-  ActiveSpriteRenderDetection: 0
-  hidingDetectionSize: {x: 0, y: 0}
-  hidingDetectionOffset: {x: 0, y: 0}
-  upperDetectionOffset: {x: 0, y: 0, z: 0}
-  upperDetectionSize: {x: 0, y: 0, z: 0}
+  hidingBehindBoundary: {fileID: 0}
+  upperCollideBoundary: {fileID: 0}
   obstableLayer:
     serializedVersion: 2
     m_Bits: 2048
   bigObjectLayer:
     serializedVersion: 2
     m_Bits: 0
-  ActiveInteractionDetection: 0
-  interactionSize: {x: 0, y: 0}
-  interactionOffset: {x: 0, y: 0}
+  interactBoundary: {fileID: 0}
   interactionLayer:
     serializedVersion: 2
     m_Bits: 0

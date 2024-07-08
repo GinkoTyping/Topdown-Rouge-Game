@@ -4458,7 +4458,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.48, y: 10.62, z: -10}
+  m_LocalPosition: {x: 13.51, y: 10.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5527,8 +5527,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.022900045, y: 0.0388, z: 0}
-    m_Extent: {x: 1.1217, y: 0.9714, z: 0}
+    m_Center: {x: -0.028400004, y: 0.033250004, z: 0}
+    m_Extent: {x: 1.1211, y: 0.97485006, z: 0}
   m_PointLightInnerAngle: 360.00003
   m_PointLightOuterAngle: 360.00003
   m_PointLightInnerRadius: 0
@@ -13092,6 +13092,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 933599709}
+  - component: {fileID: 933599712}
   - component: {fileID: 933599711}
   - component: {fileID: 933599710}
   m_Layer: 9
@@ -13132,10 +13133,10 @@ MonoBehaviour:
   playAudioByAnim: 0
   playAudioOnActivate: 1
   abilityAudio: {fileID: 8300000, guid: 6739c01659ad96d47987f4ddee226b36, type: 3}
-  attackDamage: 0
+  attackDamage: 10
   hostileLayer:
     serializedVersion: 2
-    m_Bits: 4096
+    m_Bits: 6144
   projectilePrefab: {fileID: 681933164312349124, guid: c65fd01e46f43bf4d8ba32ef53bb7ad8,
     type: 3}
   targetType: 1
@@ -13159,6 +13160,20 @@ MonoBehaviour:
   isAutoAnim: 0
   defaultAttackAnimBoolName: 0
   totalCooldownTime: 0
+--- !u!114 &933599712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933599708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8055ff2b34ae3d9438e6e0989118d300, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  glowMaterial: {fileID: 2100000, guid: e4c4ae7cc318bd84590be8dda7832dbc, type: 2}
 --- !u!1 &939974118
 GameObject:
   m_ObjectHideFlags: 0
@@ -16586,9 +16601,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af9a9476e769225478c78ffaf39f6b60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeleton: {fileID: 5617566462948286229, guid: 0e850558a239fef478bcaf0fffd6e8f1,
+  enemyPrefab: {fileID: 5617566462948286229, guid: e6c6244ef4a8cd844938bf3cfcdca61f,
     type: 3}
-  isSpawning: 0
+  isSpawning: 1
   isDebug: 0
   spawnPositions:
   - {x: 7, y: 3}
@@ -24096,7 +24111,7 @@ Transform:
   m_GameObject: {fileID: 1986595657}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.48, y: 10.62, z: 0}
+  m_LocalPosition: {x: 13.51, y: 10.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
