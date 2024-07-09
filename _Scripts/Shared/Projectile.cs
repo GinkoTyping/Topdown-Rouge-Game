@@ -5,23 +5,25 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] private Vector3 detectionOffset;
-    [SerializeField] private Vector3 detectionSize;
-    
-    private LayerMask detectionLayer;
-    private float velocity;
-    private float damageAmount;
-    private Vector3 direction;
-
-    private float startTime;
-    private float duaration;
+    [SerializeField] private bool isDebug;
 
     private Rigidbody rb;
+    private SpriteRenderer spriteRenderer;
     private PoolManager poolManager;
+
+    private Vector3 collisionOffset;
+    private Vector3 collisionSize;
+    private Vector3 direction;
+    private LayerMask collisionLayer;
+    private float velocity;
+    private float damageAmount;
+    private float startTime;
+    private float duaration;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void FixedUpdate()
@@ -40,21 +42,24 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void Set(Vector3 position, Vector3 direction, float damageAmount, LayerMask layer)
+    public void Set(ProjectileDataSO data, Vector3 position, LayerMask layer)
     {
-        this.direction = direction.normalized;
-        this.damageAmount = damageAmount;
-        detectionLayer = layer;
+        damageAmount = data.damageAmount;
+        spriteRenderer.sprite = data.sprite;
+        spriteRenderer.material = data.glowMaterial;
+        velocity = data.velocity;
+        duaration = data.duaration;
+        collisionOffset = data.collisionOffset;
+        collisionSize = data.collisionSize;
 
+        collisionLayer = layer;
         transform.position = position;
-        transform.eulerAngles = new Vector3(0, 0 , Vector2.SignedAngle(Vector2.right, this.direction));
     }
 
-    public void Fire(float velocity, float duaration)
+    public void Fire(Vector3 fireDirection)
     {
-        this.velocity = velocity;
-        this.duaration = duaration;
-
+        direction = fireDirection.normalized;
+        transform.eulerAngles = new Vector3(0, 0, Vector2.SignedAngle(Vector2.right, fireDirection));
         startTime = Time.time;
     }
 
@@ -65,7 +70,7 @@ public class Projectile : MonoBehaviour
 
     private void DetectCollision()
     {
-        Collider2D collider = Physics2D.OverlapBox(transform.position + detectionOffset, detectionSize, 0, detectionLayer);
+        Collider2D collider = Physics2D.OverlapBox(transform.position + collisionOffset, collisionSize, 0, collisionLayer);
 
         IDamageable damageable = collider?.GetComponentInParent<IDamageable>();
         if (damageable != null)
@@ -84,6 +89,14 @@ public class Projectile : MonoBehaviour
         else
         {
             poolManager.Pool.Release(gameObject);
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (isDebug)
+        {
+            Gizmos.DrawWireCube(collisionOffset, collisionSize);
         }
     }
 }

@@ -5,8 +5,8 @@ using UnityEngine;
 
 public abstract class BaseAbility : MonoBehaviour
 {
-    [Header("Base")]
     [SerializeField] protected bool isDebug;
+    [Header("Base")]
     [SerializeField] protected bool playAudioByAnim = true;
     [SerializeField] protected bool playAudioOnActivate;
     [SerializeField] public AudioClip abilityAudio;

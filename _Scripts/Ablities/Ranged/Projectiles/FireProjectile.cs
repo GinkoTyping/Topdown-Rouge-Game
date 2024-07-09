@@ -10,11 +10,10 @@ public class FireProjectile : BaseAbility
 {
     [Header("Fire Projectile")]
     [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private ProjectileDataSO defaultProjectileData;
+
     [SerializeField] private TargetType targetType;
     [SerializeField] private ShotType shotType;
-    [SerializeField] private float fireDuaration;
-    [SerializeField] private float fireVelocity;
-    [SerializeField] private Vector3 startOffset;
     [SerializeField] private float offsetSize;
 
     private PoolManager poolManager;
@@ -87,8 +86,8 @@ public class FireProjectile : BaseAbility
             Projectile projectile = poolManager.Pool.Get().GetComponent<Projectile>();
 
             projectile.SetPool(poolManager);
-            projectile.Set(data.startPosition, data.fireDirection, attackDamage, hostileLayer);
-            projectile.Fire(fireVelocity, fireDuaration);
+            projectile.Set(defaultProjectileData, data.startPosition, hostileLayer);
+            projectile.Fire(data.fireDirection);
         }
     }
 
