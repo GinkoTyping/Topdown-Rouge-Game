@@ -5527,8 +5527,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.016650021, y: 0.03095001, z: 0}
-    m_Extent: {x: 1.12305, y: 0.96235, z: 0}
+    m_Center: {x: -0.028299987, y: 0.038949996, z: 0}
+    m_Extent: {x: 1.1204, y: 0.96825004, z: 0}
   m_PointLightInnerAngle: 360.00003
   m_PointLightOuterAngle: 360.00003
   m_PointLightInnerRadius: 0
@@ -13141,11 +13141,10 @@ MonoBehaviour:
     type: 3}
   defaultProjectileData: {fileID: 11400000, guid: d435b7686532b804583178792107f770,
     type: 2}
+  specialProjectilesData:
+  - {fileID: 11400000, guid: d9a11f96da1dc3845855c4d65e409094, type: 2}
   targetType: 1
   shotType: 0
-  fireDuaration: 0.8
-  fireVelocity: 10
-  startOffset: {x: 0, y: 0, z: 0}
   offsetSize: 0
 --- !u!114 &933599711
 MonoBehaviour:

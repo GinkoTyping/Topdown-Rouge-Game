@@ -8,10 +8,12 @@ using UnityEngine;
 
 public class FireProjectile : BaseAbility
 {
-    [Header("Fire Projectile")]
+    [Header("Projectiles")]
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private ProjectileDataSO defaultProjectileData;
+    [SerializeField] private ProjectileDataSO[] specialProjectilesData;
 
+    [Header("Firing Type")]
     [SerializeField] private TargetType targetType;
     [SerializeField] private ShotType shotType;
     [SerializeField] private float offsetSize;
@@ -86,7 +88,7 @@ public class FireProjectile : BaseAbility
             Projectile projectile = poolManager.Pool.Get().GetComponent<Projectile>();
 
             projectile.SetPool(poolManager);
-            projectile.Set(defaultProjectileData, data.startPosition, hostileLayer);
+            projectile.Set(GetCurrentProjectileData(), data.startPosition, hostileLayer);
             projectile.Fire(data.fireDirection);
         }
     }
@@ -164,5 +166,29 @@ public class FireProjectile : BaseAbility
     private Vector3 GetStartPostion(Vector3 direction)
     {
         return transform.position + direction.normalized * offsetSize;
+    }
+
+    private ProjectileDataSO GetCurrentProjectileData()
+    {
+        if (specialProjectilesData.Length == 0)
+        {
+            return defaultProjectileData;
+        }
+
+        ProjectileDataSO output = null;
+        float ramdonFloat = UnityEngine.Random.Range(0f, 1f);
+
+        for (int i = 0; i < specialProjectilesData.Length; ++i)
+        {
+            float min = i == 0 ? 0 : specialProjectilesData[i - 1].possibility;
+            float max = specialProjectilesData[i].possibility;
+            if (ramdonFloat > min && ramdonFloat <= max)
+            {
+                output = specialProjectilesData[i];
+                break;
+            }
+        }
+
+        return output == null ? defaultProjectileData : output;
     }
 }
