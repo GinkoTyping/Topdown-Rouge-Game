@@ -1,25 +1,37 @@
+using System.ComponentModel;
+using System.Linq;
 using UnityEngine;
 
 namespace Ginko.CoreSystem
 {
     public class SpriteEffect : CoreComponent
     {
-        [SerializeField]
-        private float tintFadeSpeed;
-        [SerializeField]
-        public Color warningColor;
+        [Header("Tint")]
+        [SerializeField] private float tintFadeSpeed;
+        [SerializeField] public Color warningColor;
 
-        public Detections Detections
+        [Header("Player Only")]
+        [SerializeField] private string backgroundLayerName;
+        [SerializeField] private string selfLayerName;
+        [SerializeField] private int beforeSortingOrder;
+        [SerializeField] private GameObject playerLightGO;
+
+        [Header("Obstables Only")]
+        [SerializeField] private HidingBehindBehavior[] hidingBehindBehaviors;
+        [SerializeField] private SpriteRenderer[] sprites;
+        [SerializeField] private Color defaultColor;
+        [SerializeField] private Color hidingColor;
+        private enum HidingBehindBehavior
         {
-            get => detections ??= Core.GetCoreComponent<Detections>();
+            None,
+            Transparent,
+            DisableLight,
         }
-        private Detections detections;
+
+        private Detections Detections;
 
         private SpriteRenderer entitySpriteRenderer;
-        private SpriteRenderer baseWeaponSpriteRenderer;
-        private SpriteRenderer weaponSpriteRenderer;
 
-        private GameObject primaryWeapon;
         private bool hasAddedSortingOrder;
 
         private bool hasChangedColor;
@@ -34,14 +46,8 @@ namespace Ginko.CoreSystem
 
             hasAddedSortingOrder = false;
             entitySpriteRenderer = transform.parent.parent.GetComponent<SpriteRenderer>();
-            primaryWeapon = transform.parent.parent.Find("PrimaryWeapon")?.gameObject;
-
-            if (primaryWeapon != null)
-            {
-                baseWeaponSpriteRenderer = primaryWeapon.transform.Find("Base").GetComponent<SpriteRenderer>();
-                weaponSpriteRenderer = primaryWeapon.transform.Find("WeaponSprite").GetComponent<SpriteRenderer>();
-            }
         }
+
         public override void LogicUpdate()
         {
             base.LogicUpdate();
@@ -49,40 +55,43 @@ namespace Ginko.CoreSystem
             SetSpriteRenderOrder();
             UpdateSprite();
         }
+
         public override void OnEnable()
         {
             base.OnEnable();
 
             ChangeSpritesColor(Color.clear);
-            Detections.OnHidingBehind += HidingBehindSprite;
+
+            Detections = Core.GetCoreComponent<Detections>();
+            if (Detections != null)
+            {
+                Detections.OnHidingBehind += HidingBehindSprite;
+            }
         }
 
         private void OnDisable()
         {
-            Detections.OnHidingBehind -= HidingBehindSprite;
+            if (Detections != null)
+            {
+                Detections.OnHidingBehind -= HidingBehindSprite;
+            }
         }
 
         private void SetSpriteRenderOrder()
         {
-            if (Detections.IsCollidingUpper && !hasAddedSortingOrder)
+            if (Detections.IsCollidingUpper 
+                && !hasAddedSortingOrder)
             {
                 hasAddedSortingOrder = true;
-                entitySpriteRenderer.sortingOrder++;
-                if (primaryWeapon != null)
-                {
-                    baseWeaponSpriteRenderer.sortingOrder++;
-                    weaponSpriteRenderer.sortingOrder++;
-                }
+                entitySpriteRenderer.sortingLayerName = backgroundLayerName;
+                entitySpriteRenderer.sortingOrder = beforeSortingOrder;
             }
-            else if (!Detections.IsCollidingUpper && hasAddedSortingOrder)
+            else if (!Detections.IsCollidingUpper 
+                && hasAddedSortingOrder)
             {
                 hasAddedSortingOrder = false;
-                entitySpriteRenderer.sortingOrder--;
-                if (primaryWeapon != null)
-                {
-                    baseWeaponSpriteRenderer.sortingOrder--;
-                    weaponSpriteRenderer.sortingOrder--;
-                }
+                entitySpriteRenderer.sortingLayerName = selfLayerName;
+                entitySpriteRenderer.sortingOrder = 0;
             }
         }
 
@@ -120,27 +129,49 @@ namespace Ginko.CoreSystem
 
         private void ChangeSpritesColor(Color color)
         {
-            entitySpriteRenderer.material.SetColor("_Tint", color);
-            baseWeaponSpriteRenderer?.material.SetColor("_Tint", color);
-            weaponSpriteRenderer?.material.SetColor("_Tint", color);
+            if (entitySpriteRenderer != null)
+            {
+                entitySpriteRenderer.material.SetColor("_Tint", color);
+            }
         }
-       
+
         public void HidingBehindSprite(Collider2D[] colliders)
         {
             if (colliders.Length > 0)
             {
                 lastHidingObjects = colliders;
-                foreach (Collider2D collider in lastHidingObjects)
-                {
-                    collider.GetComponent<SpriteHandler>().HideSprite(true);
-                }
-            } else if (lastHidingObjects?.Length > 0)
+                SwitchColliderVisible(colliders, true);
+            }
+            else if (lastHidingObjects?.Length > 0)
             {
-                foreach (Collider2D collider in lastHidingObjects)
-                {
-                    collider.GetComponent<SpriteHandler>().HideSprite(false);
-                }
+                SwitchColliderVisible(lastHidingObjects, false);
                 lastHidingObjects = null;
+            }
+        }
+
+        private void SwitchColliderVisible(Collider2D[] colliders ,bool isBehind)
+        {
+            foreach (Collider2D collider in colliders)
+            {
+                SpriteEffect spriteEffect = collider.transform.parent.GetComponent<SpriteEffect>();
+
+                if (spriteEffect.hidingBehindBehaviors.Contains(HidingBehindBehavior.Transparent))
+                {
+                    spriteEffect.SwitchSpriteTransparence(isBehind);
+                }
+
+                if (spriteEffect.hidingBehindBehaviors.Contains(HidingBehindBehavior.DisableLight))
+                {
+                    playerLightGO.SetActive(!isBehind);
+                }
+            }
+        }
+
+        private void SwitchSpriteTransparence(bool isTransparent)
+        {
+            foreach (SpriteRenderer spriteRenderer in sprites)
+            {
+                spriteRenderer.color = isTransparent ? hidingColor : defaultColor;
             }
         }
     }

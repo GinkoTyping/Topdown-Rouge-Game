@@ -23,6 +23,7 @@ public class FireProjectile : BaseAbility
     private VectorHelper vectorHelper;
     private PoolHelper poolHelper;
     private Transform projectilePoolContainer;
+    private ProjectileMultiplier[] projectileMultipliers;
 
     private enum ShotType
     {
@@ -65,6 +66,7 @@ public class FireProjectile : BaseAbility
     protected override void Start()
     {
         movement = GetComponentInParent<Core>().GetCoreComponent<Movement>();
+        projectileMultipliers = GetComponents<ProjectileMultiplier>();
 
         if (poolManager == null)
         {
@@ -89,7 +91,20 @@ public class FireProjectile : BaseAbility
 
             projectile.SetPool(poolManager);
             projectile.Set(GetCurrentProjectileData(), data.startPosition, hostileLayer);
+            ApplyMultiplier(projectile);
+
             projectile.Fire(data.fireDirection);
+        }
+    }
+
+    private void ApplyMultiplier(Projectile projectile)
+    {
+        if (projectileMultipliers.Length > 0)
+        {
+            foreach (ProjectileMultiplier multiplier in projectileMultipliers)
+            {
+                multiplier.Apply(projectile);
+            }
         }
     }
 

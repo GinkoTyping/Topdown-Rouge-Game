@@ -23,10 +23,11 @@ namespace Ginko.CoreSystem
         [SerializeField] public LayerMask hostileLayer;
 
         [Header("Sprite Render")]
-        [SerializeField] private BoundaryHelper hidingBehindBoundary;
+        [SerializeField] private bool triggerHidingCheck;
+        [SerializeField] private BoundaryHelper hidingBoundary;
+        [SerializeField] public LayerMask hidingDetectionLayer;
         [SerializeField] private BoundaryHelper upperCollideBoundary;
         [SerializeField] public LayerMask obstableLayer;
-        [SerializeField] public LayerMask bigObjectLayer;
 
         [Header("Interaction")]
         [SerializeField] private BoundaryHelper interactBoundary;
@@ -37,9 +38,11 @@ namespace Ginko.CoreSystem
         public bool IsInMeleeAttackRange { get; private set; }
         public bool IsInRangedAttackRange { get; private set; }
         public bool IsCollidingUpper { get; private set; }
+        public bool IsHidingBehind { get; private set; }
         public bool IsAbleToInteract { get; private set; }
 
         public Collider2D[] interactiveObjects;
+        public Collider2D[] hidingObjects;
 
         public Action<Collider2D[]> OnHidingBehind;
         public Action<Collider2D[]> OnInteractionItemsChange;
@@ -96,16 +99,22 @@ namespace Ginko.CoreSystem
 
         private void SetSpriteDetection()
         {
-            if (hidingBehindBoundary != null)
-            {
-                IsCollidingUpper = GetBoxDetections(hidingBehindBoundary.transform.position, hidingBehindBoundary.rectSize);
-            }
-
             if (upperCollideBoundary != null)
             {
-                Collider2D[] colliders = Physics2D.OverlapBoxAll(upperCollideBoundary.transform.position, upperCollideBoundary.rectSize, 0, bigObjectLayer);
+                IsCollidingUpper = GetBoxDetections(upperCollideBoundary.transform.position, upperCollideBoundary.rectSize);
+            }
 
-                OnHidingBehind?.Invoke(colliders);
+            if (hidingBoundary != null && triggerHidingCheck && !IsCollidingUpper)
+            {
+                Collider2D[] colliders = Physics2D.OverlapBoxAll(hidingBoundary.transform.position, hidingBoundary.rectSize, 0, hidingDetectionLayer);
+
+                IsHidingBehind = colliders.Length > 0;
+
+                if (!hidingObjects.SequenceEqual(colliders))
+                {
+                    hidingObjects = colliders;
+                    OnHidingBehind?.Invoke(colliders);
+                }
             }
         }
 

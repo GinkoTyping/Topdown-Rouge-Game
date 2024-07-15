@@ -39,6 +39,7 @@ namespace Ginko.CoreSystem
 
             CheckIfShouldFlip();
         }
+        
         public void SetVelocityZero()
         {
             workSpace.Set(0, 0);

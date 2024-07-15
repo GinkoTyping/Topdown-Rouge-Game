@@ -16,7 +16,6 @@ namespace Ginko.PlayerSystem
         public bool IsAttackInput { get; private set; }
         public PlayerInputEventHandler InputHandler { get; private set; }
         public PlayerInput InputAction;
-        private Weapon primaryWeapon;
         protected override void Awake()
         {
             base.Awake();
@@ -24,7 +23,6 @@ namespace Ginko.PlayerSystem
             Instance = this;
 
             InputHandler = GetComponent<PlayerInputEventHandler>();
-
             InputAction = GetComponent<PlayerInput>();
         }
         protected override void Start()

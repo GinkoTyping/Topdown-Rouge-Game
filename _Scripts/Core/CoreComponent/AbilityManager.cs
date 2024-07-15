@@ -19,7 +19,6 @@ namespace Ginko.CoreSystem
         private Timer cooldownTimer;
         private AnimationEventHandler animationEventHandler;
         private BaseAbility ablity;
-        private Player player;
 
         private bool isDuringCooldown;
         private float restCooldownTime;
@@ -43,8 +42,6 @@ namespace Ginko.CoreSystem
 
         public override void OnEnable()
         {
-            player = Core.GetComponentInParent<Player>();
-
             animationEventHandler.OnFinish += HandleOnAttackFinished;
         }
 
@@ -102,8 +99,10 @@ namespace Ginko.CoreSystem
         
         private void SetAnimState(AnimBoolName name)
         {
-            // TODO: 直接修改动画状态
-            if (!animator.GetCurrentAnimatorStateInfo(0).IsName(name.ToString()))
+            if (!animator
+                    .GetCurrentAnimatorStateInfo(0)
+                    .IsName(name.ToString())
+                )
             {
                 OnAnimChange?.Invoke(name);
             }
