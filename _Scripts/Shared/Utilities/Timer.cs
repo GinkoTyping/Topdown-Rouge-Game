@@ -41,7 +41,7 @@ namespace Shared.Utilities
                 return;
             }
             
-            if (Time.time > targetTime) {
+            if (Time.time >= targetTime) {
                 OnTimerDone?.Invoke();
                 StopTimer();
             } else

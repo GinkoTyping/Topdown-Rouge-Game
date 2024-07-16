@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PossibilityHelper: MonoBehaviour
+public class PossibilityHelper
 {
     public int Get(float[] items)
     {

@@ -18,6 +18,9 @@ namespace Ginko.CoreSystem
         private SpriteRenderer spriteRender;
         private AttributeStat attackInterval;
 
+        public float continousAttackTime;
+
+
         protected override void Awake()
         {
             base.Awake();
@@ -47,7 +50,11 @@ namespace Ginko.CoreSystem
         {
             if (player.IsAttackInput)
             {
+                continousAttackTime += Time.deltaTime;
                 abilityManager.CheckIfAttack();
+            } else if (continousAttackTime != 0)
+            {
+                continousAttackTime = 0;
             }
         }
 

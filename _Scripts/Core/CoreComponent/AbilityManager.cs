@@ -14,13 +14,14 @@ namespace Ginko.CoreSystem
         [Header("Base")]
         [SerializeField] private bool isAutoAnim;
         [SerializeField] private AnimBoolName defaultAttackAnimBoolName;
-        [SerializeField] private float totalCooldownTime;
+        [SerializeField] public float totalCooldownTime;
 
         private Timer cooldownTimer;
         private AnimationEventHandler animationEventHandler;
         private BaseAbility ablity;
 
         private bool isDuringCooldown;
+        private bool isToModify;
         private float restCooldownTime;
         private Animator animator;
 
@@ -63,13 +64,33 @@ namespace Ginko.CoreSystem
         {
             totalCooldownTime = cooldownTime;
 
+            cooldownTimer = null;
             cooldownTimer = new Timer(cooldownTime);
             cooldownTimer.OnTimerDone += HandleCooldownTimerDone;
         }
 
+        public void ModifyCooldown(float cooldownTime)
+        {
+            if (cooldownTimer.isActive)
+            {
+                totalCooldownTime = cooldownTime;
+                isToModify = true;
+
+                cooldownTimer.OnTimerDone += ModifyTimerOnTimerDone;
+            } else
+            {
+                SetCooldown(cooldownTime);
+            }
+        }
+
         public void CheckIfAttack()
         {
-            if (isDuringCooldown)
+            if (restCooldownTime <= 0)
+            {
+                isDuringCooldown = false;
+            }
+
+            if (isDuringCooldown || isToModify)
             {
                 return;
             }
@@ -123,6 +144,14 @@ namespace Ginko.CoreSystem
         private void HandleCooldownTimerDone()
         {
             isDuringCooldown = false;   
+        }
+
+        private void ModifyTimerOnTimerDone()
+        {
+            SetCooldown(totalCooldownTime);
+
+            cooldownTimer.OnTimerDone -= ModifyTimerOnTimerDone;
+            isToModify = false;
         }
     }
 }
