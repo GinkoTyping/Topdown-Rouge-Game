@@ -2134,6 +2134,7 @@ MonoBehaviour:
     m_Bits: 16512
   tagName: Interactive
   interactiveObjects: []
+  hidingObjects: []
 --- !u!4 &219527385 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7947911505737750448, guid: ebdc6ef285e0bf542bed7e9c1bfb9923,
@@ -5523,8 +5524,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.016349971, y: 0.03674999, z: 0}
-    m_Extent: {x: 1.12005, y: 0.96655, z: 0}
+    m_Center: {x: -0.025250018, y: 0.034350008, z: 0}
+    m_Extent: {x: 1.11765, y: 0.97075, z: 0}
   m_PointLightInnerAngle: 360.00003
   m_PointLightOuterAngle: 360.00003
   m_PointLightInnerRadius: 0
@@ -13136,9 +13137,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0b9e624ce4c10b49b2941857b06c94c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  byRange: 0
   range:
   - 0.8
   - 1.5
+  bySpecificRange: 1
+  specificRanges:
+  - value: 0.5
+    possibility: 0.2
+  - value: 1.2
+    possibility: 0.2
+  - value: 1
+    possibility: 0.6
 --- !u!1 &939974118
 GameObject:
   m_ObjectHideFlags: 0

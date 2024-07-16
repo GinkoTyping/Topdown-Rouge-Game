@@ -4,6 +4,7 @@ using Shared.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class FireProjectile : BaseAbility
@@ -18,6 +19,7 @@ public class FireProjectile : BaseAbility
     [SerializeField] private ShotType shotType;
     [SerializeField] private float offsetSize;
 
+    private PossibilityHelper possibilityHelper;
     private PoolManager poolManager;
     private Movement movement;
     private VectorHelper vectorHelper;
@@ -61,6 +63,7 @@ public class FireProjectile : BaseAbility
         vectorHelper = new VectorHelper();
         projectilePoolContainer = GameObject.Find("Containers").transform;
         poolHelper = GameObject.Find("Helper").GetComponent<PoolHelper>();
+        possibilityHelper = new PossibilityHelper();
     }
 
     protected override void Start()
@@ -190,20 +193,8 @@ public class FireProjectile : BaseAbility
             return defaultProjectileData;
         }
 
-        ProjectileDataSO output = null;
-        float ramdonFloat = UnityEngine.Random.Range(0f, 1f);
+        int targetIndex = possibilityHelper.Get(specialProjectilesData.Select(item => item.possibility).ToArray());
 
-        for (int i = 0; i < specialProjectilesData.Length; ++i)
-        {
-            float min = i == 0 ? 0 : specialProjectilesData[i - 1].possibility;
-            float max = specialProjectilesData[i].possibility;
-            if (ramdonFloat > min && ramdonFloat <= max)
-            {
-                output = specialProjectilesData[i];
-                break;
-            }
-        }
-
-        return output == null ? defaultProjectileData : output;
+        return targetIndex == -1 ? defaultProjectileData : specialProjectilesData[targetIndex];
     }
 }
