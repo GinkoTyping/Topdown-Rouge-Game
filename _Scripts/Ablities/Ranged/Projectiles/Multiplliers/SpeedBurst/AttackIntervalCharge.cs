@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AttackIntervalCharge : ProjectileMultiplier
 {
-    [SerializeField] public AttackIntervalChargeDataSO data;
+    [SerializeField] public CharingBuffData data;
 
     private AbilityManager abilityManager;
     private NormalAttack normalAttack;
