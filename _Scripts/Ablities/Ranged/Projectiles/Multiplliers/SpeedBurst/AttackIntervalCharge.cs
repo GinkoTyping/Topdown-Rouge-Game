@@ -40,7 +40,6 @@ public class AttackIntervalCharge : ProjectileMultiplier
     private void ResetBaseAttackInterval()
     {
         AttributeStat attackInterval = player.Core.GetCoreComponent<PlayerStats>().GetAttribute(AttributeType.AttackInterval);
-
-        abilityManager.SetCooldown(attackInterval.CurrentValue);
+        abilityManager.ModifyCooldown(attackInterval.CurrentValue);
     }
 }

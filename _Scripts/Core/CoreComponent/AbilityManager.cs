@@ -85,11 +85,6 @@ namespace Ginko.CoreSystem
 
         public void CheckIfAttack()
         {
-            if (restCooldownTime <= 0)
-            {
-                isDuringCooldown = false;
-            }
-
             if (isDuringCooldown || isToModify)
             {
                 return;

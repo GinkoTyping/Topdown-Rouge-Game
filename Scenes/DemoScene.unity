@@ -5524,8 +5524,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.025550008, y: 0.035100013, z: 0}
-    m_Extent: {x: 1.12675, y: 0.96880007, z: 0}
+    m_Center: {x: -0.024649978, y: 0.03400001, z: 0}
+    m_Extent: {x: 1.12035, y: 0.96889997, z: 0}
   m_PointLightInnerAngle: 360.00003
   m_PointLightOuterAngle: 360.00003
   m_PointLightInnerRadius: 0
@@ -13152,9 +13152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90ba15a5a37bcd9438ce07144fa747d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxStack: 5
-  timePerStack: 3
-  modifier: 0.9
+  data: {fileID: 11400000, guid: 4a05c84ff5531df48acad305d6af3d43, type: 2}
 --- !u!1 &939974118
 GameObject:
   m_ObjectHideFlags: 0
@@ -25047,7 +25045,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectSource: {fileID: 1466500105}
   musicSource: {fileID: 773296273}
-  volume: 0.5
+  volume: 0.2
   errorHint: {fileID: 8300000, guid: c0c028f70edee1d4ab004edf0149b342, type: 3}
   buttonClick: {fileID: 8300000, guid: 3e75afc712cce9c48aff1c28baf76bf2, type: 3}
 --- !u!4 &2129321632

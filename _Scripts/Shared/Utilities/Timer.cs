@@ -9,7 +9,7 @@ namespace Shared.Utilities
     {
         public event Action OnTimerDone;
 
-        public bool isActive;
+        public bool isActive { get; private set; }
         public float restTime;
 
         private float startTime;
