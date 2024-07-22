@@ -1,3 +1,4 @@
+using Ginko.PlayerSystem;
 using System;
 using System.Xml.Linq;
 using UnityEngine;
@@ -12,9 +13,12 @@ namespace Ginko.CoreSystem
         public override void OnEnable()
         {
             base.OnEnable();
-
-            Health.Init();
-            Poise.Init();
+            
+            if (Core.GetComponentInParent<Player>() == null )
+            {
+                Health.Init();
+                Poise.Init();
+            }
         }
 
         public override void LogicUpdate()

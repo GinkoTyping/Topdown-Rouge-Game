@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class BuffManager : CoreComponent
 {
+    [SerializeField] public PoolManager buffsPool;
     public List<Buff> buffList;
 
     public PlayerStats stats { get; private set; }
@@ -34,6 +35,9 @@ public class BuffManager : CoreComponent
         base.LogicUpdate();
 
         UpdateContinousAttackTime();
+        UpdateMovingTime();
+        UpdateStayingTime();
+
         UpdateBuffs();
     }
 
@@ -54,6 +58,29 @@ public class BuffManager : CoreComponent
         else if (continousAttackTime != 0)
         {
             continousAttackTime = 0;
+        }
+    }
+
+    private void UpdateMovingTime()
+    {
+        if (player.Movement.CurrentVelocity != Vector2.zero)
+        {
+            continousMovingTime += Time.deltaTime;
+        } else if (continousMovingTime != 0)
+        {
+            continousMovingTime = 0;
+        }
+    }
+
+    private void UpdateStayingTime()
+    {
+        if (player.Movement.CurrentVelocity == Vector2.zero)
+        {
+            continousStayingTime += Time.deltaTime;
+        }
+        else if (continousStayingTime != 0)
+        {
+            continousStayingTime = 0;
         }
     }
 }

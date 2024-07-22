@@ -364,6 +364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ee9077d48b772442aadb7464d82ac56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lerpDuration: 0.5
 --- !u!1 &2530291247611677539
 GameObject:
   m_ObjectHideFlags: 0
@@ -526,7 +527,7 @@ MonoBehaviour:
   playAudioByAnim: 1
   playAudioOnActivate: 0
   abilityAudio: {fileID: 8300000, guid: 273860b7a923af545af2985b02c516ea, type: 3}
-  attackDamage: 20
+  attackDamage: 10
   hostileLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -956,6 +957,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tintFadeSpeed: 3
   warningColor: {r: 1, g: 0, b: 0, a: 0.5882353}
+  backgroundLayerName: 
+  selfLayerName: 
+  beforeSortingOrder: 0
+  playerLightGO: {fileID: 0}
+  hidingBehindBehaviors: 
+  sprites: []
+  defaultColor: {r: 0, g: 0, b: 0, a: 0}
+  hidingColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &7141797706882481001
 GameObject:
   m_ObjectHideFlags: 0
@@ -1167,17 +1176,19 @@ MonoBehaviour:
   hostileLayer:
     serializedVersion: 2
     m_Bits: 512
-  hidingBehindBoundary: {fileID: 0}
+  triggerHidingCheck: 0
+  hidingBoundary: {fileID: 0}
+  hidingDetectionLayer:
+    serializedVersion: 2
+    m_Bits: 0
   upperCollideBoundary: {fileID: 0}
   obstableLayer:
     serializedVersion: 2
     m_Bits: 2048
-  bigObjectLayer:
-    serializedVersion: 2
-    m_Bits: 0
   interactBoundary: {fileID: 0}
   interactionLayer:
     serializedVersion: 2
     m_Bits: 0
   tagName: 
   interactiveObjects: []
+  hidingObjects: []

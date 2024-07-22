@@ -9,15 +9,27 @@ namespace Ginko.CoreSystem
     {
         [SerializeField]
         public AttributeStat[] attributes;
+        [SerializeField]
+        private HealthBar playerHealthBar;
 
         public override void OnEnable()
         {
             base.OnEnable();
 
+            Health.OnCurrentValueChange += playerHealthBar.ChangeHealthBar;
+
+            Health.Init();
+            Poise.Init();
+
             foreach (AttributeStat attribute in attributes)
             {
                 attribute.Init();
             }
+        }
+
+        private void OnDisable()
+        {
+            Health.OnCurrentValueChange -= playerHealthBar.ChangeHealthBar;
         }
 
         public AttributeStat GetAttribute(AttributeType type)
@@ -33,11 +45,6 @@ namespace Ginko.CoreSystem
             }
 
             return output;
-        }
-
-        private float GetAttackSpeed()
-        {
-            return 0;
         }
     }
 }

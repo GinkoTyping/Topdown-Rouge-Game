@@ -10,7 +10,10 @@ namespace Ginko.CoreSystem
     {
         [field: SerializeField] 
         public float RecoveryRate { get; private set; }
-        public void Init() => CurrentValue = MaxValue;
+        public void Init()
+        {
+            CurrentValue = MaxValue;
+        }
         public void LogicUpdate()
         {
             if (RecoveryRate > 0 && CurrentValue < MaxValue)
