@@ -63,4 +63,5 @@ public enum AttributeType
     HealthRecovery,
 
     AttackInterval,
+    Poise,
 }

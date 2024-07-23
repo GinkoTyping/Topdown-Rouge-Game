@@ -16,8 +16,8 @@ namespace Ginko.CoreSystem
             
             if (Core.GetComponentInParent<Player>() == null )
             {
-                Health.Init();
-                Poise.Init();
+                Health.Init(this);
+                Poise.Init(this);
             }
         }
 

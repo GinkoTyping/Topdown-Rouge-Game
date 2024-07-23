@@ -10,6 +10,7 @@ namespace Ginko.CoreSystem
     {
         [field: SerializeField] public float MaxValue { get; private set; }
         [field: SerializeField] public float MinValue { get; private set; }
+        [field: SerializeField] public float InitValue { get; private set; }
 
         public event Action OnCurrentValueZero;
         public event Action<float, float> OnCurrentValueChange;
@@ -30,8 +31,9 @@ namespace Ginko.CoreSystem
             }
         }
 
-        public void Increase(float amount) => CurrentValue += amount;
-        public void Decrease(float amount) => CurrentValue -= amount;
+        public virtual void Increase(float amount) => CurrentValue += amount;
+
+        public virtual void Decrease(float amount) => CurrentValue -= amount;
 
         public void ChangeMaxValue(float value)
         {

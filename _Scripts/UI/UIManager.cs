@@ -1,9 +1,8 @@
 using Ginko.PlayerSystem;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 
 public class UIManager : MonoBehaviour
 {
@@ -18,6 +17,8 @@ public class UIManager : MonoBehaviour
     private AudioClip openMenuAudio;
     [SerializeField]
     private AudioClip closeMenuAudio;
+    [SerializeField]
+    private Light2D globalLight2D;
 
     public event Action onInventoryUIClose;
 
@@ -83,7 +84,10 @@ public class UIManager : MonoBehaviour
             inventoryUI.transform.Find("Loot").gameObject.SetActive((bool)showLoot);
 
             SoundManager.Instance.PlaySound(openMenuAudio);
-        } else
+
+            SwitchGameRunning(false);
+        }
+        else
         {
             onInventoryUIClose?.Invoke();
 
@@ -94,6 +98,8 @@ public class UIManager : MonoBehaviour
             inventoryUI.SetActive(false);
 
             SoundManager.Instance.PlaySound(closeMenuAudio);
+
+            SwitchGameRunning(true);
         }
     }
 
@@ -105,5 +111,18 @@ public class UIManager : MonoBehaviour
         // 装备栏和掠夺栏左右布局，物品栏在剩余宽度居中
         float widthLeft = Screen.width - border * 2 - lootInventoryUI.sizeDelta.x - equipmentInventoryUI.sizeDelta.x; 
         luggageInventoryUI.anchoredPosition = new Vector2(widthLeft / 2 - luggageInventoryUI.sizeDelta.x / 2 + equipmentInventoryUI.sizeDelta.x + border, -border);
+    }
+
+    private void SwitchGameRunning(bool isRunning)
+    {
+        if (isRunning)
+        {
+            Time.timeScale = 1f;
+            globalLight2D.intensity = 0.55f;
+        } else
+        {
+            Time.timeScale = 0f;
+            globalLight2D.intensity = 0.2f;
+        }
     }
 }

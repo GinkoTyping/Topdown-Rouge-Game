@@ -27,7 +27,7 @@ namespace Ginko.CoreSystem
             looted = false;
 
             UIManager = GameObject.Find("UI").GetComponent<UIManager>();
-            lootInventory = GameObject.Find("Loot").GetComponentInChildren<Grid>();
+            lootInventory = GameObject.Find("Loot").GetComponentInChildren<Grid>(true);
             inventoryUI = GameObject.Find("Inventory");
 
             inventoryController = inventoryUI.GetComponent<InventoryController>();
