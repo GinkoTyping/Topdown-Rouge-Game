@@ -37,7 +37,7 @@ public class StatTitle : MonoBehaviour
     {
         if (isResource)
         {
-            ResouceStat resouceStat = playerStats.GetAttribute(resourceType);
+            ResourceStat resouceStat = playerStats.GetAttribute(resourceType);
             textMesh.text = $"{resouceStat.CurrentValue} / {resouceStat.MaxValue}";
         } else
         {

@@ -8,11 +8,6 @@ public class ChargingBuff : Buff
 
     private AttributeStat stat;
 
-    private void Awake()
-    {
-        chargeBuffData = data as CharingBuffDataSO;
-    }
-
     protected override void Start()
     {
         base.Start();
@@ -35,7 +30,7 @@ public class ChargingBuff : Buff
 
         if (currenrStack > 0 && currentBuffIcon == null)
         {
-            InstantiateBuffIcon();
+            SwitchBuffIcon(true);
         }
     }
 
@@ -135,5 +130,10 @@ public class ChargingBuff : Buff
     {
         AttributeStat attackInterval = buffManager.stats.GetAttribute(AttributeType.AttackInterval);
         abilityManager.ModifyCooldown(attackInterval.CurrentValue);
+    }
+
+    protected override void UpdateSpecificBuffData()
+    {
+        chargeBuffData = data as CharingBuffDataSO;
     }
 }

@@ -7,8 +7,7 @@ namespace Ginko.CoreSystem
 {
     public class CoreComponent: MonoBehaviour
     {
-        protected Core Core { get; private set; }
-
+        public Core Core { get; private set; }
         
         public virtual void OnEnable() { }
         public virtual void LogicUpdate() { }

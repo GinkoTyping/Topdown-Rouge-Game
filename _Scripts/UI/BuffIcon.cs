@@ -7,22 +7,15 @@ using UnityEngine.UI;
 
 public class BuffIcon : MonoBehaviour
 {
-    private PoolManager poolManager;
+    [SerializeField] private Image buffImage;
+    [SerializeField] private GameObject stackGO;
+    [SerializeField] private TextMeshProUGUI stackText;
+    [SerializeField] private GameObject timerGO;
+    [SerializeField] private TextMeshProUGUI timerText;
 
-    private Image buffImage;
-    private GameObject stackGO;
-    private TextMeshProUGUI textMeshProUGUI;
+    [HideInInspector] public PoolManager poolManager;
 
     private Buff currentBuff;
-
-    private void OnEnable()
-    {
-        buffImage = transform.Find("Icon").GetComponent<Image>();
-        stackGO = transform.Find("Stack").gameObject;
-
-        textMeshProUGUI = stackGO.transform.Find("StackText").GetComponent<TextMeshProUGUI>();
-        textMeshProUGUI.text = "0";
-    }
 
     public void SetPool(PoolManager poolManager)
     {
@@ -33,10 +26,14 @@ public class BuffIcon : MonoBehaviour
     {
         currentBuff = buff;
         buffImage.sprite = buff.data.iconSprite;
+        stackGO.SetActive(buff.data.stackable);
+        timerGO.SetActive(buff.data.hasTimer);
     }
 
     private void Update()
     {
+        UpdateTimerText();
+
         if (currentBuff != null)
         {
             if (currentBuff.data.stackable)
@@ -46,16 +43,29 @@ public class BuffIcon : MonoBehaviour
         }
     }
 
+    private void UpdateTimerText()
+    {
+        if (currentBuff.buffTimer < 1 && timerGO.activeSelf)
+        {
+            timerGO.SetActive(false);
+        }
+        else if (timerGO.activeSelf)
+        {
+            timerText.text = Mathf.Round(currentBuff.buffTimer).ToString();
+        }
+
+    }
+
     private void UpdateStackableBuff()
     {
         if (currentBuff.currenrStack == 0)
         {
             poolManager.Pool.Release(gameObject);
         } 
-        else if (textMeshProUGUI.text != currentBuff.currenrStack.ToString())
+        else if (stackText.text != currentBuff.currenrStack.ToString())
         {
             stackGO.SetActive(true);
-            textMeshProUGUI.text = currentBuff.currenrStack.ToString();
+            stackText.text = currentBuff.currenrStack.ToString();
         }
     }
 

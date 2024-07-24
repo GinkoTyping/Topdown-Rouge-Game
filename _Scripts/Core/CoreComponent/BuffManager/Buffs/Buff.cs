@@ -9,29 +9,50 @@ public abstract class Buff : MonoBehaviour
 {
     [SerializeField] public BaseBuffDataSO data;
 
-    protected BuffManager buffManager;
+    [HideInInspector] public float currenrStack = 0f;
+    [HideInInspector] public float buffTimer;
 
+    protected BuffManager buffManager;
     protected BuffIcon currentBuffIcon;
-    public float currenrStack = 0f;
 
     protected virtual void Start()
     {
         buffManager = GetComponentInParent<BuffManager>();
         buffManager.Add(this);
+
+        UpdateSpecificBuffData();
     }
 
     public abstract void LogicUpdate();
 
-    protected void InstantiateBuffIcon()
+    protected void SwitchBuffIcon(bool isShow)
     {
-        if (currentBuffIcon == null)
+        if (isShow)
         {
-            GameObject buffGO = buffManager.buffsPool.Pool.Get();
-            BuffIcon buffIcon = buffGO.GetComponent<BuffIcon>();
-            currentBuffIcon = buffIcon;
+            if (currentBuffIcon == null)
+            {
+                GameObject buffGO = buffManager.buffsPool.Pool.Get();
+                BuffIcon buffIcon = buffGO.GetComponent<BuffIcon>();
+                currentBuffIcon = buffIcon;
 
-            buffIcon.SetPool(buffManager.buffsPool);
-            buffIcon.Set(this);
+                buffIcon.SetPool(buffManager.buffsPool);
+                buffIcon.Set(this);
+            }
+        } else
+        {
+            if (currentBuffIcon != null)
+            {
+                currentBuffIcon.poolManager.Pool.Release(currentBuffIcon.gameObject);
+            }
         }
     }
+
+    protected void UpdateBuffData(BaseBuffDataSO newBuffData)
+    {
+        data = newBuffData;
+
+        UpdateSpecificBuffData();
+    }
+
+    protected abstract void UpdateSpecificBuffData();
 }

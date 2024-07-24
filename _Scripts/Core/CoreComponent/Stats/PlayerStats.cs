@@ -18,8 +18,8 @@ namespace Ginko.CoreSystem
 
             Health.OnCurrentValueChange += playerHealthBar.ChangeHealthBar;
 
-            Health.Init(this);
-            Poise.Init(this);
+            Health.Init();
+            Poise.Init();
 
             foreach (AttributeStat attribute in attributes)
             {

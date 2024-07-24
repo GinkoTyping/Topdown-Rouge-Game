@@ -4851,7 +4851,7 @@ GameObject:
   - component: {fileID: 1716694399948123784}
   - component: {fileID: 4025120648491987234}
   m_Layer: 0
-  m_Name: Healing
+  m_Name: Buff Effect_Healing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
