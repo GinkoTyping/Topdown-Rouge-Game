@@ -13,7 +13,7 @@ namespace Ginko.CoreSystem
         [field: SerializeField] public float InitValue { get; private set; }
 
         public event Action OnCurrentValueZero;
-        public event Action<float, float> OnCurrentValueChange;
+        public event Action<float, float, float> OnCurrentValueChange;
 
         private float currentValue;
         public float CurrentValue
@@ -21,13 +21,14 @@ namespace Ginko.CoreSystem
             get => currentValue;
             set
             {
+                float valueBeforeChange = currentValue;
                 currentValue = Mathf.Clamp(value, MinValue, MaxValue);
                 if (currentValue <= 0)
                 {
                     OnCurrentValueZero?.Invoke();
                 }
 
-                OnCurrentValueChange?.Invoke(currentValue, MaxValue);
+                OnCurrentValueChange?.Invoke(currentValue, MaxValue, valueBeforeChange);
             }
         }
 

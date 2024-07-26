@@ -55,7 +55,7 @@ namespace Ginko.CoreSystem
             }
         }
 
-        public void ChangeHealthBar(float currentHealth, float maxHealth)
+        public void ChangeHealthBar(float currentHealth, float maxHealth, float valueBeforeChange)
         {
             targerWidth = currentHealth / maxHealth * originalWidth;
             isLerp = true;

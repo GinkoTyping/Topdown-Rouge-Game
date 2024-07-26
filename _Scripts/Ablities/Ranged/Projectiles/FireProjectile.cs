@@ -7,7 +7,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class FireProjectile : BaseAbility
 {
@@ -28,8 +27,6 @@ public class FireProjectile : BaseAbility
     private PoolHelper poolHelper;
     private Transform projectilePoolContainer;
     private ProjectileMultiplier[] projectileMultipliers;
-
-    private Entity entity;
 
     private enum ShotType
     {
@@ -72,7 +69,6 @@ public class FireProjectile : BaseAbility
 
     protected override void Start()
     {
-        entity = GetComponentInParent<Entity>();
         movement = GetComponentInParent<Core>().GetCoreComponent<Movement>();
         projectileMultipliers = GetComponents<ProjectileMultiplier>();
 

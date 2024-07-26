@@ -243,11 +243,11 @@ MonoBehaviour:
   <Health>k__BackingField:
     <MaxValue>k__BackingField: 30
     <MinValue>k__BackingField: 0
-    <RecoveryRate>k__BackingField: 0
+    <InitValue>k__BackingField: 0
   <Poise>k__BackingField:
     <MaxValue>k__BackingField: 30
     <MinValue>k__BackingField: 0
-    <RecoveryRate>k__BackingField: 0
+    <InitValue>k__BackingField: 0
 --- !u!1 &1867071578004988006
 GameObject:
   m_ObjectHideFlags: 0
@@ -1070,6 +1070,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDesctructableItem: 0
+  allowLifeSteal: 1
   damageParticles: {fileID: 2629989054506311817, guid: 60dca40fcec24844ca0fc3f541745aeb,
     type: 3}
   damageClip: {fileID: 8300000, guid: a37f44cbf8c2a7443a3c361efa2f233a, type: 3}

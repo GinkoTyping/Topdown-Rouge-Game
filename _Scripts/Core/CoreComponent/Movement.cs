@@ -10,6 +10,7 @@ namespace Ginko.CoreSystem
 {
     public class Movement: CoreComponent
     {
+        [SerializeField] private Transform[] avoidFlipTransform;
         public Rigidbody2D RB {  get; private set; }
 
         public Vector2 CurrentVelocity { get; private set; }
@@ -61,6 +62,14 @@ namespace Ginko.CoreSystem
         {
             FacingDirection *= -1;
             RB.transform.Rotate(0.0f, 180.0f, 0.0f);
+
+            if (avoidFlipTransform.Length > 0)
+            {
+                foreach (Transform t in avoidFlipTransform)
+                {
+                    t.Rotate(0.0f, 180.0f, 0.0f);
+                }
+            }
         }
         
         private void CheckIfShouldFlip()
@@ -85,6 +94,16 @@ namespace Ginko.CoreSystem
                 {
                     Flip();
                 }
+            }
+        }
+
+        public void AvoidFlipMe(Transform transformToAvoid)
+        {
+            if ((FacingDirection < 0 && transformToAvoid.rotation.y == 0)
+                || (FacingDirection > 0 && transformToAvoid.rotation.y != 0))
+            {
+                Debug.Log(1);
+                transformToAvoid.Rotate(0, 180f, 0);
             }
         }
     }

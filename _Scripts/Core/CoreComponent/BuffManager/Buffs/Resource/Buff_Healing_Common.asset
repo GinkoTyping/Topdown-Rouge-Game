@@ -18,6 +18,6 @@ MonoBehaviour:
   resourceType: 0
   buffEffect: {fileID: 6648539020999668230, guid: 7b8a53ddf5932604d9b342c693dae0aa,
     type: 3}
-  perValue: 2
-  perTime: 3
-  totalTime: 12
+  perValue: 5
+  perTime: 2
+  totalTime: 100

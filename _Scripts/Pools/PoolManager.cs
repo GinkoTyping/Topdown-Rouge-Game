@@ -24,6 +24,10 @@ public abstract class PoolManager : MonoBehaviour
         Pool = new ObjectPool<GameObject>(createFunc, actionOnGet, actionOnRelease, actionOnDestroy, true, 10, maxSize);
 
         currentObject = defaultObject;
+        if (containerTransform == null)
+        {
+            containerTransform = transform;
+        }
     }
 
     private void actionOnDestroy(GameObject obj)

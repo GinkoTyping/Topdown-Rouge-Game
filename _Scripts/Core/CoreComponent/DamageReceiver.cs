@@ -13,6 +13,8 @@ namespace Ginko.CoreSystem
         [SerializeField]
         public bool IsDesctructableItem;
         [SerializeField]
+        public bool allowLifeSteal;
+        [SerializeField]
         private GameObject damageParticles;
         [SerializeField]
         private AudioClip damageClip;
@@ -51,7 +53,7 @@ namespace Ginko.CoreSystem
             BuffManager senderBuffs = sender.Core.GetCoreComponent<BuffManager>();
 
             LifeSteal lifeSteal = senderBuffs.GetComponentInChildren<LifeSteal>();
-            if (lifeSteal != null)
+            if (lifeSteal != null && allowLifeSteal)
             {
                 lifeSteal.Activate();
             }
