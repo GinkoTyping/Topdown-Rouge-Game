@@ -10,11 +10,9 @@ public class AttributeStat : BaseStat
 {
     [SerializeField]
     public AttributeType type;
-    [SerializeField]
-    private float initValue;
 
     public void Init()
     {
-        CurrentValue = initValue;
+        CurrentValue = InitValue;
     }
 }

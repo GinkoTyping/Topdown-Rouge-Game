@@ -16,16 +16,6 @@ namespace Ginko.CoreSystem
         }
 
         public void LogicUpdate() { }
-
-        public override void Increase(float amount)
-        {
-            base.Increase(amount);
-        }
-
-        public override void Decrease(float amount)
-        {
-            base.Decrease(amount);
-        } 
     }
 
     public enum ResourceType

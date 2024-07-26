@@ -1,11 +1,13 @@
 using Ginko.CoreSystem;
 using Ginko.PlayerSystem;
+using Ginko.StateMachineSystem;
 using Shared.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class FireProjectile : BaseAbility
 {
@@ -26,6 +28,8 @@ public class FireProjectile : BaseAbility
     private PoolHelper poolHelper;
     private Transform projectilePoolContainer;
     private ProjectileMultiplier[] projectileMultipliers;
+
+    private Entity entity;
 
     private enum ShotType
     {
@@ -68,6 +72,7 @@ public class FireProjectile : BaseAbility
 
     protected override void Start()
     {
+        entity = GetComponentInParent<Entity>();
         movement = GetComponentInParent<Core>().GetCoreComponent<Movement>();
         projectileMultipliers = GetComponents<ProjectileMultiplier>();
 
@@ -93,7 +98,7 @@ public class FireProjectile : BaseAbility
             Projectile projectile = poolManager.Pool.Get().GetComponent<Projectile>();
 
             projectile.SetPool(poolManager);
-            projectile.Set(GetCurrentProjectileData(), data.startPosition, hostileLayer);
+            projectile.Set(GetCurrentProjectileData(), data.startPosition, hostileLayer, entity);
             ApplyMultiplier(projectile);
 
             projectile.Fire(data.fireDirection);

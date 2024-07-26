@@ -23,6 +23,11 @@ public class BuffManager : CoreComponent
         player = Core.GetComponentInParent<Player>();
         stats = Core.GetCoreComponent<PlayerStats>();
         normalAttack = Core.GetCoreComponent<NormalAttack>();
+
+        foreach (Buff buff in buffList)
+        {
+            buff.Init();
+        }
     }
 
     public void Add(Buff buff)

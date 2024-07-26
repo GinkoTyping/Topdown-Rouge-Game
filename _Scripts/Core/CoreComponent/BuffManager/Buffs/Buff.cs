@@ -23,6 +23,8 @@ public abstract class Buff : MonoBehaviour
         UpdateSpecificBuffData();
     }
 
+    public virtual void Init() { }
+
     public abstract void LogicUpdate();
 
     protected void SwitchBuffIcon(bool isShow)

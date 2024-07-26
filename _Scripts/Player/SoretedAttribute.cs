@@ -64,4 +64,5 @@ public enum AttributeType
 
     AttackInterval,
     Poise,
+    LifeSteal,
 }

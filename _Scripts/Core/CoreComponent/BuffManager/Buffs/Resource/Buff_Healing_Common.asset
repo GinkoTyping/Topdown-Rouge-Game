@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb04abb899e65eb44829fdccbd5bb602, type: 3}
   m_Name: Buff_Healing_Common
   m_EditorClassIdentifier: 
-  iconSprite: {fileID: 21300000, guid: 0ee6b5e007c508742835db006554c835, type: 3}
+  iconSprite: {fileID: 21300000, guid: 2853b92a7abe42e4a8343511cde217c7, type: 3}
   hasTimer: 1
   stackable: 0
   resourceType: 0
