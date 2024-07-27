@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace Ginko.CoreSystem
@@ -9,8 +10,6 @@ namespace Ginko.CoreSystem
         [SerializeField] private Vector2 defaultOffset = new Vector2 (0.6f, 0);
 
         private PoolManager poolManager;
-        private Stats stats;
-        private Movement movement;
 
         protected override void Awake()
         {
@@ -19,49 +18,61 @@ namespace Ginko.CoreSystem
             poolManager = GetComponent<PoolManager>();
         }
 
-        private void Start()
+        public void FloatDamageText(DamageDetail damageDetail)
         {
-            stats = Core.GetCoreComponent<Stats>();
-            movement = Core.GetCoreComponent<Movement>();
-        }
+            string content = damageDetail.isCritical
+                ? $"{damageDetail.amount}!"
+                : damageDetail.amount.ToString();
 
-        public override void OnEnable()
-        {
-            base.OnEnable();
+            FontStyles fontStyles = FontStyles.Bold;
+            float fontSize = 0f;
 
-            if (stats == null)
+            if (damageDetail.isCritical)
             {
-                stats = Core.GetCoreComponent<Stats>();
+                fontStyles = FontStyles.Bold | FontStyles.Italic;
+                fontSize = 0.8f;
             }
 
-            stats.Health.OnCurrentValueChange += HandleHealthChange;
-        }
 
-        public override void LogicUpdate()
-        {
-            base.LogicUpdate();
-
-        }
-
-        private void HandleHealthChange(float currentValue, float maxValue, float valueBeforeChange)
-        {
-            float changedValue = valueBeforeChange - currentValue;
-            if (changedValue == 0)
+            Color color = Color.red;
+            switch (damageDetail.damageEffect)
             {
-                return;
+                case DamageEffect.Normal:
+                    break;
+                case DamageEffect.Fire:
+                    break;
+                case DamageEffect.Ice:
+                    color = Color.blue;
+                    break;
+                case DamageEffect.Toxic:
+                    color = Color.green;
+                    break;
+                default:
+                    break;
             }
-
-            bool isAdd = changedValue < 0;
-            Color color = isAdd ? Color.green : Color.red;
-            string indicator = isAdd ? "+" : "-";
-            string content = $"{indicator}{Mathf.Abs(changedValue)}";
 
             GameObject textGO = poolManager.Pool.Get();
             textGO.GetComponent<AnimatedText>().Init(
                 poolManager,
                 defaultOffset,
                 content,
-                color);
+                color,
+                fontStyles,
+                fontSize);
+        }
+
+        public void FloatHealText(float currentValue, float maxValue, float valueBeforeChange)
+        {
+            if (valueBeforeChange < currentValue && poolManager != null)
+            {
+                GameObject textGO = poolManager.Pool.Get();
+                textGO.GetComponent<AnimatedText>().Init(
+                    poolManager,
+                    defaultOffset,
+                    (currentValue - valueBeforeChange).ToString(),
+                    Color.green,
+                    flipped: true);
+            }
         }
     }
 }

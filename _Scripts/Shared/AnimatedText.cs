@@ -52,17 +52,29 @@ public class AnimatedText : MonoBehaviour
         }
     }
 
-    public void Init(PoolManager poolManager, Vector3 position, string content, Color color)
+    public void Init(PoolManager poolManager, Vector3 position, string content, Color color, FontStyles fontStyles = FontStyles.Bold, float fontSize = 0, bool flipped = false)
     {
         this.poolManager = poolManager;
 
-        rect.anchoredPosition = position;
-        startPos = position;
-        aliveTargetPos = position + endPositionOffset;
+        Vector3 calculatePos = position;
+        if (flipped)
+        {
+            calculatePos = new Vector3(-position.x, position.y);
+        }
+
+        rect.anchoredPosition = calculatePos;
+        startPos = calculatePos;
+        aliveTargetPos = calculatePos + endPositionOffset;
         fadeTargetPos = aliveTargetPos + fadeOffset;
 
         textMeshPro.text = content;
+        textMeshPro.alignment = flipped ? TextAlignmentOptions.Right : TextAlignmentOptions.Left;
         textMeshPro.color = color;
+        textMeshPro.fontStyle = fontStyles;
+        if (fontSize > 0)
+        {
+            textMeshPro.fontSize = fontSize;
+        }
 
         isActive = true;
     }
@@ -101,7 +113,6 @@ public class AnimatedText : MonoBehaviour
         {
             Vector2 newPos = Vector2.LerpUnclamped(rect.anchoredPosition, fadeTargetPos, fadeTime / fadeTimeTotal);
             rect.anchoredPosition = newPos;
-            Debug.Log(rect.anchoredPosition);
             Color color = textMeshPro.color;
             color.a = Mathf.LerpUnclamped(color.a, 0, fadeTime / fadeTimeTotal);
             textMeshPro.color = color;

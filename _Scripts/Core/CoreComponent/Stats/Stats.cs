@@ -9,6 +9,10 @@ namespace Ginko.CoreSystem
     {
         [field: SerializeField] public ResourceStat Health {  get; private set; }
         [field: SerializeField] public ResourceStat Poise {  get; private set; }
+        [SerializeField]
+        public AttributeStat[] attributes;
+
+        private FloatingText floatingTextComp;
 
         public override void OnEnable()
         {
@@ -19,6 +23,16 @@ namespace Ginko.CoreSystem
                 Health.Init();
                 Poise.Init();
             }
+
+            SetHealingFloatingText();
+        }
+
+        private void OnDisable()
+        {
+            if (floatingTextComp != null)
+            {
+                Health.OnCurrentValueChange -= floatingTextComp.FloatHealText;
+            }
         }
 
         public override void LogicUpdate()
@@ -28,12 +42,40 @@ namespace Ginko.CoreSystem
             Health.LogicUpdate();
             Poise.LogicUpdate();
         }
+
+        private void SetHealingFloatingText()
+        {
+            if (floatingTextComp == null)
+            {
+                floatingTextComp = Core.GetCoreComponent<FloatingText>();
+            }
+
+            if (floatingTextComp != null)
+            {
+                Health.OnCurrentValueChange += floatingTextComp.FloatHealText;
+            }
+        }
+
         public ResourceStat GetAttribute(ResourceType type)
         {
             ResourceStat output = null;
             if (type == ResourceType.Health)
             {
                 output = Health;
+            }
+
+            return output;
+        }
+        public AttributeStat GetAttribute(AttributeType type)
+        {
+            AttributeStat output = null;
+            foreach (AttributeStat attribute in attributes)
+            {
+                if (attribute.type == type)
+                {
+                    output = attribute;
+                    break;
+                }
             }
 
             return output;

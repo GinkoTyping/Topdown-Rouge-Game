@@ -1,13 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PossibilityHelper
 {
-    public int Get(float[] items)
+    public int GetAmongItems(float[] items)
     {
         int output = -1;
-        float ramdonFloat = Random.Range(0f, 1f);
+        float ramdonFloat = UnityEngine.Random.Range(0f, 1f);
 
         for (int i = 0; i < items.Length; ++i)
         {
@@ -21,5 +22,10 @@ public class PossibilityHelper
         }
 
         return output;
+    }
+
+    public bool GetChance(float possibility)
+    {
+        return UnityEngine.Random.Range(0f, 1f) <= possibility;
     }
 }

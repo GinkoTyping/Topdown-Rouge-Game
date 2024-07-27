@@ -24,6 +24,7 @@ namespace Ginko.CoreSystem
         private Stats stats;
         private ParticleManager particleManager;
         private SpriteEffect spriteHandler;
+        private FloatingText floatingTextComp;
 
         protected override void Awake()
         {
@@ -32,15 +33,12 @@ namespace Ginko.CoreSystem
             stats = Core.GetCoreComponent<Stats>();
             particleManager = Core.GetCoreComponent<ParticleManager>();
             spriteHandler = Core.GetCoreComponent<SpriteEffect>();
+            floatingTextComp = Core.GetCoreComponent<FloatingText>();
         }
 
-        public void Damage(float amount, Entity sender = null)
+        public void Damage(float amount, bool isCritical = false, Entity sender = null)
         {
-            stats.Health.Decrease(amount);
-            HandleDamageSender(sender);
-            particleManager.StartParticlesWithRandomRotation(damageParticles);
-            spriteHandler?.TintSprite(damageColor);
-            SoundManager.Instance.PlaySound(damageClip);
+            Damage(new DamageDetail(amount), sender);
         }
 
         private void HandleDamageSender(Entity sender)
@@ -57,6 +55,21 @@ namespace Ginko.CoreSystem
             {
                 lifeSteal.Activate();
             }
+        }
+
+        public void Damage(DamageDetail damageDetail, Entity sender = null)
+        {
+            stats.Health.Decrease(damageDetail.amount);
+            HandleDamageSender(sender);
+
+            if (floatingTextComp != null)
+            {
+                floatingTextComp.FloatDamageText(damageDetail);
+            }
+
+            particleManager.StartParticlesWithRandomRotation(damageParticles);
+            spriteHandler?.TintSprite(damageColor);
+            SoundManager.Instance.PlaySound(damageClip);
         }
     }
 }

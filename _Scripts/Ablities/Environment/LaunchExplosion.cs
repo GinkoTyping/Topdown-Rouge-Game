@@ -39,10 +39,8 @@ public class LaunchExplosion : BaseAbility
         spriteEffect = entity.Core.GetCoreComponent<SpriteEffect>();
     }
 
-    protected override void Update()
+    protected void Update()
     {
-        base.Update();
-
         explosionTimer.Tick();
         damageTimer.Tick();
     }

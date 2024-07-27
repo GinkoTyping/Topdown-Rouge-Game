@@ -27,11 +27,6 @@ public abstract class BaseAbility : MonoBehaviour
         entity = GetComponentInParent<Entity>();
     }
 
-    protected virtual void Update()
-    {
-        
-    }
-
     protected virtual void OnEnable()
     {
         SwitchAbleToActivate(true);

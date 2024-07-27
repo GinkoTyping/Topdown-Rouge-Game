@@ -24,7 +24,7 @@ public class SizeMultiplier : ProjectileMultiplier
         }
         else if (data.bySpecificRange)
         {
-            int index = possibilityHelper.Get(data.specificRanges.Select(item => item.possibility).ToArray());
+            int index = possibilityHelper.GetAmongItems(data.specificRanges.Select(item => item.possibility).ToArray());
             sizeMultiplier = index == -1 ? 1 : data.specificRanges[index].value;
         }
 

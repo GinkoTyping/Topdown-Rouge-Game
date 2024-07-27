@@ -1,3 +1,4 @@
+using Ginko.CoreSystem;
 using Ginko.PlayerSystem;
 using Ginko.StateMachineSystem;
 using System.Collections;
@@ -22,6 +23,7 @@ public class Projectile : MonoBehaviour
     private float duaration;
 
     private Entity senderEntity;
+    private Stats statsComp;
 
     private void Awake()
     {
@@ -57,6 +59,7 @@ public class Projectile : MonoBehaviour
 
         collisionLayer = layer;
         senderEntity = sender;
+        statsComp = sender.Core.GetCoreComponent<Stats>();
         transform.position = position;
     }
 
@@ -79,7 +82,8 @@ public class Projectile : MonoBehaviour
         IDamageable damageable = collider?.GetComponentInParent<IDamageable>();
         if (damageable != null)
         {
-            damageable.Damage(damageAmount, senderEntity);
+            DamageDetail damageDetail = new DamageDetail(damageAmount, statsComp, DamageEffect.Normal);
+            damageable.Damage(damageDetail, senderEntity);
             DestroySelf();
         }
     }

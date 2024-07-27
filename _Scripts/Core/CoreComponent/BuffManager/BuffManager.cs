@@ -6,16 +6,15 @@ using UnityEngine;
 
 public class BuffManager : CoreComponent
 {
+    public float continousAttackTime;
+    public float continousStayingTime;
+    public float continousMovingTime;
+
     [SerializeField] public PoolManager buffsPool;
     public List<Buff> buffList;
 
     public PlayerStats stats { get; private set; }
     public NormalAttack normalAttack { get; private set; }
-
-    public float continousAttackTime;
-    public float continousStayingTime;
-    public float continousMovingTime;
-
     private Player player;
 
     private void Start()

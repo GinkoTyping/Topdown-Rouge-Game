@@ -194,7 +194,7 @@ public class FireProjectile : BaseAbility
             return defaultProjectileData;
         }
 
-        int targetIndex = possibilityHelper.Get(specialProjectilesData.Select(item => item.possibility).ToArray());
+        int targetIndex = possibilityHelper.GetAmongItems(specialProjectilesData.Select(item => item.possibility).ToArray());
 
         return targetIndex == -1 ? defaultProjectileData : specialProjectilesData[targetIndex];
     }

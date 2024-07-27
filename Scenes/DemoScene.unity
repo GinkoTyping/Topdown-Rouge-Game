@@ -5293,11 +5293,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e85686c8efbefcf42a19219bc9ac2ade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buffsPool: {fileID: 433745532}
-  buffList: []
   continousAttackTime: 0
   continousStayingTime: 0
   continousMovingTime: 0
+  buffsPool: {fileID: 433745532}
+  buffList: []
 --- !u!1001 &578946173
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6054,8 +6054,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.025749981, y: 0.038450003, z: 0}
-    m_Extent: {x: 1.1164501, y: 0.97095, z: 0}
+    m_Center: {x: -0.024150014, y: 0.040250003, z: 0}
+    m_Extent: {x: 1.12665, y: 0.97205, z: 0}
   m_PointLightInnerAngle: 360.00003
   m_PointLightOuterAngle: 360.00003
   m_PointLightInnerRadius: 0
@@ -13564,6 +13564,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 643265962}
   m_PrefabAsset: {fileID: 0}
+--- !u!212 &926482141 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 2444991506894079395, guid: 7277dd75e907b27448ec1de08238d0bb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1869758377}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &933599708
 GameObject:
   m_ObjectHideFlags: 0
@@ -17032,7 +17038,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 5617566462948286229, guid: e6c6244ef4a8cd844938bf3cfcdca61f,
     type: 3}
-  isSpawning: 0
+  isSpawning: 1
   isDebug: 0
   spawnPositions:
   - {x: 7, y: 3}
@@ -17403,6 +17409,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1143039428}
   m_CullTransparentMesh: 1
+--- !u!212 &1146956771 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 4370152849212869299, guid: 7277dd75e907b27448ec1de08238d0bb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1869758377}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1193045735
 GameObject:
   m_ObjectHideFlags: 0
@@ -23950,7 +23962,7 @@ MonoBehaviour:
     type: 4
   - <MaxValue>k__BackingField: 1
     <MinValue>k__BackingField: 0
-    <InitValue>k__BackingField: 0.1
+    <InitValue>k__BackingField: 0.5
     type: 5
   - <MaxValue>k__BackingField: 999
     <MinValue>k__BackingField: 0
@@ -26883,6 +26895,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5448611686290797322, guid: 9e7797bb065982d4497d030f065d6e2f,
+        type: 3}
+      propertyPath: sprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 926482141}
+    - target: {fileID: 5448611686290797322, guid: 9e7797bb065982d4497d030f065d6e2f,
+        type: 3}
+      propertyPath: sprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 1146956771}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

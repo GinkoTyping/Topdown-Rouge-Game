@@ -15,15 +15,18 @@ public class SpawnEnemyOnDeath : BaseAbility
     private PoolHelper poolHelper;
     private PoolManager poolManager;
     private Transform enemiesContainer;
-
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+
         poolHelper = GameObject.Find("Helper").GetComponent<PoolHelper>();
         enemiesContainer = GameObject.Find("Enemies").transform;
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+
         SetSpawnCount(defaultSpawnCount);
     }
 
