@@ -61,15 +61,36 @@ namespace Ginko.CoreSystem
         {
             stats.Health.Decrease(damageDetail.amount);
             HandleDamageSender(sender);
+            ApplyDamageEffect(damageDetail.damageEffect);
 
             if (floatingTextComp != null)
             {
                 floatingTextComp.FloatDamageText(damageDetail);
             }
 
-            particleManager.StartParticlesWithRandomRotation(damageParticles);
+            GameObject hitParticles = damageDetail.hitParticle == null ? damageParticles : damageDetail.hitParticle;
+            if (damageDetail.showHitParticle)
+            {
+                particleManager.StartParticlesWithRandomRotation(hitParticles);
+            }
+
             spriteHandler?.TintSprite(damageColor);
-            SoundManager.Instance.PlaySound(damageClip);
+
+            if (damageDetail.playSound)
+            {
+                SoundManager.Instance.PlaySound(damageClip);
+            }
+        }
+
+        public void ApplyDamageEffect(DamageEffect effect)
+        {
+            if(effect != DamageEffect.Normal)
+            {
+                if (effect == DamageEffect.Fire)
+                {
+
+                }
+            }
         }
     }
 }

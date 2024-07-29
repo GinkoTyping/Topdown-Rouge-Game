@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "newSizeMultiplierData", menuName = "Data/Multiplier/Size Multiplier Data")]
+[CreateAssetMenu(fileName = "newSizeMultiplierData", menuName = "Data/Projectile Multiplier/Size Multiplier Data")]
 public class SizeMultiplierDataSO : ScriptableObject
 {
     [SerializeField] public bool byRange;

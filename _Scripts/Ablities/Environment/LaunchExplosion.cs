@@ -78,12 +78,15 @@ public class LaunchExplosion : BaseAbility
     {
         damageTimer.OnTimerDone += DetectDamega;
         damageTimer.StartTimer();
+
+        InvokeAbilityDoneEvent();
     }
 
     private void DetectDamega()
     {
-        damageTimer.OnTimerDone -= DetectDamega;
+        PlayAbilitySound();
 
+        damageTimer.OnTimerDone -= DetectDamega;
         Collider2D[] colliders =  Physics2D.OverlapCircleAll(transform.position, explosionRadius, hostileLayer);
         if (colliders.Length > 0)
         {

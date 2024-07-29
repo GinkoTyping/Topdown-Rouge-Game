@@ -527,7 +527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDebug: 1
-  playAudioByAnim: 1
+  playAudioByAnim: 0
   playAudioOnActivate: 0
   abilityAudio: {fileID: 8300000, guid: 273860b7a923af545af2985b02c516ea, type: 3}
   attackDamage: 10
@@ -1145,14 +1145,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDebug: 1
-  playAudioByAnim: 1
+  playAudioByAnim: 0
   playAudioOnActivate: 0
   abilityAudio: {fileID: 8300000, guid: 273860b7a923af545af2985b02c516ea, type: 3}
   attackDamage: 20
   hostileLayer:
     serializedVersion: 2
     m_Bits: 1024
-  isDestructSelf: 1
+  isDestructSelf: 0
   explosionRadius: 1.2
   explosionScale: 1.5
   explosionDelayTime: 0.5

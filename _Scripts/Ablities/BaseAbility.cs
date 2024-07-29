@@ -1,4 +1,5 @@
 using Ginko.StateMachineSystem;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,8 @@ public abstract class BaseAbility : MonoBehaviour
     protected AnimationEventHandler animationEventHandler;
 
     protected bool isAbleToActivate;
+
+    public event Action<BaseAbility> OnAbilityFinished;
 
     protected virtual void Awake()
     {
@@ -77,5 +80,10 @@ public abstract class BaseAbility : MonoBehaviour
         {
             SoundManager.Instance.PlaySound(abilityAudio);
         }
+    }
+
+    protected void InvokeAbilityDoneEvent()
+    {
+        OnAbilityFinished?.Invoke(this);
     }
 }

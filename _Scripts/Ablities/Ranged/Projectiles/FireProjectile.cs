@@ -70,7 +70,7 @@ public class FireProjectile : BaseAbility
     protected override void Start()
     {
         movement = GetComponentInParent<Core>().GetCoreComponent<Movement>();
-        projectileMultipliers = GetComponents<ProjectileMultiplier>();
+        projectileMultipliers = GetComponentsInChildren<ProjectileMultiplier>();
 
         if (poolManager == null)
         {

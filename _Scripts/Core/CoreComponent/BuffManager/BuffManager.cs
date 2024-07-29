@@ -1,5 +1,7 @@
 using Ginko.CoreSystem;
 using Ginko.PlayerSystem;
+using Shared.Utilities;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,19 +11,29 @@ public class BuffManager : CoreComponent
     public float continousAttackTime;
     public float continousStayingTime;
     public float continousMovingTime;
+    private bool isStaying = true;
 
     [SerializeField] public PoolManager buffsPool;
+    [SerializeField] private float effectiveTime = 0.05f;
+
     public List<Buff> buffList;
+    public event Action<int> OnBuffChange;
 
     public PlayerStats stats { get; private set; }
     public NormalAttack normalAttack { get; private set; }
     private Player player;
+
+    private Timer effectiveTimer;
+    private bool isEffectiveContinous;
 
     private void Start()
     {
         player = Core.GetComponentInParent<Player>();
         stats = Core.GetCoreComponent<PlayerStats>();
         normalAttack = Core.GetCoreComponent<NormalAttack>();
+
+        effectiveTimer = new Timer(effectiveTime);
+        effectiveTimer.OnTimerDone += HandleEffectiveTimerDone;
 
         foreach (Buff buff in buffList)
         {
@@ -32,6 +44,7 @@ public class BuffManager : CoreComponent
     public void Add(Buff buff)
     {
         buffList.Add(buff);
+        OnBuffChange?.Invoke(buffList.Count);
     }
 
     public override void LogicUpdate()
@@ -39,9 +52,7 @@ public class BuffManager : CoreComponent
         base.LogicUpdate();
 
         UpdateContinousAttackTime();
-        UpdateMovingTime();
-        UpdateStayingTime();
-
+        UpdateIsStay();
         UpdateBuffs();
     }
 
@@ -65,26 +76,34 @@ public class BuffManager : CoreComponent
         }
     }
 
-    private void UpdateMovingTime()
+    private void UpdateIsStay()
     {
-        if (player.Movement.CurrentVelocity != Vector2.zero)
+        effectiveTimer.Tick();
+
+        if (isStaying)
+        {
+            if (player.Movement.CurrentVelocity.sqrMagnitude > 0)
+            {
+                isStaying = false;
+            }
+        } else if (!isStaying && player.Movement.CurrentVelocity.sqrMagnitude == 0 &&!effectiveTimer.isActive)
+        {
+            effectiveTimer.StartTimer();
+        }
+
+        if (isStaying)
+        {
+            continousStayingTime += Time.deltaTime;
+            continousMovingTime = 0;
+        } else
         {
             continousMovingTime += Time.deltaTime;
-        } else if (continousMovingTime != 0)
-        {
-            continousMovingTime = 0;
+            continousStayingTime = 0;
         }
     }
 
-    private void UpdateStayingTime()
+    private void HandleEffectiveTimerDone()
     {
-        if (player.Movement.CurrentVelocity == Vector2.zero)
-        {
-            continousStayingTime += Time.deltaTime;
-        }
-        else if (continousStayingTime != 0)
-        {
-            continousStayingTime = 0;
-        }
+        isStaying = player.Movement.CurrentVelocity.sqrMagnitude == 0;
     }
 }

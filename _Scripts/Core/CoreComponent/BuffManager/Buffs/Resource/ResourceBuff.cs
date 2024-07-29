@@ -1,21 +1,38 @@
 using Ginko.CoreSystem;
+using Shared.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResourceBuff : Buff
+public abstract class ResourceBuff : Buff
 {
-    private ResourceBuffDataSO resourceBuffData;
-    private ResourceStat resourceStat;
+    protected ResourceBuffDataSO resourceBuffData;
+    protected ResourceStat resourceStat;
 
-    private float passedTime;
-    private float calculateTime;
+    protected float passedTime;
+    protected float calculateTime;
 
-    private GameObject buffEffect;
+    protected GameObject buffEffect;
+    protected DamageReceiver damageReceiverComp;
+
+    protected Timer vfx_timer;
+
+    protected override void Start()
+    {
+        base.Start();
+
+        damageReceiverComp = buffManager.Core.GetCoreComponent<DamageReceiver>();
+    }
 
     protected override void UpdateSpecificBuffData()
     {
         resourceBuffData = data as ResourceBuffDataSO;
+
+        if (resourceBuffData?.vfx_actvieType == ResourceBuffDataSO.VFX_ActiveType.OnActivate)
+        {
+            vfx_timer = new Timer(resourceBuffData.vfx_activeTime);
+            vfx_timer.OnTimerDone += HandleVFX_TimerDone;
+        }
 
         if (resourceBuffData != null && resourceBuffData.resourceType == AttributeType.MaxHealth)
         {
@@ -23,62 +40,109 @@ public class ResourceBuff : Buff
         }
     }
 
+    private void OnDisable()
+    {
+        if (vfx_timer != null)
+        {
+            vfx_timer.OnTimerDone -= HandleVFX_TimerDone;
+        }
+    }
+
     public override void LogicUpdate()
     {
+        UpdateVFX_Timer();
+
         if (resourceBuffData != null)
         {
             if (passedTime > resourceBuffData.totalTime)
             {
-                passedTime = 0;
-                calculateTime = 0;
-
-                SwitchBuffEffect(false);
-                SwitchBuffIcon(false);
-
-                UpdateBuffData(null);
+                HandleBuffOver();
             }
             else
             {
-                if (passedTime == 0)
-                {
-                    SwitchBuffEffect(true);
-                    SwitchBuffIcon(true);
+                CheckSwitchOnBuffIcon();
+                CheckSwitchOnBuff_VFX();
 
-                    buffTimer = resourceBuffData.totalTime;
-                }
+                ApplyBuffEffect();
 
-                if (calculateTime >= resourceBuffData.perTime)
-                {
-                    calculateTime -= resourceBuffData.perTime;
-                    resourceStat.Increase(resourceBuffData.perValue);
-                }
-
-                passedTime += Time.deltaTime;
-                calculateTime += Time.deltaTime;
-                buffTimer -= Time.deltaTime;
+                UpdateTimeConfig();
             }
         }
     }
 
-    private void SwitchBuffEffect(bool isShow)
+    protected abstract void ApplyBuffEffect();
+
+    private void UpdateVFX_Timer()
     {
-        if (resourceBuffData.resourceType == AttributeType.MaxHealth)
+        if (vfx_timer != null)
         {
-            if (isShow)
-            {
-                if (buffEffect == null)
-                {
-                    buffEffect = Instantiate(resourceBuffData.buffEffect, transform);
-                }
-                else
-                {
-                    buffEffect.SetActive(true);
-                }
-            }
-            else if (buffEffect != null && buffEffect.activeSelf)
-            {
-                buffEffect.SetActive(false);
-            }
+            vfx_timer.Tick();
         }
+    }
+
+    private void UpdateTimeConfig()
+    {
+        passedTime += Time.deltaTime;
+        buffTimer -= Time.deltaTime;
+    }
+
+    private void HandleBuffOver()
+    {
+        passedTime = 0;
+        calculateTime = 0;
+
+        SwitchBuff_VFX(false);
+        SwitchBuffIcon(false);
+
+        UpdateBuffData(null);
+    }
+
+    private void CheckSwitchOnBuff_VFX()
+    {
+        if (passedTime == 0 && resourceBuffData.vfx_actvieType == ResourceBuffDataSO.VFX_ActiveType.DuringActive)
+        {
+            SwitchBuff_VFX(true);
+        }
+        else if (calculateTime >= resourceBuffData.perTime && resourceBuffData.vfx_actvieType == ResourceBuffDataSO.VFX_ActiveType.OnActivate)
+        {
+            SwitchBuff_VFX(true);
+        }
+    }
+
+    private void CheckSwitchOnBuffIcon()
+    {
+        if (passedTime == 0)
+        {
+            SwitchBuffIcon(true);
+            buffTimer = resourceBuffData.totalTime;
+        }
+    }
+
+    private void SwitchBuff_VFX(bool isShow)
+    {
+        if (isShow)
+        {
+            if (buffEffect == null)
+            {
+                buffEffect = Instantiate(resourceBuffData.buffEffect, transform);
+                buffEffect.transform.localPosition = resourceBuffData.vfx_offset;
+                buffEffect.transform.localScale = resourceBuffData.vfx_scale;
+            }
+            else
+            {
+                buffEffect.SetActive(true);
+            }
+
+            vfx_timer?.StartTimer();
+        }
+        else if (buffEffect != null && buffEffect.activeSelf)
+        {
+            buffEffect.SetActive(false);
+        }
+    }
+
+    private void HandleVFX_TimerDone()
+    {
+        SwitchBuff_VFX(false);
     }
 }

@@ -9,8 +9,9 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] private bool isDebug;
 
+    public SpriteRenderer spriteRenderer;
+
     private Rigidbody rb;
-    private SpriteRenderer spriteRenderer;
     private PoolManager poolManager;
 
     private Vector3 collisionOffset;
@@ -25,10 +26,18 @@ public class Projectile : MonoBehaviour
     private Entity senderEntity;
     private Stats statsComp;
 
+    private DamageEffect damageEffect;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void OnEnable()
+    {
+        damageEffect = DamageEffect.Normal;
+        spriteRenderer.color = Color.white;
     }
 
     private void FixedUpdate()
@@ -63,6 +72,11 @@ public class Projectile : MonoBehaviour
         transform.position = position;
     }
 
+    public void SetDamageEffect(DamageEffect effect)
+    {
+        damageEffect = effect;
+    }
+
     public void Fire(Vector3 fireDirection)
     {
         direction = fireDirection.normalized;
@@ -82,7 +96,7 @@ public class Projectile : MonoBehaviour
         IDamageable damageable = collider?.GetComponentInParent<IDamageable>();
         if (damageable != null)
         {
-            DamageDetail damageDetail = new DamageDetail(damageAmount, statsComp, DamageEffect.Normal);
+            DamageDetail damageDetail = new DamageDetail(damageAmount, statsComp, damageEffect);
             damageable.Damage(damageDetail, senderEntity);
             DestroySelf();
         }

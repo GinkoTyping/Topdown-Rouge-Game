@@ -21,8 +21,8 @@ namespace Ginko.CoreSystem
         public void FloatDamageText(DamageDetail damageDetail)
         {
             string content = damageDetail.isCritical
-                ? $"{damageDetail.amount}!"
-                : damageDetail.amount.ToString();
+                ? $"{Mathf.Abs(damageDetail.amount)}!"
+                : Mathf.Abs(damageDetail.amount).ToString();
 
             FontStyles fontStyles = FontStyles.Bold;
             float fontSize = 0f;

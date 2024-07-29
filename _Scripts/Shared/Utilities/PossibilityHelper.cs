@@ -9,18 +9,20 @@ public class PossibilityHelper
     {
         int output = -1;
         float ramdonFloat = UnityEngine.Random.Range(0f, 1f);
-
+        float min = 0;
         for (int i = 0; i < items.Length; ++i)
         {
-            float min = i == 0 ? 0 : items[i - 1];
-            float max = items[i];
+            if (i > 0)
+            {
+                min += items[i - 1];
+            }
+            float max = i == 0 ? items[i] : min + items[i];
             if (ramdonFloat > min && ramdonFloat <= max)
             {
                 output = i;
                 break;
             }
         }
-
         return output;
     }
 
