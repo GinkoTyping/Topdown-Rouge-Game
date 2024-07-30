@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6080422848270422393}
   - component: {fileID: 8169478296137849683}
   m_Layer: 9
-  m_Name: Buff_OnFire
+  m_Name: Buff_FireDot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

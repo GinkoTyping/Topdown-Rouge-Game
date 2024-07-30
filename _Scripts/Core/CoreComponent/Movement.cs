@@ -26,6 +26,13 @@ namespace Ginko.CoreSystem
             RB = GetComponentInParent<Rigidbody2D>();
         }
 
+        public override void OnEnable()
+        {
+            base.OnEnable();
+
+            ResetAvoidFlipTransform();
+        }
+
         public override void LogicUpdate()
         {
             CurrentVelocity = RB.velocity;
@@ -72,6 +79,20 @@ namespace Ginko.CoreSystem
             }
         }
         
+        private void ResetAvoidFlipTransform()
+        {
+            if (avoidFlipTransform.Length > 0)
+            {
+                foreach (Transform t in avoidFlipTransform)
+                {
+                    if (t.transform.rotation.y != 0.0f)
+                    {
+                        t.Rotate(0.0f, 180.0f, 0.0f);
+                    }
+                }
+            }
+        }
+
         private void CheckIfShouldFlip()
         {
             if (CurrentVelocity.x != 0 && CurrentVelocity.x * FacingDirection < 0)

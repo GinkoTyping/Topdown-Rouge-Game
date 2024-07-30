@@ -2,15 +2,15 @@ using Ginko.CoreSystem;
 using Ginko.PlayerSystem;
 using Shared.Utilities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BuffManager : CoreComponent
 {
-    public float continousAttackTime;
-    public float continousStayingTime;
-    public float continousMovingTime;
+    public float continousAttackTime = 0;
+    public float continousStayingTime = 0;
+    public float continousMovingTime = 0;
     private bool isStaying = true;
 
     [SerializeField] public PoolManager buffsPool;
@@ -21,27 +21,72 @@ public class BuffManager : CoreComponent
 
     public PlayerStats stats { get; private set; }
     public NormalAttack normalAttack { get; private set; }
-    private Player player;
 
+    private Movement movement;
+    private Death death;
+    private Player player;
     private Timer effectiveTimer;
-    private bool isEffectiveContinous;
 
     private void Start()
     {
         player = Core.GetComponentInParent<Player>();
         stats = Core.GetCoreComponent<PlayerStats>();
         normalAttack = Core.GetCoreComponent<NormalAttack>();
+        movement = Core.GetCoreComponent<Movement>();
 
         effectiveTimer = new Timer(effectiveTime);
         effectiveTimer.OnTimerDone += HandleEffectiveTimerDone;
+    }
+
+    public override void OnEnable()
+    {
+        base.OnEnable();
 
         foreach (Buff buff in buffList)
         {
             buff.Init();
         }
+        Reset();
+
+        death = Core.GetCoreComponent<Death>();
+        death.OnDeath += Reset;
+    }
+
+    private void OnDisable()
+    {
+        death.OnDeath -= Reset;
+    }
+
+    private void Reset()
+    {
+        buffList = new List<Buff>();
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Destroy(transform.GetChild(i).gameObject);
+        }
+
+        for (int i = 0;i < buffsPool.transform.childCount; i++)
+        {
+            Destroy(buffsPool.transform.GetChild(i).gameObject);
+        }
     }
 
     public void Add(Buff buff)
+    {
+        Buff exsitBuff = buffList.Where(item => item.gameObject.name == buff.gameObject.name).FirstOrDefault();
+        if (exsitBuff != null)
+        {
+            exsitBuff.RefreshBuff();
+        }
+        else
+        {
+            GameObject newBuff = Instantiate(buff.gameObject, transform);
+            newBuff.name = buff.name;
+        }
+    }
+
+    public void RegisterBuff(Buff buff)
     {
         buffList.Add(buff);
         OnBuffChange?.Invoke(buffList.Count);
@@ -52,7 +97,7 @@ public class BuffManager : CoreComponent
         base.LogicUpdate();
 
         UpdateContinousAttackTime();
-        UpdateIsStay();
+        UpdateMoveAndStayTime();
         UpdateBuffs();
     }
 
@@ -66,7 +111,7 @@ public class BuffManager : CoreComponent
 
     private void UpdateContinousAttackTime()
     {
-        if (player.IsAttackInput)
+        if (player != null && player.IsAttackInput)
         {
             continousAttackTime += Time.deltaTime;
         }
@@ -76,17 +121,18 @@ public class BuffManager : CoreComponent
         }
     }
 
-    private void UpdateIsStay()
+    private void UpdateMoveAndStayTime()
     {
         effectiveTimer.Tick();
 
         if (isStaying)
         {
-            if (player.Movement.CurrentVelocity.sqrMagnitude > 0)
+            if (movement.CurrentVelocity.sqrMagnitude > 0)
             {
                 isStaying = false;
             }
-        } else if (!isStaying && player.Movement.CurrentVelocity.sqrMagnitude == 0 &&!effectiveTimer.isActive)
+        } 
+        else if (!isStaying && movement.CurrentVelocity.sqrMagnitude == 0 &&!effectiveTimer.isActive)
         {
             effectiveTimer.StartTimer();
         }
@@ -95,7 +141,8 @@ public class BuffManager : CoreComponent
         {
             continousStayingTime += Time.deltaTime;
             continousMovingTime = 0;
-        } else
+        } 
+        else
         {
             continousMovingTime += Time.deltaTime;
             continousStayingTime = 0;
@@ -104,6 +151,6 @@ public class BuffManager : CoreComponent
 
     private void HandleEffectiveTimerDone()
     {
-        isStaying = player.Movement.CurrentVelocity.sqrMagnitude == 0;
+        isStaying = movement.CurrentVelocity.sqrMagnitude == 0;
     }
 }

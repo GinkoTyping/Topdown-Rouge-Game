@@ -7,17 +7,9 @@ namespace Ginko.CoreSystem
 {
     public class PlayerStats : Stats
     {
-        [SerializeField]
-        private HealthBar playerHealthBar;
-
         public override void OnEnable()
         {
             base.OnEnable();
-
-            Health.OnCurrentValueChange += playerHealthBar.ChangeHealthBar;
-
-            Health.Init();
-            Poise.Init();
 
             foreach (AttributeStat attribute in attributes)
             {
@@ -27,9 +19,7 @@ namespace Ginko.CoreSystem
 
         private void OnDisable()
         {
-            Health.OnCurrentValueChange -= playerHealthBar.ChangeHealthBar;
+            
         }
-
-        
     }
 }

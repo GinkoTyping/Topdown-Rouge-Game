@@ -52,17 +52,16 @@ public class SpawnEnemyOnDeath : BaseAbility
                 poolManager = poolHelper.GetPoolByPrefab(enemiesContainer, enemyPrefab);
             }
 
-            Debug.Log(poolManager);
-
-
             for (int i = 0; i < enemyCount; i++)
             {
                 GameObject obj = poolManager.Pool.Get();
                 obj.transform.position = transform.position + GetRamdonPos(spawnRadius);
 
                 Enemy enemy = obj.GetComponent<Enemy>();
-                enemy.Core.GetCoreComponent<Death>().GetComponentInChildren<SpawnEnemyOnDeath>().SetSpawnCount(spawnCount - 1);
+                enemy.Core.GetCoreComponent<Death>().GetComponentInChildren<SpawnEnemyOnDeath>()?.SetSpawnCount(spawnCount - 1);
             }
         }
+
+        InvokeAbilityDoneEvent();
     }
 }

@@ -27,6 +27,7 @@ public class Projectile : MonoBehaviour
     private Stats statsComp;
 
     private DamageEffect damageEffect;
+    private Buff buffEffectGO;
 
     private void Awake()
     {
@@ -72,9 +73,10 @@ public class Projectile : MonoBehaviour
         transform.position = position;
     }
 
-    public void SetDamageEffect(DamageEffect effect)
+    public void SetDamageEffect(DamageEffect effect, Buff buffEffect = null)
     {
         damageEffect = effect;
+        buffEffectGO = buffEffect;
     }
 
     public void Fire(Vector3 fireDirection)
@@ -96,7 +98,7 @@ public class Projectile : MonoBehaviour
         IDamageable damageable = collider?.GetComponentInParent<IDamageable>();
         if (damageable != null)
         {
-            DamageDetail damageDetail = new DamageDetail(damageAmount, statsComp, damageEffect);
+            DamageDetail damageDetail = new DamageDetail(damageAmount, statsComp, damageEffect, buffEffect: buffEffectGO);
             damageable.Damage(damageDetail, senderEntity);
             DestroySelf();
         }

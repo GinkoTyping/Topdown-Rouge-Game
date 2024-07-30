@@ -508,7 +508,7 @@ GameObject:
   - component: {fileID: 2311552773306687144}
   - component: {fileID: 3060318636137029564}
   m_Layer: 5
-  m_Name: BuffIcon
+  m_Name: BuffIcon_Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

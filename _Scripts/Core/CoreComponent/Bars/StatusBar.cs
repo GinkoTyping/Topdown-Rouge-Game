@@ -18,9 +18,8 @@ namespace Ginko.CoreSystem
         }
         public Stats stats { get; private set; }
 
+        private Death death;
         private HealthBar healthBar;
-
-        private bool flipped = false;
 
         protected override void Awake()
         {
@@ -29,32 +28,27 @@ namespace Ginko.CoreSystem
             healthBar = GetComponentInChildren<HealthBar>();
         }
 
+        private void Start()
+        {
+            gameObject.SetActive(true);
+        }
+
         public override void OnEnable()
         {
             base.OnEnable();
             gameObject.SetActive(true);
+            death = Core.GetCoreComponent<Death>();
 
             Stats.Health.OnCurrentValueChange += healthBar.ChangeHealthBar;
-            Stats.Health.OnCurrentValueZero += HandleDeath;
+            death.OnDeath += HandleDeath;
         }
 
         private void OnDisable()
         {
             Stats.Health.OnCurrentValueChange -= healthBar.ChangeHealthBar;
-            Stats.Health.OnCurrentValueZero -= HandleDeath;
+            death.OnDeath -= HandleDeath;
         }
 
-        public override void LogicUpdate()
-        {
-            base.LogicUpdate();
-
-            if ((Movement.FacingDirection < 0 && !flipped) || Movement.FacingDirection > 0 && flipped)
-            {
-                transform.Rotate(0, 180, 0);
-                flipped = !flipped;
-            }
-        }
-    
         private void HandleDeath()
         {
             gameObject.SetActive(false);

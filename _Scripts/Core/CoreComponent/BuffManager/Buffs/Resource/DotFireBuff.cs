@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OnFireBuff : ResourceBuff
+// TODO: 火焰类型的子弹 附加给角色该buff
+public class DotFireBuff : ResourceBuff
 {
     protected override void ApplyBuffEffect()
     {

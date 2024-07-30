@@ -14,6 +14,7 @@ public class DamageEffectMultiplierDataSO : ScriptableObject
     public class EffectItem
     {
         public float possibility;
+        public Buff effectBuff;
         public DamageEffect effect;
     }
 }

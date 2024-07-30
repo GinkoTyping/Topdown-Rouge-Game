@@ -11,13 +11,13 @@ namespace Ginko.CoreSystem
     public class HealthBar : MonoBehaviour
     {
         [SerializeField] private float lerpDuration;
+        [SerializeField] private float originalWidth;
         private float lerpTotalTime;
         private bool isLerp;
 
         private RectTransform HealthRect;
         private RectTransform HealthDecreasedRect;
-
-        private float originalWidth;
+        
         private float currentWidth;
         private float targerWidth = -1f;
 
@@ -26,7 +26,14 @@ namespace Ginko.CoreSystem
             HealthRect = transform.Find("Health").GetComponent<RectTransform>();
             HealthDecreasedRect = transform.Find("Health_Decreased")?.GetComponent<RectTransform>();
 
-            originalWidth = HealthRect.sizeDelta.x;
+            if (originalWidth == 0f)
+            {
+                originalWidth = HealthRect.sizeDelta.x;
+            }
+        }
+
+        private void Start()
+        {
         }
 
         private void Update()

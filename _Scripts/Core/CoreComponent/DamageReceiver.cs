@@ -25,6 +25,7 @@ namespace Ginko.CoreSystem
         private ParticleManager particleManager;
         private SpriteEffect spriteHandler;
         private FloatingText floatingTextComp;
+        private BuffManager buffManager;
 
         protected override void Awake()
         {
@@ -34,6 +35,7 @@ namespace Ginko.CoreSystem
             particleManager = Core.GetCoreComponent<ParticleManager>();
             spriteHandler = Core.GetCoreComponent<SpriteEffect>();
             floatingTextComp = Core.GetCoreComponent<FloatingText>();
+            buffManager = Core.GetCoreComponent<BuffManager>();
         }
 
         public void Damage(float amount, bool isCritical = false, Entity sender = null)
@@ -61,7 +63,7 @@ namespace Ginko.CoreSystem
         {
             stats.Health.Decrease(damageDetail.amount);
             HandleDamageSender(sender);
-            ApplyDamageEffect(damageDetail.damageEffect);
+            ApplyDamageEffect(damageDetail.buffEffect);
 
             if (floatingTextComp != null)
             {
@@ -82,14 +84,11 @@ namespace Ginko.CoreSystem
             }
         }
 
-        public void ApplyDamageEffect(DamageEffect effect)
+        public void ApplyDamageEffect(Buff buffEffect)
         {
-            if(effect != DamageEffect.Normal)
+            if (buffEffect != null && buffManager != null)
             {
-                if (effect == DamageEffect.Fire)
-                {
-
-                }
+                buffManager.Add(buffEffect);
             }
         }
     }

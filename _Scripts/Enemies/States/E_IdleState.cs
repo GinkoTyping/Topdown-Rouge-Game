@@ -65,7 +65,6 @@ public class E_IdleState : IdleState
         enemy.OnObstaclesCollision += OnObstaclesCollision;
     }
 
-
     private void OnObstaclesCollision()
     {
         IniteTimer();

@@ -45,6 +45,11 @@ public class BuffIcon : MonoBehaviour
 
     private void UpdateTimerText()
     {
+        if (currentBuff == null)
+        {
+            return;
+        }
+
         if (currentBuff.buffTimer < 1 && timerGO.activeSelf)
         {
             timerGO.SetActive(false);
@@ -53,7 +58,6 @@ public class BuffIcon : MonoBehaviour
         {
             timerText.text = Mathf.Round(currentBuff.buffTimer).ToString();
         }
-
     }
 
     private void UpdateStackableBuff()

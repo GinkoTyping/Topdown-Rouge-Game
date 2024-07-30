@@ -20,12 +20,14 @@ public class DamageDetail
     public AttributeStat criticalDamage;
     public DamageEffect damageEffect;
     public GameObject hitParticle;
+    public Buff buffEffect;
 
-    public DamageDetail(float amount, Stats stats = null, DamageEffect damageEffect = DamageEffect.Normal, bool playSound = true, GameObject hitParticle = null, bool showHitParticle = true)
+    public DamageDetail(float amount, Stats stats = null, DamageEffect damageEffect = DamageEffect.Normal, bool playSound = true, GameObject hitParticle = null, bool showHitParticle = true, Buff buffEffect = null)
     {
         this.damageEffect = damageEffect;
         this.playSound = playSound;
         this.hitParticle = hitParticle;
+        this.buffEffect = buffEffect;
         this.showHitParticle = showHitParticle;
 
         if (stats != null)

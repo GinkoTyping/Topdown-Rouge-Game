@@ -34,6 +34,11 @@ public class ChargingBuff : Buff
         }
     }
 
+    public override void RefreshBuff()
+    {
+        throw new System.NotImplementedException();
+    }
+
     private float GetBuffStackCount()
     {
         float time = 0;

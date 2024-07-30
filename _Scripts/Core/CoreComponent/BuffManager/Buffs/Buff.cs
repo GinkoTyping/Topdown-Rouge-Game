@@ -18,20 +18,29 @@ public abstract class Buff : MonoBehaviour
     protected virtual void Start()
     {
         buffManager = GetComponentInParent<BuffManager>();
-        buffManager.Add(this);
+        buffManager.RegisterBuff(this);
 
         UpdateSpecificBuffData();
+    }
+
+    private void OnEnable()
+    {
+        currentBuffIcon = null;
     }
 
     public virtual void Init() { }
 
     public abstract void LogicUpdate();
 
+    protected abstract void UpdateSpecificBuffData();
+
+    public abstract void RefreshBuff();
+
     protected void SwitchBuffIcon(bool isShow)
     {
         if (isShow)
         {
-            if (currentBuffIcon == null)
+            if (currentBuffIcon == null && buffManager.buffsPool.Pool != null)
             {
                 GameObject buffGO = buffManager.buffsPool.Pool.Get();
                 BuffIcon buffIcon = buffGO.GetComponent<BuffIcon>();
@@ -55,6 +64,4 @@ public abstract class Buff : MonoBehaviour
 
         UpdateSpecificBuffData();
     }
-
-    protected abstract void UpdateSpecificBuffData();
 }

@@ -22,6 +22,6 @@ MonoBehaviour:
   vfx_activeTime: 1
   vfx_offset: {x: 0, y: -0.15, z: 0}
   vfx_scale: {x: 0.3, y: 0.3, z: 0.3}
-  perValue: -5
+  perValue: -1
   perTime: 1
   totalTime: 20

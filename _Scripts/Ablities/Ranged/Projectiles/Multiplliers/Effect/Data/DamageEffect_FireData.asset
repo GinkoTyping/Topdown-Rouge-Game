@@ -10,18 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f6a585a80a1b8044b928ef6c93e7f69, type: 3}
-  m_Name: DamageEffec_Fire And Ice Data
+  m_Name: DamageEffect_FireData
   m_EditorClassIdentifier: 
   mixed: 1
-  effect: 0
+  effect: 1
   effectRanges:
-  - possibility: 0.4
-    effectBuff: {fileID: 0}
-    effect: 0
-  - possibility: 0.3
-    effectBuff: {fileID: 3847060065388263075, guid: 7e4a4872f42bd4647a0f802614d8894c,
+  - possibility: 1
+    effectBuff: {fileID: 8169478296137849683, guid: 7e4a4872f42bd4647a0f802614d8894c,
       type: 3}
     effect: 1
-  - possibility: 0.3
-    effectBuff: {fileID: 0}
-    effect: 2

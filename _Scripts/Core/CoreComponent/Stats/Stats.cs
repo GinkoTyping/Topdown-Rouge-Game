@@ -7,6 +7,8 @@ namespace Ginko.CoreSystem
 {
     public class Stats : CoreComponent
     {
+        [SerializeField]
+        protected HealthBar healthBar;
         [field: SerializeField] public ResourceStat Health {  get; private set; }
         [field: SerializeField] public ResourceStat Poise {  get; private set; }
         [SerializeField]
@@ -17,11 +19,18 @@ namespace Ginko.CoreSystem
         public override void OnEnable()
         {
             base.OnEnable();
-            
-            if (Core.GetComponentInParent<Player>() == null )
+
+            if (healthBar != null )
             {
-                Health.Init();
-                Poise.Init();
+                Health.OnCurrentValueChange += healthBar.ChangeHealthBar;
+            }
+
+            Health.Init();
+            Poise.Init();
+
+            if (healthBar != null)
+            {
+                healthBar.ChangeHealthBar(Health.CurrentValue, Health.MaxValue, 0);
             }
 
             SetHealingFloatingText();
@@ -29,6 +38,11 @@ namespace Ginko.CoreSystem
 
         private void OnDisable()
         {
+            if (healthBar != null )
+            {
+                Health.OnCurrentValueChange -= healthBar.ChangeHealthBar;
+            }
+
             if (floatingTextComp != null)
             {
                 Health.OnCurrentValueChange -= floatingTextComp.FloatHealText;

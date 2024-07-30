@@ -1,3 +1,4 @@
+using Ginko.StateMachineSystem;
 using Shared.Utilities;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ public class EnemySpawn : MonoBehaviour
             foreach (Vector2 pos in spawnPositions)
             {
                 GameObject enemy = poolManager.Pool.Get();
+                enemy.GetComponent<Entity>().SetPool(poolManager.Pool);
                 enemy.transform.position = pos;
             }
         }

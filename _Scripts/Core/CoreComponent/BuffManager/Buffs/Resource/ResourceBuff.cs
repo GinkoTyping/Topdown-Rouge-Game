@@ -9,7 +9,7 @@ public abstract class ResourceBuff : Buff
     protected ResourceBuffDataSO resourceBuffData;
     protected ResourceStat resourceStat;
 
-    protected float passedTime;
+    protected float passedTime = -1;
     protected float calculateTime;
 
     protected GameObject buffEffect;
@@ -22,6 +22,8 @@ public abstract class ResourceBuff : Buff
         base.Start();
 
         damageReceiverComp = buffManager.Core.GetCoreComponent<DamageReceiver>();
+
+        RefreshBuff();
     }
 
     protected override void UpdateSpecificBuffData()
@@ -70,6 +72,11 @@ public abstract class ResourceBuff : Buff
         }
     }
 
+    public override void RefreshBuff()
+    {
+        passedTime = 0;
+    }
+
     protected abstract void ApplyBuffEffect();
 
     private void UpdateVFX_Timer()
@@ -88,7 +95,6 @@ public abstract class ResourceBuff : Buff
 
     private void HandleBuffOver()
     {
-        passedTime = 0;
         calculateTime = 0;
 
         SwitchBuff_VFX(false);

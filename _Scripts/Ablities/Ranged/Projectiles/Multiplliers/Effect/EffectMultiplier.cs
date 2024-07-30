@@ -26,19 +26,21 @@ public class EffectMultiplier : ProjectileMultiplier
     public override Projectile Apply(Projectile projectile)
     {
         DamageEffect defaultEffect = DamageEffect.Normal;
+        Buff buffEffect = null;
         if (data.mixed && data.effectRanges.Length > 0)
         {
             int index = helper.GetAmongItems(data.effectRanges.Select(item => item.possibility).ToArray());
             if (index != -1)
             {
                 defaultEffect = data.effectRanges[index].effect;
+                buffEffect = data.effectRanges[index].effectBuff;
             }
         } else
         {
             defaultEffect = data.effect;
         }
 
-        projectile.SetDamageEffect(defaultEffect);
+        projectile.SetDamageEffect(defaultEffect, buffEffect);
         projectile.spriteRenderer.color = GetEffectColor(defaultEffect);
 
         return projectile;

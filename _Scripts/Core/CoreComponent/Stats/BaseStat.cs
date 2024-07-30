@@ -15,7 +15,7 @@ namespace Ginko.CoreSystem
         public event Action OnCurrentValueZero;
         public event Action<float, float, float> OnCurrentValueChange;
 
-        private float currentValue;
+        private float currentValue = 0;
         public float CurrentValue
         {
             get => currentValue;

@@ -10,7 +10,6 @@ public class LifeSteal : Buff
 
     private ResourceStat health;
 
-
     public override void Init()
     {
         base.Init();
@@ -27,6 +26,12 @@ public class LifeSteal : Buff
 
     public override void LogicUpdate()
     {
+        
+    }
+
+    public override void RefreshBuff()
+    {
+        throw new System.NotImplementedException();
     }
 
     protected override void UpdateSpecificBuffData()

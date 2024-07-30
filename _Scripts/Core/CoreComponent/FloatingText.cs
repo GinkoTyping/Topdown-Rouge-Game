@@ -18,6 +18,16 @@ namespace Ginko.CoreSystem
             poolManager = GetComponent<PoolManager>();
         }
 
+        public override void OnEnable()
+        {
+            base.OnEnable();
+
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                Destroy(transform.GetChild(i).gameObject);
+            }
+        }
+
         public void FloatDamageText(DamageDetail damageDetail)
         {
             string content = damageDetail.isCritical
