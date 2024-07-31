@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
@@ -14,8 +15,9 @@ public class BuffIcon : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
 
     [HideInInspector] public PoolManager poolManager;
+    public Buff currentBuff;
 
-    private Buff currentBuff;
+    private BuffsContainer buffsContainer;
 
     public void SetPool(PoolManager poolManager)
     {
@@ -24,6 +26,8 @@ public class BuffIcon : MonoBehaviour
 
     public void Set(Buff buff)
     {
+        buffsContainer = GetComponentInParent<BuffsContainer>();
+
         currentBuff = buff;
         buffImage.sprite = buff.data.iconSprite;
         stackGO.SetActive(buff.data.stackable);
@@ -77,5 +81,15 @@ public class BuffIcon : MonoBehaviour
     {
         currentBuff = null;
         stackGO.SetActive(false);
+    }
+
+    public void HandleMouseHover()
+    {
+        buffsContainer.SetHoverBuffIcon(this);
+    }
+
+    public void HandleMouseExist()
+    {
+        buffsContainer.SetHoverBuffIcon(null);
     }
 }

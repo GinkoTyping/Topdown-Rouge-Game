@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Buff_BattleFury_Common
   m_EditorClassIdentifier: 
   iconSprite: {fileID: 21300000, guid: 921ed9c569eb55c4394a7dc90cbb452d, type: 3}
-  hasTimer: 0
+  desc: Every {$1} seconds of {$2}, the {$3} decreased by {$4}, can stack {$5} times
+  hasTimer: 1
   stackable: 1
   chargingBaseType: 0
   chargingTargetAttribute: 11
   maxStack: 5
   timePerStack: 3
-  modifier: 0.9
+  modifier: -0.1

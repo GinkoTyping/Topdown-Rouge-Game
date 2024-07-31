@@ -1,11 +1,13 @@
+using Ginko.CoreSystem;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newResourceBuffData", menuName = "Data/Buff/Resource")]
 public class ResourceBuffDataSO : BaseBuffDataSO
 {
-    [SerializeField] public AttributeType resourceType;
+    [SerializeField] public ResourceType resourceType;
 
     [Header("VFX")]
     [SerializeField] public GameObject buffEffect;

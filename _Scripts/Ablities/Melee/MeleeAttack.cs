@@ -1,4 +1,5 @@
 using Ginko.CoreSystem;
+using Ginko.PlayerSystem;
 using Ginko.StateMachineSystem;
 using System;
 using UnityEngine;
@@ -40,6 +41,8 @@ public class MeleeAttack : BaseAbility
 
     public override void Activate()
     {
+        movement.FaceToItem(Player.Instance.transform);
+
         UpdateAnim(AnimBoolName.MeleeAttack);
     }
 

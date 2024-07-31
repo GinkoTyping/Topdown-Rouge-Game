@@ -31,7 +31,7 @@ public class LifeSteal : Buff
 
     public override void RefreshBuff()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     protected override void UpdateSpecificBuffData()
@@ -48,5 +48,15 @@ public class LifeSteal : Buff
         {
             health.Increase(health.MaxValue * lifeStealingBuffData.value);
         }
+    }
+
+    public override string GetDesc()
+    {
+        string moduleDesc = data.desc;
+        string color = attributeHelper.GetAttributeColor(ResourceType.Health);
+
+        moduleDesc = moduleDesc.Replace("{$1}", GetSpecialText($"{lifeStealingBuffData.value} HP", color));
+
+        return moduleDesc;
     }
 }

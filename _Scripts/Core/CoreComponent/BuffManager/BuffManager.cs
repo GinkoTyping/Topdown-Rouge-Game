@@ -14,6 +14,7 @@ public class BuffManager : CoreComponent
     private bool isStaying = true;
 
     [SerializeField] public PoolManager buffsPool;
+    [SerializeField] private List<Buff> defaultBuffList;
     [SerializeField] private float effectiveTime = 0.05f;
 
     public List<Buff> buffList;
@@ -30,7 +31,6 @@ public class BuffManager : CoreComponent
     private void Start()
     {
         player = Core.GetComponentInParent<Player>();
-        stats = Core.GetCoreComponent<PlayerStats>();
         normalAttack = Core.GetCoreComponent<NormalAttack>();
         movement = Core.GetCoreComponent<Movement>();
 
@@ -42,14 +42,16 @@ public class BuffManager : CoreComponent
     {
         base.OnEnable();
 
-        foreach (Buff buff in buffList)
-        {
-            buff.Init();
-        }
         Reset();
 
+        stats = Core.GetCoreComponent<PlayerStats>();
         death = Core.GetCoreComponent<Death>();
         death.OnDeath += Reset;
+
+        foreach (Buff buff in defaultBuffList)
+        {
+            Add(buff);
+        }
     }
 
     private void OnDisable()
@@ -83,6 +85,8 @@ public class BuffManager : CoreComponent
         {
             GameObject newBuff = Instantiate(buff.gameObject, transform);
             newBuff.name = buff.name;
+
+            newBuff.GetComponent<Buff>().Init();
         }
     }
 

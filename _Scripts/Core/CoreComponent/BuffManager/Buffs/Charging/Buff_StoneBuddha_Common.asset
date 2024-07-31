@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Buff_StoneBuddha_Common
   m_EditorClassIdentifier: 
   iconSprite: {fileID: 21300000, guid: c445c331e809c394f8fdc29530d029f7, type: 3}
+  desc: Every {$1} seconds of {$2}, the {$3} increases by {$4}, can stack {$5} times
   hasTimer: 0
   stackable: 1
   chargingBaseType: 1

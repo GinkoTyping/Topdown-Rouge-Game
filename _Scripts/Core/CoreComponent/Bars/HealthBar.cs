@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,14 +13,19 @@ namespace Ginko.CoreSystem
     {
         [SerializeField] private float lerpDuration;
         [SerializeField] private float originalWidth;
+        [SerializeField] private TextMeshProUGUI healthTextMesh;
         private float lerpTotalTime;
         private bool isLerp;
+        private bool isHover;
 
         private RectTransform HealthRect;
         private RectTransform HealthDecreasedRect;
         
         private float currentWidth;
         private float targerWidth = -1f;
+
+        private float currentHealth;
+        private float maxHealth;
 
         protected void Awake()
         {
@@ -38,6 +44,8 @@ namespace Ginko.CoreSystem
 
         private void Update()
         {
+            SwitchHealthTextVisible();
+
             if (isLerp)
             {
                 if (lerpTotalTime < lerpDuration )
@@ -64,8 +72,45 @@ namespace Ginko.CoreSystem
 
         public void ChangeHealthBar(float currentHealth, float maxHealth, float valueBeforeChange)
         {
+            this.currentHealth = currentHealth;
+            this.maxHealth = maxHealth;
+
             targerWidth = currentHealth / maxHealth * originalWidth;
+
             isLerp = true;
+            if (healthTextMesh != null)
+            {
+                healthTextMesh.text = $"{currentHealth} / {maxHealth}";
+            }
+        }
+        
+        private void SwitchHealthTextVisible()
+        {
+            if (healthTextMesh != null)
+            {
+                if (currentHealth == maxHealth)
+                {
+                    if (healthTextMesh.gameObject.activeSelf)
+                    {
+                        healthTextMesh.gameObject.SetActive(false);
+                    }
+                }
+
+                if (isHover)
+                {
+                    healthTextMesh.gameObject.SetActive(true);
+                }
+            }
+        }
+
+        public void HandleHover()
+        {
+            isHover = true;
+        }
+
+        public void HandleExit()
+        {
+            isHover = false;
         }
     }
 }

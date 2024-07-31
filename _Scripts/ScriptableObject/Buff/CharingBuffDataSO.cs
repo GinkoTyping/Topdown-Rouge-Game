@@ -21,7 +21,7 @@ public enum ChargingBaseType
     ContinousAttack,
 
     // æ≤÷π
-    NotMoving,
+    Stillness,
 
     // ±£≥÷“∆∂Ø
     Moving,

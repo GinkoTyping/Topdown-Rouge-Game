@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Buff_On Fire_Common
   m_EditorClassIdentifier: 
   iconSprite: {fileID: 21300000, guid: c2d95f36cb25e224087526bda14f803c, type: 3}
+  desc: Damage {$1} {$2} every {$3} seconds
   hasTimer: 1
   stackable: 0
   resourceType: 0

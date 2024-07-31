@@ -14,12 +14,15 @@ public abstract class Buff : MonoBehaviour
 
     protected BuffManager buffManager;
     protected BuffIcon currentBuffIcon;
+    protected AttributeHelper attributeHelper;
+
+    private void Awake()
+    {
+        attributeHelper = GameObject.Find("Helper").GetComponent<AttributeHelper>();
+    }
 
     protected virtual void Start()
     {
-        buffManager = GetComponentInParent<BuffManager>();
-        buffManager.RegisterBuff(this);
-
         UpdateSpecificBuffData();
     }
 
@@ -28,7 +31,13 @@ public abstract class Buff : MonoBehaviour
         currentBuffIcon = null;
     }
 
-    public virtual void Init() { }
+    public virtual void Init() 
+    {
+        buffManager = GetComponentInParent<BuffManager>();
+        buffManager.RegisterBuff(this);
+    }
+
+    public abstract string GetDesc();
 
     public abstract void LogicUpdate();
 
@@ -63,5 +72,12 @@ public abstract class Buff : MonoBehaviour
         data = newBuffData;
 
         UpdateSpecificBuffData();
+    }
+
+    protected string GetSpecialText<T>(T text, string color = "#ff0000", bool underline = false)
+    {
+        string output = $"<size=+6><{color}>{text}</color></size>";
+
+        return underline ? $"<u>{output}</u>" : output;
     }
 }

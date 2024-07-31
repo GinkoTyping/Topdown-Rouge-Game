@@ -36,7 +36,6 @@ public class ChargingBuff : Buff
 
     public override void RefreshBuff()
     {
-        throw new System.NotImplementedException();
     }
 
     private float GetBuffStackCount()
@@ -54,7 +53,7 @@ public class ChargingBuff : Buff
                     time = buffManager.continousMovingTime;
                     break;
                 }
-            case ChargingBaseType.NotMoving:
+            case ChargingBaseType.Stillness:
                 {
                     time = buffManager.continousStayingTime;
                     break;
@@ -127,7 +126,7 @@ public class ChargingBuff : Buff
         }
         else
         {
-            abilityManager.ModifyCooldown(abilityManager.totalCooldownTime * chargeBuffData.modifier);
+            abilityManager.ModifyCooldown(abilityManager.totalCooldownTime * ( 1 + chargeBuffData.modifier));
         }
     }
     
@@ -140,5 +139,18 @@ public class ChargingBuff : Buff
     protected override void UpdateSpecificBuffData()
     {
         chargeBuffData = data as CharingBuffDataSO;
+    }
+
+    public override string GetDesc()
+    {
+        string moduleDesc = data.desc;
+
+        moduleDesc = moduleDesc.Replace("{$1}", GetSpecialText(chargeBuffData.timePerStack));
+        moduleDesc = moduleDesc.Replace("{$2}", GetSpecialText(chargeBuffData.chargingBaseType));
+        moduleDesc = moduleDesc.Replace("{$3}", GetSpecialText(attributeHelper.ShortenAttributeName(chargeBuffData.chargingTargetAttribute), attributeHelper.GetAttributeColor(chargeBuffData.chargingTargetAttribute)));
+        moduleDesc = moduleDesc.Replace("{$4}", GetSpecialText($"{Mathf.Abs(chargeBuffData.modifier) * 100}%"));
+        moduleDesc = moduleDesc.Replace("{$5}", GetSpecialText(chargeBuffData.maxStack, underline: true));
+
+        return moduleDesc;
     }
 }

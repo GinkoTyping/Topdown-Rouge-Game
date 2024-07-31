@@ -36,7 +36,7 @@ public abstract class ResourceBuff : Buff
             vfx_timer.OnTimerDone += HandleVFX_TimerDone;
         }
 
-        if (resourceBuffData != null && resourceBuffData.resourceType == AttributeType.MaxHealth)
+        if (resourceBuffData != null && resourceBuffData.resourceType == ResourceType.Health)
         {
             resourceStat = buffManager.Core.GetCoreComponent<Stats>().Health;
         }
@@ -150,5 +150,16 @@ public abstract class ResourceBuff : Buff
     private void HandleVFX_TimerDone()
     {
         SwitchBuff_VFX(false);
+    }
+
+    public override string GetDesc()
+    {
+        string moduleDesc = data.desc;
+        string color = attributeHelper.GetAttributeColor(resourceBuffData.resourceType);
+        moduleDesc = moduleDesc.Replace("{$1}", GetSpecialText(resourceBuffData.perValue, color));
+        moduleDesc = moduleDesc.Replace("{$2}", GetSpecialText(resourceBuffData.resourceType, color));
+        moduleDesc = moduleDesc.Replace("{$3}", GetSpecialText(resourceBuffData.perTime));
+
+        return moduleDesc;
     }
 }

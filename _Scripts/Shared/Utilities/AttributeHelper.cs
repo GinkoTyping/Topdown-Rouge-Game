@@ -1,5 +1,9 @@
+using Ginko.CoreSystem;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor.TerrainTools;
 using UnityEngine;
 
 public class AttributeHelper : MonoBehaviour
@@ -8,6 +12,15 @@ public class AttributeHelper : MonoBehaviour
     public Color[] colors;
     [SerializeField]
     private Material[] materials;
+    [SerializeField]
+    private List<AttributeToColor> attributesToColors;
+
+    [Serializable]
+    public class AttributeToColor
+    {
+        public Color color;
+        public AttributeType type;
+    }
 
     public string ShortenAttributeName(AttributeType attribute)
     {
@@ -44,11 +57,38 @@ public class AttributeHelper : MonoBehaviour
             case AttributeType.HealthRecovery:
                 name = "HP Recovery";
                 break;
+            case AttributeType.LifeSteal:
+                name = "Life Steal";
+                break;
             default:
                 break;
         }
 
         return name;
+    }
+
+    public string GetAttributeColor(ResourceType resourceType)
+    {
+        if (resourceType == ResourceType.Health)
+        {
+            return GetAttributeColor(AttributeType.MaxHealth);
+        }
+        // Blue
+        return "#0096ff";
+    }
+
+    public string GetAttributeColor(AttributeType attributeType)
+    {
+        string color = "#ffffff";
+
+        AttributeToColor attributeToColor = attributesToColors.Where(item => item.type == attributeType).FirstOrDefault();
+
+        if(attributeToColor != null)
+        {
+            color = $"#{ColorUtility.ToHtmlStringRGB(attributeToColor.color)}";
+        }
+
+        return color;
     }
 
     public Color GetAttributeColor(Rarity rarity, bool isTransparent)

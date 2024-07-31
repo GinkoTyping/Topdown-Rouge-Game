@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Buff_LifeSteal_Common
   m_EditorClassIdentifier: 
   iconSprite: {fileID: 21300000, guid: 1652e754bb5b28c4886c9e7f183a8ad0, type: 3}
+  desc: Steal {$1} on every damage to enemy
   hasTimer: 0
   stackable: 0
   type: 0
