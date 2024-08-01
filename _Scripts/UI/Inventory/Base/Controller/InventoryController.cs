@@ -8,6 +8,7 @@ using UnityEngine;
 public class InventoryController : MonoBehaviour
 {
     [Header("Base")]
+    [SerializeField] private Canvas inventoryCanvas;
     [SerializeField]
     public GameObject inventoryItemPrefab;
     [SerializeField]
@@ -68,9 +69,7 @@ public class InventoryController : MonoBehaviour
         indicatorController = GetComponent<InventoryItemIndicatorController>();
         equipmentsPageController = GetComponent<EquipmentsPageController>();
 
-        canvasTransform = GetComponent<RectTransform>();
-
-        gameObject.SetActive(false);
+        canvasTransform = inventoryCanvas.GetComponent<RectTransform>();
     }
 
     private void Update()

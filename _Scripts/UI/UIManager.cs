@@ -6,19 +6,16 @@ using UnityEngine.Rendering.Universal;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField]
-    private float border;
+    [Header("Base")]
+    [SerializeField] private float menuHoldTime;
+    [SerializeField] private AudioClip openMenuAudio;
+    [SerializeField] private AudioClip closeMenuAudio;
+    [SerializeField] private Light2D globalLight2D;
+
     [Header("Inventory")]
-    [SerializeField]
-    private GameObject inventoryUI;
-    [SerializeField]
-    private float menuHoldTime;
-    [SerializeField]
-    private AudioClip openMenuAudio;
-    [SerializeField]
-    private AudioClip closeMenuAudio;
-    [SerializeField]
-    private Light2D globalLight2D;
+    [SerializeField] private GameObject inventoryCanvas;
+    [SerializeField] private RectTransform inventoryContainer;
+    [SerializeField] private GameObject lootInventoryGO;
 
     public event Action onInventoryUIClose;
 
@@ -26,24 +23,14 @@ public class UIManager : MonoBehaviour
     private PlayerInput inputAction;
 
     private float menuOpenTime;
-    private RectTransform luggageInventoryUI;
-    private RectTransform lootInventoryUI;
-    private RectTransform equipmentInventoryUI;
 
-    private void Awake()
-    {
-        luggageInventoryUI = inventoryUI.transform.Find("Luggage").GetComponent<RectTransform>();
-        lootInventoryUI = inventoryUI.transform.Find("Loot").GetComponent<RectTransform>();
-        equipmentInventoryUI = inventoryUI.transform.Find("Equipment").GetComponent<RectTransform>();
-
-    }
    
     private void Start()
     {
         playerInputEventHandler = Player.Instance.InputHandler;
         inputAction = Player.Instance.InputAction;
 
-        SetInventoryUI();
+        SwitchInventory(false);
     }
 
     private void Update()
@@ -54,13 +41,13 @@ public class UIManager : MonoBehaviour
     public void HandleSwitchInventory()
     {
 
-        if (playerInputEventHandler.PressEsc && inventoryUI.activeSelf)
+        if (playerInputEventHandler.PressEsc && inventoryCanvas.activeSelf)
         {
             SwitchInventory(false);
         }
         else if (playerInputEventHandler.SwitchInventory)
         {
-            if (inventoryUI.activeSelf && Time.time >= menuOpenTime + menuHoldTime)
+            if (inventoryCanvas.activeSelf && Time.time >= menuOpenTime + menuHoldTime)
             {
                 SwitchInventory(false);
             }
@@ -79,13 +66,13 @@ public class UIManager : MonoBehaviour
             playerInputEventHandler.UseSwitchInventorySignal();
 
             inputAction.SwitchCurrentActionMap("UI");
-            inventoryUI.SetActive(true);
+            inventoryCanvas.SetActive(true);
 
-            inventoryUI.transform.Find("Loot").gameObject.SetActive((bool)showLoot);
+            lootInventoryGO.SetActive((bool)showLoot);
+
+            SetInventoryUI();
 
             SoundManager.Instance.PlaySound(openMenuAudio);
-
-            SwitchGameRunning(false);
         }
         else
         {
@@ -95,22 +82,16 @@ public class UIManager : MonoBehaviour
             playerInputEventHandler.UseSwitchInventorySignal();
 
             inputAction.SwitchCurrentActionMap("Gameplay");
-            inventoryUI.SetActive(false);
+            inventoryCanvas.SetActive(false);
 
             SoundManager.Instance.PlaySound(closeMenuAudio);
-
-            SwitchGameRunning(true);
         }
     }
 
     public void SetInventoryUI()
     {
-        lootInventoryUI.anchoredPosition = new Vector2(Screen.width - lootInventoryUI.sizeDelta.x - border, -border);
-        equipmentInventoryUI.anchoredPosition = new Vector2(border, -border);
-
-        // 装备栏和掠夺栏左右布局，物品栏在剩余宽度居中
-        float widthLeft = Screen.width - border * 2 - lootInventoryUI.sizeDelta.x - equipmentInventoryUI.sizeDelta.x; 
-        luggageInventoryUI.anchoredPosition = new Vector2(widthLeft / 2 - luggageInventoryUI.sizeDelta.x / 2 + equipmentInventoryUI.sizeDelta.x + border, -border);
+        Grid[] activeGrids = inventoryContainer.GetComponentsInChildren<Grid>();
+        inventoryContainer.sizeDelta = new Vector2(activeGrids.Length == 2 ? 1000 : 1100, Screen.height);
     }
 
     private void SwitchGameRunning(bool isRunning)

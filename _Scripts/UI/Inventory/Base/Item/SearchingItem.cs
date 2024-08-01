@@ -5,13 +5,11 @@ using UnityEngine;
 
 public class SearchingItem : MonoBehaviour
 {
-    [SerializeField]
-    private AudioClip searchAudio;
+    [SerializeField] private AudioClip searchAudio;
 
     public event Action OnSearchingDone;
     public bool needSearch {  get; private set; }
     public bool isSearching { get; private set; }
-
 
     private PoolManager searchingUIPool;
     private GameObject searchUI;
@@ -19,8 +17,6 @@ public class SearchingItem : MonoBehaviour
 
     private float totalTime;
     private float startTime;
-
-    private static float SCALE_SIZE = .8f;
 
     private void Awake()
     {
@@ -46,22 +42,21 @@ public class SearchingItem : MonoBehaviour
         if (needSearch)
         {
             isSearching = true;
-            startTime = Time.time;
+            startTime = Time.unscaledTime;
         }
     }
 
     private void CreateUI(InventoryItem item)
     {
-        searchingUIPool = GameObject.Find("UI").transform.Find("Inventory").Find("Loot").GetComponentInChildren<PoolManager>();
+        searchingUIPool = GameObject.Find("Inventory").transform.Find("Loot").GetComponentInChildren<PoolManager>();
         RectTransform selfRect = GetComponent<RectTransform>();
 
-
         searchUI = searchingUIPool.Pool.Get();
+        searchUI.GetComponent<TrackInventoryItemPos>().Set(item);
         RectTransform rect = searchUI.GetComponent<RectTransform>();
         spinner = rect.Find("Spinner").gameObject;
 
-        rect.position = item.transform.position;
-        rect.localScale = Vector3.one * selfRect.sizeDelta.x * SCALE_SIZE;
+        rect.transform.position = transform.position;
     }
 
     private void SetSearchingTimeByRarity(Rarity rarity)
@@ -85,7 +80,7 @@ public class SearchingItem : MonoBehaviour
 
     private void CheckSwitchSearchingUI()
     {
-        if (isSearching && Time.time < startTime + totalTime)
+        if (isSearching && Time.unscaledTime < startTime + totalTime)
         {
             if (!spinner.activeSelf)
             {
@@ -94,7 +89,7 @@ public class SearchingItem : MonoBehaviour
             }
         }
         else if (isSearching 
-            && Time.time > startTime + totalTime
+            && Time.unscaledTime >= startTime + totalTime
             && searchUI.activeSelf)
         {
             totalTime = 0;
