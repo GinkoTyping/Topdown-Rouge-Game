@@ -16,13 +16,16 @@ MonoBehaviour:
   desc: Heal {$1} {$2} every {$3} seconds
   hasTimer: 1
   stackable: 0
-  resourceType: 0
-  buffEffect: {fileID: 6648539020999668230, guid: 7b8a53ddf5932604d9b342c693dae0aa,
-    type: 3}
+  buff_vfx: {fileID: 0}
   vfx_actvieType: 0
   vfx_activeTime: 0
   vfx_offset: {x: 0, y: -0.5, z: 0}
   vfx_scale: {x: 0.6, y: 0.6, z: 0.6}
+  isAttribute: 0
+  resourceType: 0
+  attributeType: 0
+  isUpdateOverTime: 1
+  staticValue: 0
   perValue: 5
   perTime: 2
   totalTime: 100

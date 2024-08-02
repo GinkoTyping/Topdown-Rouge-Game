@@ -5,7 +5,44 @@ using UnityEngine;
 
 public class RegularResourceBuff : ResourceBuff
 {
+    private bool hasUpdatedAtOneTime;
+    private AttributeStat targetAttribute;
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        hasUpdatedAtOneTime = false;
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        if (resourceBuffData != null && !resourceBuffData.isUpdateOverTime)
+        {
+            targetAttribute.Decrease(resourceBuffData.staticValue);
+        }
+    }
+
     protected override void ApplyBuffEffect()
+    {
+        if (resourceBuffData.isUpdateOverTime)
+        {
+            UpdateStatOverTime();
+        } else
+        {
+            if (!hasUpdatedAtOneTime)
+            {
+                hasUpdatedAtOneTime = true;
+
+                targetAttribute = buffManager.stats.GetAttribute(resourceBuffData.attributeType);
+                targetAttribute.Increase(resourceBuffData.staticValue);
+            }
+        }
+    }
+
+    private void UpdateStatOverTime()
     {
         if (calculateTime >= resourceBuffData.perTime)
         {

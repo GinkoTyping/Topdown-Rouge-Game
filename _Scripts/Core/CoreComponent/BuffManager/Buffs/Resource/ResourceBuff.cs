@@ -12,7 +12,7 @@ public abstract class ResourceBuff : Buff
     protected float passedTime = -1;
     protected float calculateTime;
 
-    protected GameObject buffEffect;
+    protected GameObject buffVFX;
     protected DamageReceiver damageReceiverComp;
 
     protected Timer vfx_timer;
@@ -30,7 +30,7 @@ public abstract class ResourceBuff : Buff
     {
         resourceBuffData = data as ResourceBuffDataSO;
 
-        if (resourceBuffData?.vfx_actvieType == ResourceBuffDataSO.VFX_ActiveType.OnActivate)
+        if (resourceBuffData?.buff_vfx != null && resourceBuffData?.vfx_actvieType == ResourceBuffDataSO.VFX_ActiveType.OnActivate)
         {
             vfx_timer = new Timer(resourceBuffData.vfx_activeTime);
             vfx_timer.OnTimerDone += HandleVFX_TimerDone;
@@ -42,7 +42,7 @@ public abstract class ResourceBuff : Buff
         }
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         if (vfx_timer != null)
         {
@@ -72,9 +72,15 @@ public abstract class ResourceBuff : Buff
         }
     }
 
-    public override void RefreshBuff()
+    public override void RefreshBuff(BaseBuffDataSO newData = null)
     {
+        base.RefreshBuff(newData);
+
         passedTime = 0;
+        if (!gameObject.activeSelf)
+        {
+            gameObject.SetActive(true);
+        }
     }
 
     protected abstract void ApplyBuffEffect();
@@ -100,11 +106,18 @@ public abstract class ResourceBuff : Buff
         SwitchBuff_VFX(false);
         SwitchBuffIcon(false);
 
+        // OnDisabled 需要 buffData 数据，所以先Disabled再重置 buffData
+        gameObject.SetActive(false);
         UpdateBuffData(null);
     }
 
     private void CheckSwitchOnBuff_VFX()
     {
+        if (resourceBuffData.buff_vfx == null)
+        {
+            return;
+        }
+
         if (passedTime == 0 && resourceBuffData.vfx_actvieType == ResourceBuffDataSO.VFX_ActiveType.DuringActive)
         {
             SwitchBuff_VFX(true);
@@ -128,22 +141,22 @@ public abstract class ResourceBuff : Buff
     {
         if (isShow)
         {
-            if (buffEffect == null)
+            if (buffVFX == null)
             {
-                buffEffect = Instantiate(resourceBuffData.buffEffect, transform);
-                buffEffect.transform.localPosition = resourceBuffData.vfx_offset;
-                buffEffect.transform.localScale = resourceBuffData.vfx_scale;
+                buffVFX = Instantiate(resourceBuffData.buff_vfx, transform);
+                buffVFX.transform.localPosition = resourceBuffData.vfx_offset;
+                buffVFX.transform.localScale = resourceBuffData.vfx_scale;
             }
             else
             {
-                buffEffect.SetActive(true);
+                buffVFX.SetActive(true);
             }
 
             vfx_timer?.StartTimer();
         }
-        else if (buffEffect != null && buffEffect.activeSelf)
+        else if (buffVFX != null && buffVFX.activeSelf)
         {
-            buffEffect.SetActive(false);
+            buffVFX.SetActive(false);
         }
     }
 
@@ -155,9 +168,32 @@ public abstract class ResourceBuff : Buff
     public override string GetDesc()
     {
         string moduleDesc = data.desc;
-        string color = attributeHelper.GetAttributeColor(resourceBuffData.resourceType);
-        moduleDesc = moduleDesc.Replace("{$1}", GetSpecialText(resourceBuffData.perValue, color));
-        moduleDesc = moduleDesc.Replace("{$2}", GetSpecialText(resourceBuffData.resourceType, color));
+
+        string color;
+        string statName;
+        if (resourceBuffData.isAttribute)
+        {
+            color = attributeHelper.GetAttributeColor(resourceBuffData.attributeType);
+            statName = attributeHelper.ShortenAttributeName(resourceBuffData.attributeType);
+        }
+        else
+        {
+            color = attributeHelper.GetAttributeColor(resourceBuffData.resourceType);
+            statName = attributeHelper.ShortenAttributeName(resourceBuffData.resourceType);
+        }
+
+        float value = resourceBuffData.isUpdateOverTime ? resourceBuffData.perValue : resourceBuffData.staticValue;
+        string valueString;
+        if (resourceBuffData.isAttribute && attributeHelper.IsFloat(resourceBuffData.attributeType))
+        {
+            valueString = $"{value * 100}%";
+        } else
+        {
+            valueString = value.ToString();
+        }
+
+        moduleDesc = moduleDesc.Replace("{$1}", GetSpecialText(valueString, color));
+        moduleDesc = moduleDesc.Replace("{$2}", GetSpecialText(statName, color));
         moduleDesc = moduleDesc.Replace("{$3}", GetSpecialText(resourceBuffData.perTime));
 
         return moduleDesc;

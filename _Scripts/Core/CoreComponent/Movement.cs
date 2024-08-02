@@ -17,6 +17,7 @@ namespace Ginko.CoreSystem
         public int FacingDirection { get; private set; }
 
         private Vector2 workSpace;
+        private AttributeStat moveSpeedStat;
 
         protected override void Awake()
         {
@@ -24,6 +25,9 @@ namespace Ginko.CoreSystem
 
             FacingDirection = 1;
             RB = GetComponentInParent<Rigidbody2D>();
+
+            Stats stats = Core.GetCoreComponent<Stats>();
+            moveSpeedStat = stats.GetAttribute(AttributeType.MoveSpeed);
         }
 
         public override void OnEnable()
@@ -41,7 +45,9 @@ namespace Ginko.CoreSystem
         public void SetVelocity(float amount, Vector2 direction)
         {
             Vector2 normalizedDirection = direction.normalized;
-            workSpace.Set(normalizedDirection.x * amount, normalizedDirection.y * amount);
+            float moveSpeed = amount * moveSpeedStat.CurrentValue;
+
+            workSpace.Set(normalizedDirection.x * moveSpeed, normalizedDirection.y * moveSpeed);
             RB.velocity = workSpace;
             CurrentVelocity = workSpace;
 

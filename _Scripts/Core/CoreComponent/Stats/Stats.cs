@@ -80,6 +80,7 @@ namespace Ginko.CoreSystem
 
             return output;
         }
+        
         public AttributeStat GetAttribute(AttributeType type)
         {
             AttributeStat output = null;

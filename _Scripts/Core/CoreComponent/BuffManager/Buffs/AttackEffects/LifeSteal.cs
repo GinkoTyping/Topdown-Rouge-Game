@@ -29,11 +29,6 @@ public class LifeSteal : Buff
         
     }
 
-    public override void RefreshBuff()
-    {
-        
-    }
-
     protected override void UpdateSpecificBuffData()
     {
         lifeStealingBuffData = data as LifeStealingBuffDataSO;
@@ -49,7 +44,6 @@ public class LifeSteal : Buff
             health.Increase(health.MaxValue * lifeStealingBuffData.value);
         }
     }
-
     public override string GetDesc()
     {
         string moduleDesc = data.desc;

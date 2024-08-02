@@ -767,7 +767,11 @@ MonoBehaviour:
     <MaxValue>k__BackingField: 30
     <MinValue>k__BackingField: 0
     <InitValue>k__BackingField: 0
-  attributes: []
+  attributes:
+  - <MaxValue>k__BackingField: 2
+    <MinValue>k__BackingField: 0.1
+    <InitValue>k__BackingField: 1
+    type: 8
 --- !u!1 &4349958166545162798
 GameObject:
   m_ObjectHideFlags: 0
@@ -1062,6 +1066,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9411e48c026ae541af7a0ba117de095, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  descHover: {fileID: 0}
 --- !u!1 &5522775887106601776
 GameObject:
   m_ObjectHideFlags: 0
@@ -1166,6 +1171,7 @@ MonoBehaviour:
   continousStayingTime: 0
   continousMovingTime: 0
   buffsPool: {fileID: 8174906179471281707}
+  defaultBuffList: []
   effectiveTime: 0.05
   buffList: []
 --- !u!1 &5859089903839874880
@@ -1506,6 +1512,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lerpDuration: 0.5
   originalWidth: 0
+  healthBarImage: {fileID: 0}
+  healthTextMesh: {fileID: 0}
+  healthToColors: []
 --- !u!1 &8912192868212358802
 GameObject:
   m_ObjectHideFlags: 0

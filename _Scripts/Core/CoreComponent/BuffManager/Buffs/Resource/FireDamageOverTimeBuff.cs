@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DotFireBuff : ResourceBuff
+public class FireDamageOverTimeBuff : ResourceBuff
 {
     protected override void ApplyBuffEffect()
     {

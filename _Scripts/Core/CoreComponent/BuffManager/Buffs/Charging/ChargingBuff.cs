@@ -34,10 +34,6 @@ public class ChargingBuff : Buff
         }
     }
 
-    public override void RefreshBuff()
-    {
-    }
-
     private float GetBuffStackCount()
     {
         float time = 0;

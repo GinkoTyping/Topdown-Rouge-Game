@@ -9,12 +9,12 @@ public class InventoryController : MonoBehaviour
 {
     [Header("Base")]
     [SerializeField] private Canvas inventoryCanvas;
-    [SerializeField]
-    public GameObject inventoryItemPrefab;
-    [SerializeField]
-    public GameObject equipmentItemPrefab;
+    [SerializeField] public GameObject inventoryItemPrefab;
+    [SerializeField] public GameObject equipmentItemPrefab;
+    [SerializeField] private InventoryItemHoverController hoverController;
+    [SerializeField] private UIManager UIManager;
 
-    [Header("GameObject")]
+    [Header("Equipments")]
     [SerializeField]
     private GameObject equipmentPage;
     [SerializeField]
@@ -40,28 +40,9 @@ public class InventoryController : MonoBehaviour
     private InventoryItemIndicatorController indicatorController;
     private EquipmentsPageController equipmentsPageController;
     private PlayerInputEventHandler playerInputEventHandler;
-
     private RectTransform selectedItemTransform;
     private RectTransform canvasTransform;
     private RectTransform pickupItemFrom;
-
-    private UIManager UIManager;
-
-    private InventoryItemHoverController hoverController;
-    private TextMeshProUGUI switchEquipemntPageButton;
-    private bool isShowEquipmentPage;
-
-    private Grid autoSearchInventory;
-
-    private void Awake()
-    {
-        UIManager = GetComponentInParent<UIManager>();
-
-        switchEquipemntPageButton = transform.Find("Equipment").Find("SwitchDetailButton").GetComponentInChildren<TextMeshProUGUI>();
-        hoverController = GameObject.Find("Hover").GetComponent<InventoryItemHoverController>();
-
-        isShowEquipmentPage = true;
-    }
 
     private void Start()
     {
@@ -409,16 +390,4 @@ public class InventoryController : MonoBehaviour
     }
 
     #endregion
-
-    public void OnSwitchEquipmentPage()
-    {
-        isShowEquipmentPage = !isShowEquipmentPage;
-
-        equipmentPage.SetActive(isShowEquipmentPage);
-        equipmentDetailPage.SetActive(!isShowEquipmentPage);
-
-        switchEquipemntPageButton.text = isShowEquipmentPage ? "Detailed Stauts" : "Equipment Status";
-
-        SoundManager.Instance.ButtonClick();
-    }
 }

@@ -28,7 +28,6 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
     private AttributeHelper attributeHelper;
 
     private RectTransform rectTransform;
-    private RectTransform hoverContainer;
     private RectTransform backgroundTransform;
     private RectTransform borderTransform;
 
@@ -43,6 +42,8 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
     private TextMeshProUGUI priceInfo;
 
     [Header("Transform")]
+    [SerializeField]
+    private RectTransform hoverContainer;
     [SerializeField]
     private Transform baseAttributeContainer;
     [SerializeField]
@@ -63,7 +64,6 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
         rectTransform = GetComponent<RectTransform>();
         backgroundTransform = transform.Find("Background").GetComponent<RectTransform>();
         borderTransform = transform.Find("Border").GetComponent<RectTransform>();
-        hoverContainer = GameObject.Find("HoverContainer").GetComponent<RectTransform>();
 
         attributeHelper = GameObject.Find("Helper").GetComponent<AttributeHelper>();
 

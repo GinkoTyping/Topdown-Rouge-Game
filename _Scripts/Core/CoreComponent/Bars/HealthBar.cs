@@ -13,7 +13,9 @@ namespace Ginko.CoreSystem
     {
         [SerializeField] private float lerpDuration;
         [SerializeField] private float originalWidth;
+        [SerializeField] private Image healthBarImage;
         [SerializeField] private TextMeshProUGUI healthTextMesh;
+        [SerializeField] private HealthToColor[] healthToColors;
         private float lerpTotalTime;
         private bool isLerp;
         private bool isHover;
@@ -26,6 +28,14 @@ namespace Ginko.CoreSystem
 
         private float currentHealth;
         private float maxHealth;
+        private Color currentHealthBarColor;
+
+        [Serializable]
+        public class HealthToColor
+        {
+            public Color color;
+            public float[] range = new float[2];
+        }
 
         protected void Awake()
         {
@@ -82,8 +92,29 @@ namespace Ginko.CoreSystem
             {
                 healthTextMesh.text = $"{currentHealth} / {maxHealth}";
             }
+
+            UpdateHealthBarColor();
         }
         
+        private void UpdateHealthBarColor()
+        {
+            if (healthToColors.Length > 0)
+            {
+                foreach (HealthToColor healthToColor in healthToColors)
+                {
+                    if (currentHealth >= maxHealth * healthToColor.range[0] && currentHealth <= maxHealth * healthToColor.range[1])
+                    {
+                        if (currentHealthBarColor != healthToColor.color)
+                        {
+                            currentHealthBarColor = healthToColor.color;
+                            healthBarImage.color = currentHealthBarColor;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         private void SwitchHealthTextVisible()
         {
             if (healthTextMesh != null)

@@ -76,10 +76,15 @@ public class BuffManager : CoreComponent
 
     public void Add(Buff buff)
     {
+        if (buff == null)
+        {
+            return;
+        }
+
         Buff exsitBuff = buffList.Where(item => item.gameObject.name == buff.gameObject.name).FirstOrDefault();
         if (exsitBuff != null)
         {
-            exsitBuff.RefreshBuff();
+            exsitBuff.RefreshBuff(buff.data);
         }
         else
         {

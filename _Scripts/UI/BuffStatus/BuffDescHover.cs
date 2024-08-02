@@ -11,14 +11,25 @@ public class BuffDescHover : MonoBehaviour
     [SerializeField] private Vector2 padding;
 
     private RectTransform hoverRect;
+    private BuffIcon buffIcon;
 
     private void Awake()
     {
         hoverRect = GetComponent<RectTransform>();
     }
 
+    private void Update()
+    {
+        if (buffIcon == null || !buffIcon.gameObject.activeSelf)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
     public void Set(BuffIcon buffIcon)
     {
+        this.buffIcon = buffIcon;
+
         textMesh.text = buffIcon.currentBuff.GetDesc();
         RectTransform buffIconRect = buffIcon.GetComponent<RectTransform>();
 

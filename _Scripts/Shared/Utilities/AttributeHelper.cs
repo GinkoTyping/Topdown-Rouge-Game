@@ -22,6 +22,13 @@ public class AttributeHelper : MonoBehaviour
         public AttributeType type;
     }
 
+    public bool IsFloat(AttributeType attributeType)
+    {
+        SoretedAttribute soretedAttribute = new SoretedAttribute();
+
+        return soretedAttribute.floatAttribute.Where(item => item == attributeType).ToArray().Length > 0;
+    }
+
     public string ShortenAttributeName(AttributeType attribute)
     {
         string name = attribute.ToString();
@@ -65,6 +72,16 @@ public class AttributeHelper : MonoBehaviour
         }
 
         return name;
+    }
+
+    public string ShortenAttributeName(ResourceType resource)
+    {
+        if (resource == ResourceType.Health)
+        {
+            return "HP";
+        }
+
+        return "MP";
     }
 
     public string GetAttributeColor(ResourceType resourceType)
@@ -119,4 +136,47 @@ public class AttributeHelper : MonoBehaviour
     {
         return materials[(int)rarity];
     }
+}
+
+public class SoretedAttribute
+{
+    public AttributeType[] PropertyAttributes = new AttributeType[]
+    {
+        AttributeType.Strength,
+        AttributeType.Intelligence,
+        AttributeType.Agility
+    };
+
+    public AttributeType[] CriticalAttributes = new AttributeType[]
+    {
+        AttributeType.CriticalChance,
+        AttributeType.CriticalDamage
+    };
+
+    public AttributeType[] ArmorAttributes = new AttributeType[]
+    {
+        AttributeType.DamageReduction,
+        AttributeType.MoveSpeed
+    };
+
+    public AttributeType[] intAttribute = new AttributeType[]
+    {
+        AttributeType.MaxHealth,
+        AttributeType.WeaponDamage,
+        AttributeType.HealthRegeneration,
+        AttributeType.HealthRecovery,
+
+
+        AttributeType.Strength,
+        AttributeType.Intelligence,
+        AttributeType.Agility,
+    };
+
+    public AttributeType[] floatAttribute = new AttributeType[]
+    {
+        AttributeType.CriticalChance,
+        AttributeType.CriticalDamage,
+        AttributeType.DamageReduction,
+        AttributeType.MoveSpeed,
+    };
 }

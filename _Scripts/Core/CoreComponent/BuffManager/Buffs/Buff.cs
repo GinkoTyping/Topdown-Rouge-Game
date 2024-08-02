@@ -26,7 +26,7 @@ public abstract class Buff : MonoBehaviour
         UpdateSpecificBuffData();
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         currentBuffIcon = null;
     }
@@ -43,7 +43,13 @@ public abstract class Buff : MonoBehaviour
 
     protected abstract void UpdateSpecificBuffData();
 
-    public abstract void RefreshBuff();
+    public virtual void RefreshBuff(BaseBuffDataSO newData = null)
+    {
+        if (newData != null)
+        {
+            UpdateBuffData(newData);
+        }
+    }
 
     protected void SwitchBuffIcon(bool isShow)
     {

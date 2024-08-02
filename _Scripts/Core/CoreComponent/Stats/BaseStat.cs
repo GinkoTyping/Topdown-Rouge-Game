@@ -39,6 +39,8 @@ namespace Ginko.CoreSystem
         public void ChangeMaxValue(float value)
         {
             MaxValue += value;
+
+            OnCurrentValueChange?.Invoke(currentValue, MaxValue, currentValue);
         }
     }
 }

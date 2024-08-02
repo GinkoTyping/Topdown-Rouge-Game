@@ -7,16 +7,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "newResourceBuffData", menuName = "Data/Buff/Resource")]
 public class ResourceBuffDataSO : BaseBuffDataSO
 {
+    [Header("Type")]
+    [SerializeField] public bool isAttribute;
     [SerializeField] public ResourceType resourceType;
-
-    [Header("VFX")]
-    [SerializeField] public GameObject buffEffect;
-    [SerializeField] public VFX_ActiveType vfx_actvieType;
-    [SerializeField] public float vfx_activeTime;
-    [SerializeField] public Vector3 vfx_offset;
-    [SerializeField] public Vector3 vfx_scale = Vector3.one;
+    [SerializeField] public AttributeType attributeType;
+    [SerializeField] public bool isUpdateOverTime;
 
     [Header("Resource")]
+    [SerializeField] public float staticValue;
     [SerializeField] public float perValue;
     [SerializeField] public float perTime;
     [SerializeField] public float totalTime;

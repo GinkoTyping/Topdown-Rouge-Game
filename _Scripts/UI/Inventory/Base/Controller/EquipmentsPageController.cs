@@ -3,10 +3,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class EquipmentsPageController : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject equipmentPage;
+    [SerializeField]
+    private GameObject equipmentDetailPage;
+    [SerializeField]
+    private TextMeshProUGUI switchEquipemntPageButton;
+
+    [Header("Other Inventories")]
     [SerializeField]
     private Grid backpackInventory;
     [SerializeField]
@@ -14,6 +23,7 @@ public class EquipmentsPageController : MonoBehaviour
     [SerializeField]
     private Grid lootInventory;
 
+    private bool isShowEquipmentPage = true;
     private InventoryController inventoryController;
     private InventorySoundController soundController;
     private PlayerInputEventHandler playerInputEventHandler;
@@ -234,5 +244,17 @@ public class EquipmentsPageController : MonoBehaviour
                 inventoryController.selectedInventory.RemoveItem(item);
             }
         }
+    }
+
+    public void OnSwitchEquipmentPage()
+    {
+        isShowEquipmentPage = !isShowEquipmentPage;
+
+        equipmentPage.SetActive(isShowEquipmentPage);
+        equipmentDetailPage.SetActive(!isShowEquipmentPage);
+
+        switchEquipemntPageButton.text = isShowEquipmentPage ? "Detailed Stauts" : "Equipment Status";
+
+        SoundManager.Instance.ButtonClick();
     }
 }
