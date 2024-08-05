@@ -21,6 +21,7 @@ public class InventoryInteraction : MonoBehaviour
     private InventoryController inventoryController;
     private InventorySound soundController;
     private PlayerInputEventHandler playerInputEventHandler;
+    private BuffManager playerBuffManager;
 
 
     private void Start()
@@ -28,6 +29,7 @@ public class InventoryInteraction : MonoBehaviour
         playerInputEventHandler = Player.Instance.InputHandler;
         inventoryController = GetComponent<InventoryController>();
         soundController = GetComponent<InventorySound>();
+        playerBuffManager = Player.Instance.Core.GetCoreComponent<BuffManager>();
     }
 
     private void Update()
@@ -38,11 +40,6 @@ public class InventoryInteraction : MonoBehaviour
         HandleFastEquipItem();
         HandleFastUnequipItem();
     }
-
-    //public void SetSelectedEquipmentSlot(EquipmentSlot equipmentSlot)
-    //{
-    //    selectedEquipmentSlot = equipmentSlot;
-    //}
 
     #region Handlers
 
@@ -102,24 +99,36 @@ public class InventoryInteraction : MonoBehaviour
     {
         if (playerInputEventHandler.DeSelect
             && inventoryController.selectedItem == null
-            && inventoryController.selectedInventory != null
-            && inventoryController.selectedInventory != pocketInventory)
+            && inventoryController.selectedInventory != null)
         {
             playerInputEventHandler.useDeSelectSignal();
             Vector2Int inventoryPosition = inventoryController.GetInventoryPosition(null);
 
             InventoryItem itemToEquip = inventoryController.selectedInventory.GetItem(inventoryPosition);
 
-            if (itemToEquip.data.itemType == ItemType.Equipment)
+            if (itemToEquip == null)
             {
-                FastEquipEquipment(itemToEquip as EquipmentItem);
+                return;
             }
-            else if (itemToEquip.data.itemType == ItemType.Consumable)
+
+            if (inventoryController.selectedInventory == pocketInventory)
             {
-                FastEquipConsumable(itemToEquip);
-            } else if (itemToEquip.data.itemType == ItemType.Treasure)
+                UseConsumable(itemToEquip);
+            }
+            else
             {
-                FastEquipTreasure(itemToEquip);
+                if (itemToEquip.data.itemType == ItemType.Equipment)
+                {
+                    FastEquipEquipment(itemToEquip as EquipmentItem);
+                }
+                else if (itemToEquip.data.itemType == ItemType.Consumable)
+                {
+                    FastEquipConsumable(itemToEquip);
+                }
+                else if (itemToEquip.data.itemType == ItemType.Treasure)
+                {
+                    FastEquipTreasure(itemToEquip);
+                }
             }
         }
     }
@@ -233,6 +242,19 @@ public class InventoryInteraction : MonoBehaviour
             {
                 inventoryController.selectedInventory.RemoveItem(item);
             }
+        }
+    }
+
+    private void UseConsumable(InventoryItem item)
+    {
+        if (item.currentBuffData != null)
+        {
+            playerBuffManager.Add(item.data.buffPrefab, item.currentBuffData);
+
+            pocketInventory.RemoveItem(item);
+            Destroy(item.gameObject);
+
+            soundController.PlayConsumePotionAudio();
         }
     }
 }

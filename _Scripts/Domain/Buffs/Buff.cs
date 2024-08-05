@@ -19,6 +19,7 @@ public abstract class Buff : MonoBehaviour
     private void Awake()
     {
         SetAttributeHelper();
+        buffManager = GetComponentInParent<BuffManager>();
     }
 
     protected virtual void Start()
@@ -33,8 +34,6 @@ public abstract class Buff : MonoBehaviour
 
     public virtual void Init() 
     {
-        buffManager = GetComponentInParent<BuffManager>();
-        buffManager.RegisterBuff(this);
     }
 
     private void SetAttributeHelper()
@@ -83,6 +82,12 @@ public abstract class Buff : MonoBehaviour
         data = newBuffData;
 
         UpdateSpecificBuffData();
+
+        // 去（除）激活的buff更新数据之后重新触发激活；
+        if (newBuffData != null && !gameObject.activeSelf)
+        {
+            gameObject.SetActive(true);
+        }
     }
 
     protected string GetSpecialText<T>(T text, string color = "#ff0000", bool underline = false)

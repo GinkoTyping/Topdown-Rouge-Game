@@ -20,6 +20,8 @@ public class InventoryItem : MonoBehaviour
     public BonusAttribute[] baseAttributes { get; private set; }
     public string buffDesc { get; private set; }
 
+    public BaseBuffDataSO currentBuffData;
+
     public int width
     {
         get => isRotated ? data.size.y : data.size.x;
@@ -126,12 +128,10 @@ public class InventoryItem : MonoBehaviour
 
     public void SetBuff(InventoryItemSO data)
     {
-        if (data.buff != null && data.buffDataByRarities.Length > 0)
+        if (data.buffPrefab != null && data.buffDataByRarities.Length > 0)
         {
-            BaseBuffDataSO buffData =  data.buffDataByRarities.Where(item => item.rarity == rarity).First().buffData;
-            data.buff.UpdateBuffData(buffData);
-
-            buffDesc = data.buff.GetDesc(true);
+            currentBuffData =  data.buffDataByRarities.Where(item => item.rarity == rarity).First().buffData;
+            buffDesc = data.buffPrefab.GetDesc(true);
         }
     }
 

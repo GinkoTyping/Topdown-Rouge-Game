@@ -74,7 +74,7 @@ public class BuffManager : CoreComponent
         }
     }
 
-    public void Add(Buff buff)
+    public void Add(Buff buff, BaseBuffDataSO buffData = null)
     {
         if (buff == null)
         {
@@ -84,20 +84,31 @@ public class BuffManager : CoreComponent
         Buff exsitBuff = buffList.Where(item => item.gameObject.name == buff.gameObject.name).FirstOrDefault();
         if (exsitBuff != null)
         {
-            if (buff.data == null)
+            if (buff.data == null && buffData == null)
             {
                 Debug.LogError($"{buff.gameObject.name}: Empty Buff data");
             } else
             {
-                exsitBuff.UpdateBuffData(buff.data);
+                exsitBuff.UpdateBuffData(
+                    buffData == null 
+                    ? buff.data 
+                    : buffData);
             }
         }
         else
         {
-            GameObject newBuff = Instantiate(buff.gameObject, transform);
-            newBuff.name = buff.name;
+            GameObject newBuffGO = Instantiate(buff.gameObject, transform);
+            newBuffGO.name = buff.name;
+            Buff newBuff = newBuffGO.GetComponent<Buff>();
 
-            newBuff.GetComponent<Buff>().Init();
+            if (buffData != null)
+            {
+                newBuff.UpdateBuffData(buffData);
+            }
+
+            buffList.Add(newBuff);
+            newBuff.Init();
+            OnBuffChange?.Invoke(buffList.Count);
         }
     }
 

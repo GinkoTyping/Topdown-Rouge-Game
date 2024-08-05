@@ -43,6 +43,8 @@ public class RegularResourceBuff : ResourceBuff
 
     private void UpdateStatOverTime()
     {
+        calculateTime += Time.deltaTime;
+
         if (calculateTime >= statusBuffData.perTime)
         {
             calculateTime -= statusBuffData.perTime;
@@ -65,7 +67,5 @@ public class RegularResourceBuff : ResourceBuff
                 stat.Increase(statusBuffData.perValue);
             }
         }
-
-        calculateTime += Time.deltaTime;
     }
 }

@@ -14,7 +14,7 @@ public class InventoryItemSO : ScriptableObject
     public LootPriceDataSO priceSetting;
 
     [Header("Buff")]
-    public Buff buff;
+    public Buff buffPrefab;
     public BuffDataByRarity[] buffDataByRarities;
 
     [Tooltip("It holds all the possible base attributes among different rarity.")]

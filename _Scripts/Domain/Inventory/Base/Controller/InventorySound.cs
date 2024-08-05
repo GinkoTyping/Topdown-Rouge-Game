@@ -17,6 +17,8 @@ public class InventorySound : MonoBehaviour
     public AudioClip selectAudio;
     [SerializeField]
     public AudioClip equipAudio;
+    [SerializeField]
+    public AudioClip potionAudio;
 
     public void PlayPlaceItemAudio(InventoryItem item)
     {
@@ -48,5 +50,10 @@ public class InventorySound : MonoBehaviour
     public void PlayEquipItemAudio()
     {
         SoundManager.Instance.PlaySound(equipAudio);
+    }
+
+    public void PlayConsumePotionAudio()
+    {
+        SoundManager.Instance.PlaySound(potionAudio);
     }
 }

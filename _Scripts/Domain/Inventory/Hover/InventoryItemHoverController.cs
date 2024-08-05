@@ -148,7 +148,7 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
             height = DEFAULT_HEIGHT;
         }
 
-        if (currentItem.data.buff != null)
+        if (currentItem.data.buffPrefab != null)
         {
             height += buffInfo.GetComponent<RectTransform>().sizeDelta.y + BUFF_PADDING_TOP;
         }

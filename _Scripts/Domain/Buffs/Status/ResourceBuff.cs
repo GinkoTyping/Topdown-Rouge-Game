@@ -34,6 +34,8 @@ public abstract class ResourceBuff : Buff
     {
         statusBuffData = data as StatusBuffDataSO;
 
+        passedTime = 0;
+
         if (statusBuffData?.buff_vfx != null && statusBuffData?.vfx_actvieType == StatusBuffDataSO.VFX_ActiveType.OnActivate)
         {
             vfx_timer = new Timer(statusBuffData.vfx_activeTime);
@@ -123,6 +125,8 @@ public abstract class ResourceBuff : Buff
         if (passedTime == 0)
         {
             SwitchBuffIcon(true);
+
+            calculateTime = 0;
             buffTimer = statusBuffData.totalTime;
         }
     }
