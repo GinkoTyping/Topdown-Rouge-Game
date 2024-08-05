@@ -137,8 +137,10 @@ public class ChargingBuff : Buff
         chargeBuffData = data as CharingBuffDataSO;
     }
 
-    public override string GetDesc()
+    public override string GetDesc(bool hasDurationText = false)
     {
+        base.GetDesc();
+
         string moduleDesc = data.desc;
 
         moduleDesc = moduleDesc.Replace("{$1}", GetSpecialText(chargeBuffData.timePerStack));

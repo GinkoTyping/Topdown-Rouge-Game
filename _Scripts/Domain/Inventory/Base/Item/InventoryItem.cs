@@ -18,6 +18,7 @@ public class InventoryItem : MonoBehaviour
     public Vector2Int pivotPositionOnGrid { get; private set; }
     public Rarity rarity { get; private set; }
     public BonusAttribute[] baseAttributes { get; private set; }
+    public string buffDesc { get; private set; }
 
     public int width
     {
@@ -68,6 +69,7 @@ public class InventoryItem : MonoBehaviour
         backgroundTransform.GetComponent<Image>().material = attributeHelper.GetRarityColorMaterial(rarity);
 
         SetBaseAttribute(data);
+        SetBuff(data);
     }
 
     public void SetSize(Vector2 size)
@@ -108,6 +110,8 @@ public class InventoryItem : MonoBehaviour
 
     public void SetBaseAttribute(InventoryItemSO data)
     {
+        baseAttributes = new BonusAttribute[0];
+
         if (data.baseAttributeByRarities.Length == 0)
         {
             return;
@@ -117,6 +121,17 @@ public class InventoryItem : MonoBehaviour
         if (attributes.Length > 0)
         {
             baseAttributes = attributes;
+        }
+    }
+
+    public void SetBuff(InventoryItemSO data)
+    {
+        if (data.buff != null && data.buffDataByRarities.Length > 0)
+        {
+            BaseBuffDataSO buffData =  data.buffDataByRarities.Where(item => item.rarity == rarity).First().buffData;
+            data.buff.UpdateBuffData(buffData);
+
+            buffDesc = data.buff.GetDesc(true);
         }
     }
 

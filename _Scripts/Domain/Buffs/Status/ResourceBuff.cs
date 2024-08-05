@@ -155,8 +155,10 @@ public abstract class ResourceBuff : Buff
         SwitchBuff_VFX(false);
     }
 
-    public override string GetDesc()
+    public override string GetDesc(bool hasDurationText = false)
     {
+        base.GetDesc(hasDurationText);
+
         string moduleDesc = data.desc;
 
         string color;
@@ -185,6 +187,11 @@ public abstract class ResourceBuff : Buff
         moduleDesc = moduleDesc.Replace("{$1}", GetSpecialText(valueString, color));
         moduleDesc = moduleDesc.Replace("{$2}", GetSpecialText(statName, color));
         moduleDesc = moduleDesc.Replace("{$3}", GetSpecialText(statusBuffData.perTime));
+
+        if (hasDurationText)
+        {
+            moduleDesc += $" ,last {GetSpecialText(statusBuffData.totalTime)} seconds";
+        }
 
         return moduleDesc;
     }

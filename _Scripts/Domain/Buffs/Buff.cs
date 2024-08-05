@@ -18,7 +18,7 @@ public abstract class Buff : MonoBehaviour
 
     private void Awake()
     {
-        attributeHelper = GameObject.Find("Helper").GetComponent<AttributeHelper>();
+        SetAttributeHelper();
     }
 
     protected virtual void Start()
@@ -37,7 +37,20 @@ public abstract class Buff : MonoBehaviour
         buffManager.RegisterBuff(this);
     }
 
-    public abstract string GetDesc();
+    private void SetAttributeHelper()
+    {
+        attributeHelper = GameObject.Find("Helper").GetComponent<AttributeHelper>();
+    }
+
+    public virtual string GetDesc(bool hasDurationText = false)
+    {
+        if (attributeHelper == null)
+        {
+            SetAttributeHelper();
+        }
+
+        return "";
+    }
 
     public abstract void LogicUpdate();
 

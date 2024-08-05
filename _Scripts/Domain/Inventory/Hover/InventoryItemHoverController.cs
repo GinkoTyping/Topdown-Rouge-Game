@@ -20,6 +20,7 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
     const float TOP_PADDING = 40.0f;
     const float BOTTOM_PADDING = 90.0f;
     const float DEFAULT_HEIGHT = 250.0f;
+    const float BUFF_PADDING_TOP = 10.0f;
 
     private Image nameBGImage;
 
@@ -40,6 +41,8 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
     private TextMeshProUGUI rarityInfo;
     [SerializeField]
     private TextMeshProUGUI priceInfo;
+    [SerializeField]
+    private TextMeshProUGUI buffInfo;
 
     [Header("Transform")]
     [SerializeField]
@@ -111,6 +114,8 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
             SetBaseAttributes(item);
         }
 
+        SetBuffDesc(item);
+
         SetHeight(item);
     }
     
@@ -141,6 +146,11 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
         else
         {
             height = DEFAULT_HEIGHT;
+        }
+
+        if (currentItem.data.buff != null)
+        {
+            height += buffInfo.GetComponent<RectTransform>().sizeDelta.y + BUFF_PADDING_TOP;
         }
 
         Vector2 size = new Vector2(rectTransform.sizeDelta.x, height);
@@ -224,7 +234,7 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
     {
         poolManager.SetCurrentParrent(baseAttributeContainer);
 
-        if (item.baseAttributes.Length > 0)
+        if (item.baseAttributes?.Length > 0)
         {
             for (int i = 0; i < item.baseAttributes?.Length; i++)
             {
@@ -251,6 +261,18 @@ public class InventoryItemHoverController : MonoBehaviour, IPointerEnterHandler,
             RectTransform rect = prop.GetComponent<RectTransform>();
 
             rect.localPosition = new Vector2(0, -TOP_PADDING - (i + baseAttributeCount) * attributePadding);
+        }
+    }
+
+    private void SetBuffDesc(InventoryItem item)
+    {
+        if (item.buffDesc?.Length > 0)
+        {
+            buffInfo.text = item.buffDesc;
+
+            Vector2 sizeDelta = buffInfo.GetComponent<RectTransform>().sizeDelta;
+            RectTransform rect = buffInfo.GetComponent<RectTransform>();
+            rect.sizeDelta = new Vector2(rect.sizeDelta.x, buffInfo.preferredHeight);
         }
     }
 
