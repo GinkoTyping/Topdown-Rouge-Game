@@ -9,6 +9,7 @@ public class EquipmentItemSO : InventoryItemSO
 {
     public EquipmentType equipmentType;
 }
+
 public enum EquipmentType
 {
     Weapon,

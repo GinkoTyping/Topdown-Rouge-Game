@@ -43,14 +43,6 @@ public abstract class Buff : MonoBehaviour
 
     protected abstract void UpdateSpecificBuffData();
 
-    public virtual void RefreshBuff(BaseBuffDataSO newData = null)
-    {
-        if (newData != null)
-        {
-            UpdateBuffData(newData);
-        }
-    }
-
     protected void SwitchBuffIcon(bool isShow)
     {
         if (isShow)
@@ -73,7 +65,7 @@ public abstract class Buff : MonoBehaviour
         }
     }
 
-    protected void UpdateBuffData(BaseBuffDataSO newBuffData)
+    public void UpdateBuffData(BaseBuffDataSO newBuffData)
     {
         data = newBuffData;
 

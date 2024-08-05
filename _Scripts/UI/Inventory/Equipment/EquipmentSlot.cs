@@ -39,6 +39,7 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         stats = Player.Instance.Core.GetCoreComponent <PlayerStats>();
     }
+    
     public void OnPointerEnter(PointerEventData eventData)
     {
         isActive = true;
@@ -56,20 +57,7 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         isActive = false;
         equipmentsPageController.SetSelectedEquipmentSlot(null);
     }
-    public void UpdateEquipmentStat(InventoryItem item)
-    {
-        if (item == null)
-        {
-            UpdatePlayerAttribute(false);
-            currentEquipment = null;
-        }
-        else
-        {
-            currentEquipment = item;
-            UpdatePlayerAttribute(true);
-        }
-    }
-
+   
     private void SwitchHighlight(bool isHighlight)
     {
         if (isHighlight)
@@ -130,6 +118,26 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         UpdateEquipmentStat(null);
 
         return output;
+    }
+
+    public void UpdateEquipmentStat(InventoryItem item)
+    {
+        if (item == null)
+        {
+            UpdatePlayerAttribute(false);
+            UpdateEquipmentBuff(false);
+            currentEquipment = null;
+        }
+        else
+        {
+            currentEquipment = item;
+            UpdatePlayerAttribute(true);
+            UpdateEquipmentBuff(true);
+        }
+    }
+    private void UpdateEquipmentBuff(bool isEquip)
+    {
+
     }
 
     private void UpdatePlayerAttribute(bool isEquip)

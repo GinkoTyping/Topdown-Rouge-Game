@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static ResourceBuffDataSO;
+using static StatusBuffDataSO;
 
 public abstract class BaseBuffDataSO : ScriptableObject
 {

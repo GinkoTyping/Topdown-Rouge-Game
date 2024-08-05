@@ -1,15 +1,13 @@
 using Ginko.CoreSystem;
 using Shared.Utilities;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class ResourceBuff : Buff
 {
-    protected ResourceBuffDataSO resourceBuffData;
-    protected ResourceStat resourceStat;
+    protected StatusBuffDataSO statusBuffData;
+    protected BaseStat stat;
 
-    protected float passedTime = -1;
+    protected float passedTime;
     protected float calculateTime;
 
     protected GameObject buffVFX;
@@ -23,27 +21,30 @@ public abstract class ResourceBuff : Buff
 
         damageReceiverComp = buffManager.Core.GetCoreComponent<DamageReceiver>();
 
-        RefreshBuff();
+        if (statusBuffData.isAttribute)
+        {
+            stat = buffManager.Core.GetCoreComponent<Stats>().GetAttribute(statusBuffData.attributeType);
+        } else
+        {
+            stat = buffManager.Core.GetCoreComponent<Stats>().GetAttribute(statusBuffData.resourceType);
+        }
     }
 
     protected override void UpdateSpecificBuffData()
     {
-        resourceBuffData = data as ResourceBuffDataSO;
+        statusBuffData = data as StatusBuffDataSO;
 
-        if (resourceBuffData?.buff_vfx != null && resourceBuffData?.vfx_actvieType == ResourceBuffDataSO.VFX_ActiveType.OnActivate)
+        if (statusBuffData?.buff_vfx != null && statusBuffData?.vfx_actvieType == StatusBuffDataSO.VFX_ActiveType.OnActivate)
         {
-            vfx_timer = new Timer(resourceBuffData.vfx_activeTime);
+            vfx_timer = new Timer(statusBuffData.vfx_activeTime);
             vfx_timer.OnTimerDone += HandleVFX_TimerDone;
-        }
-
-        if (resourceBuffData != null && resourceBuffData.resourceType == ResourceType.Health)
-        {
-            resourceStat = buffManager.Core.GetCoreComponent<Stats>().Health;
         }
     }
 
     protected virtual void OnDisable()
     {
+        passedTime = 0;
+
         if (vfx_timer != null)
         {
             vfx_timer.OnTimerDone -= HandleVFX_TimerDone;
@@ -54,9 +55,9 @@ public abstract class ResourceBuff : Buff
     {
         UpdateVFX_Timer();
 
-        if (resourceBuffData != null)
+        if (statusBuffData != null)
         {
-            if (passedTime > resourceBuffData.totalTime)
+            if (passedTime > statusBuffData.totalTime)
             {
                 HandleBuffOver();
             }
@@ -69,17 +70,6 @@ public abstract class ResourceBuff : Buff
 
                 UpdateTimeConfig();
             }
-        }
-    }
-
-    public override void RefreshBuff(BaseBuffDataSO newData = null)
-    {
-        base.RefreshBuff(newData);
-
-        passedTime = 0;
-        if (!gameObject.activeSelf)
-        {
-            gameObject.SetActive(true);
         }
     }
 
@@ -113,16 +103,16 @@ public abstract class ResourceBuff : Buff
 
     private void CheckSwitchOnBuff_VFX()
     {
-        if (resourceBuffData.buff_vfx == null)
+        if (statusBuffData.buff_vfx == null)
         {
             return;
         }
 
-        if (passedTime == 0 && resourceBuffData.vfx_actvieType == ResourceBuffDataSO.VFX_ActiveType.DuringActive)
+        if (passedTime == 0 && statusBuffData.vfx_actvieType == StatusBuffDataSO.VFX_ActiveType.DuringActive)
         {
             SwitchBuff_VFX(true);
         }
-        else if (calculateTime >= resourceBuffData.perTime && resourceBuffData.vfx_actvieType == ResourceBuffDataSO.VFX_ActiveType.OnActivate)
+        else if (calculateTime >= statusBuffData.perTime && statusBuffData.vfx_actvieType == StatusBuffDataSO.VFX_ActiveType.OnActivate)
         {
             SwitchBuff_VFX(true);
         }
@@ -133,7 +123,7 @@ public abstract class ResourceBuff : Buff
         if (passedTime == 0)
         {
             SwitchBuffIcon(true);
-            buffTimer = resourceBuffData.totalTime;
+            buffTimer = statusBuffData.totalTime;
         }
     }
 
@@ -143,9 +133,9 @@ public abstract class ResourceBuff : Buff
         {
             if (buffVFX == null)
             {
-                buffVFX = Instantiate(resourceBuffData.buff_vfx, transform);
-                buffVFX.transform.localPosition = resourceBuffData.vfx_offset;
-                buffVFX.transform.localScale = resourceBuffData.vfx_scale;
+                buffVFX = Instantiate(statusBuffData.buff_vfx, transform);
+                buffVFX.transform.localPosition = statusBuffData.vfx_offset;
+                buffVFX.transform.localScale = statusBuffData.vfx_scale;
             }
             else
             {
@@ -171,20 +161,20 @@ public abstract class ResourceBuff : Buff
 
         string color;
         string statName;
-        if (resourceBuffData.isAttribute)
+        if (statusBuffData.isAttribute)
         {
-            color = attributeHelper.GetAttributeColor(resourceBuffData.attributeType);
-            statName = attributeHelper.ShortenAttributeName(resourceBuffData.attributeType);
+            color = attributeHelper.GetAttributeColor(statusBuffData.attributeType);
+            statName = attributeHelper.ShortenAttributeName(statusBuffData.attributeType);
         }
         else
         {
-            color = attributeHelper.GetAttributeColor(resourceBuffData.resourceType);
-            statName = attributeHelper.ShortenAttributeName(resourceBuffData.resourceType);
+            color = attributeHelper.GetAttributeColor(statusBuffData.resourceType);
+            statName = attributeHelper.ShortenAttributeName(statusBuffData.resourceType);
         }
 
-        float value = resourceBuffData.isUpdateOverTime ? resourceBuffData.perValue : resourceBuffData.staticValue;
+        float value = statusBuffData.isUpdateOverTime ? statusBuffData.perValue : statusBuffData.staticValue;
         string valueString;
-        if (resourceBuffData.isAttribute && attributeHelper.IsFloat(resourceBuffData.attributeType))
+        if (statusBuffData.isAttribute && attributeHelper.IsFloat(statusBuffData.attributeType))
         {
             valueString = $"{value * 100}%";
         } else
@@ -194,7 +184,7 @@ public abstract class ResourceBuff : Buff
 
         moduleDesc = moduleDesc.Replace("{$1}", GetSpecialText(valueString, color));
         moduleDesc = moduleDesc.Replace("{$2}", GetSpecialText(statName, color));
-        moduleDesc = moduleDesc.Replace("{$3}", GetSpecialText(resourceBuffData.perTime));
+        moduleDesc = moduleDesc.Replace("{$3}", GetSpecialText(statusBuffData.perTime));
 
         return moduleDesc;
     }

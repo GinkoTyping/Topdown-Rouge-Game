@@ -1,8 +1,7 @@
 using Ginko.CoreSystem;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: 修改类的名称
 public class RegularResourceBuff : ResourceBuff
 {
     private bool hasUpdatedAtOneTime;
@@ -19,15 +18,15 @@ public class RegularResourceBuff : ResourceBuff
     {
         base.OnDisable();
 
-        if (resourceBuffData != null && !resourceBuffData.isUpdateOverTime)
+        if (statusBuffData != null && !statusBuffData.isUpdateOverTime)
         {
-            targetAttribute.Decrease(resourceBuffData.staticValue);
+            targetAttribute.Decrease(statusBuffData.staticValue);
         }
     }
 
     protected override void ApplyBuffEffect()
     {
-        if (resourceBuffData.isUpdateOverTime)
+        if (statusBuffData.isUpdateOverTime)
         {
             UpdateStatOverTime();
         } else
@@ -36,24 +35,26 @@ public class RegularResourceBuff : ResourceBuff
             {
                 hasUpdatedAtOneTime = true;
 
-                targetAttribute = buffManager.stats.GetAttribute(resourceBuffData.attributeType);
-                targetAttribute.Increase(resourceBuffData.staticValue);
+                targetAttribute = buffManager.stats.GetAttribute(statusBuffData.attributeType);
+                targetAttribute.Increase(statusBuffData.staticValue);
             }
         }
     }
 
     private void UpdateStatOverTime()
     {
-        if (calculateTime >= resourceBuffData.perTime)
+        if (calculateTime >= statusBuffData.perTime)
         {
-            calculateTime -= resourceBuffData.perTime;
+            calculateTime -= statusBuffData.perTime;
 
-            if (resourceBuffData.perValue < 0)
+            if (!statusBuffData.isAttribute 
+                && statusBuffData.resourceType == ResourceType.Health
+                && statusBuffData.perValue < 0)
             {
                 bool playSound = Random.Range(0f, 1f) <= 0.3f;
                 damageReceiverComp.Damage(
                     new DamageDetail(
-                        Mathf.Abs(resourceBuffData.perValue),
+                        Mathf.Abs(statusBuffData.perValue),
                         playSound: playSound,
                         showHitParticle: false
                     )
@@ -61,7 +62,7 @@ public class RegularResourceBuff : ResourceBuff
             }
             else
             {
-                resourceStat.Increase(resourceBuffData.perValue);
+                stat.Increase(statusBuffData.perValue);
             }
         }
 

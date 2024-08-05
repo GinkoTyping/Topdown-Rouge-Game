@@ -28,4 +28,4 @@ MonoBehaviour:
   staticValue: -0.05
   perValue: -1
   perTime: 1
-  totalTime: 5
+  totalTime: 10

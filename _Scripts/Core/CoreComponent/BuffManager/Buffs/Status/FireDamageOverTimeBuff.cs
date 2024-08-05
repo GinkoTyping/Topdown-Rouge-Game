@@ -6,14 +6,14 @@ public class FireDamageOverTimeBuff : ResourceBuff
 {
     protected override void ApplyBuffEffect()
     {
-        if (calculateTime >= resourceBuffData.perTime)
+        if (calculateTime >= statusBuffData.perTime)
         {
             calculateTime = 0;
 
             bool playSound = Random.Range(0f, 1f) <= 0.3f;
             damageReceiverComp.Damage(
                 new DamageDetail(
-                    Mathf.Abs(resourceBuffData.perValue),
+                    Mathf.Abs(statusBuffData.perValue),
                     playSound: playSound,
                     showHitParticle: false
                 )

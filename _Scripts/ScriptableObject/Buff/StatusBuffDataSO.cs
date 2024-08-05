@@ -5,7 +5,7 @@ using System.Reflection;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newResourceBuffData", menuName = "Data/Buff/Resource")]
-public class ResourceBuffDataSO : BaseBuffDataSO
+public class StatusBuffDataSO : BaseBuffDataSO
 {
     [Header("Type")]
     [SerializeField] public bool isAttribute;

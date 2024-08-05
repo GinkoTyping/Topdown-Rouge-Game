@@ -84,7 +84,13 @@ public class BuffManager : CoreComponent
         Buff exsitBuff = buffList.Where(item => item.gameObject.name == buff.gameObject.name).FirstOrDefault();
         if (exsitBuff != null)
         {
-            exsitBuff.RefreshBuff(buff.data);
+            if (buff.data == null)
+            {
+                Debug.LogError($"{buff.gameObject.name}: Empty Buff data");
+            } else
+            {
+                exsitBuff.UpdateBuffData(buff.data);
+            }
         }
         else
         {
