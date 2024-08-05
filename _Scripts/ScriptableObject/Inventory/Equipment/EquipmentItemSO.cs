@@ -57,9 +57,4 @@ public class BonusAttribute
     }
 }
 
-[Serializable]
-public class BaseAttributeByRarity
-{
-    public Rarity rarity;
-    public BonusAttribute[] attributes;
-}
+

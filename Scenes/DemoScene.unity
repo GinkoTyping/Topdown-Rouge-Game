@@ -4512,7 +4512,7 @@ GameObject:
   - component: {fileID: 465227736}
   - component: {fileID: 465227735}
   - component: {fileID: 465227734}
-  - component: {fileID: 465227733}
+  - component: {fileID: 465227737}
   - component: {fileID: 465227732}
   m_Layer: 5
   m_Name: Inventory
@@ -4581,24 +4581,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1841b64455ca30a4e93820fbb7b1f31b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &465227733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 465227729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: deb06a70a3ca1db4684cf4c1a47d95dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  equipmentPage: {fileID: 455281663}
-  equipmentDetailPage: {fileID: 328698476}
-  switchEquipemntPageButton: {fileID: 180639375}
-  backpackInventory: {fileID: 469230693}
-  pocketInventory: {fileID: 1318541009}
-  lootInventory: {fileID: 868860415}
 --- !u!114 &465227734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4654,10 +4636,27 @@ MonoBehaviour:
   equipmentDetailPage: {fileID: 328698476}
   lootInventory: {fileID: 868860415}
   backpackInventory: {fileID: 469230693}
+  equipmentInventory: {fileID: 1568012424}
   inventoryItemsData:
   - {fileID: 11400000, guid: e2d4324de2971e44fb313023630672ea, type: 2}
   - {fileID: 11400000, guid: 83bce6a07ca2b054f9a21e54652f0297, type: 2}
   - {fileID: 11400000, guid: 1924b5e9740d13c4ca96c81e61b61b10, type: 2}
+--- !u!114 &465227737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465227729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1688499fc39621f45ac92840323f0bbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backpackInventory: {fileID: 469230693}
+  pocketInventory: {fileID: 1318541009}
+  lootInventory: {fileID: 868860415}
+  equipmentInventory: {fileID: 1568012424}
 --- !u!1001 &466472767
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6293,8 +6292,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.023000002, y: 0.03575, z: 0}
-    m_Extent: {x: 1.1235, y: 0.96325004, z: 0}
+    m_Center: {x: -0.020099998, y: 0.033199996, z: 0}
+    m_Extent: {x: 1.1201, y: 0.9626, z: 0}
   m_PointLightInnerAngle: 360.00003
   m_PointLightOuterAngle: 360.00003
   m_PointLightInnerRadius: 0
@@ -12938,7 +12937,7 @@ MonoBehaviour:
   globalLight2D: {fileID: 296154032}
   inventoryCanvas: {fileID: 22688784}
   inventoryContainer: {fileID: 465227730}
-  lootInventoryGO: {fileID: 859430069}
+  lootInventoryGO: {fileID: 96585831}
 --- !u!4 &789473368 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5100217437599595380, guid: 8d15c39fd3e3cab47ab96fbaf6dc2f92,
@@ -14250,8 +14249,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 465227733}
-        m_TargetAssemblyTypeName: EquipmentsPageController, Assembly-CSharp
+      - m_Target: {fileID: 1568012424}
+        m_TargetAssemblyTypeName: EquipmentPageController, Assembly-CSharp
         m_MethodName: OnSwitchEquipmentPage
         m_Mode: 1
         m_Arguments:
@@ -22161,6 +22160,7 @@ GameObject:
   - component: {fileID: 1568012421}
   - component: {fileID: 1568012423}
   - component: {fileID: 1568012422}
+  - component: {fileID: 1568012424}
   m_Layer: 5
   m_Name: Equipment
   m_TagString: Untagged
@@ -22229,6 +22229,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1568012420}
   m_CullTransparentMesh: 1
+--- !u!114 &1568012424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1568012420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18ad829fe7ddcb7488cf0cee9fdd27b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  equipmentPage: {fileID: 455281663}
+  equipmentDetailPage: {fileID: 328698476}
+  switchEquipemntPageButton: {fileID: 180639375}
+  equipmentSlots: []
 --- !u!1001 &1569931044
 PrefabInstance:
   m_ObjectHideFlags: 0

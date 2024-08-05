@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb04abb899e65eb44829fdccbd5bb602, type: 3}
+  m_Name: Buff_Healing_Rare
+  m_EditorClassIdentifier: 
+  iconSprite: {fileID: 21300000, guid: 2853b92a7abe42e4a8343511cde217c7, type: 3}
+  desc: Heal {$1} {$2} every {$3} seconds
+  hasTimer: 1
+  stackable: 0
+  buff_vfx: {fileID: 6648539020999668230, guid: 7b8a53ddf5932604d9b342c693dae0aa,
+    type: 3}
+  vfx_actvieType: 0
+  vfx_activeTime: 0
+  vfx_offset: {x: 0, y: -0.5, z: 0}
+  vfx_scale: {x: 0.6, y: 0.6, z: 0.6}
+  isAttribute: 0
+  resourceType: 0
+  attributeType: 0
+  isUpdateOverTime: 1
+  staticValue: 0
+  perValue: 15
+  perTime: 2
+  totalTime: 10
