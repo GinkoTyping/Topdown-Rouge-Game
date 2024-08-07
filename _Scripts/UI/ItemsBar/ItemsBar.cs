@@ -1,12 +1,17 @@
+using Ginko.PlayerSystem;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ItemsBar : MonoBehaviour
 {
     [SerializeField] private Grid pockectInventory;
+
     private ItemOnBar[] items;
+    private PlayerInputEventHandler playerInputEventHandler;
+    private BuffManager playerBuffManager;
 
     private void Awake()
     {
@@ -25,12 +30,23 @@ public class ItemsBar : MonoBehaviour
 
     private void Start()
     {
+        playerInputEventHandler = Player.Instance.InputHandler;
+        playerBuffManager = Player.Instance.Core.GetCoreComponent<BuffManager>();
+    }
 
+    private void Update()
+    {
+        HandleUseItem();
     }
 
     private void HandleUseItem()
     {
+        if (playerInputEventHandler.ConsumePotion) 
+        {
+            playerInputEventHandler.UseConsumePotionSignal();
 
+            items[0].item.ApplyBuff(playerBuffManager, true);
+        }
     }
 
     private void UpdateItemsOnBar(bool isAdd, InventoryItem item)

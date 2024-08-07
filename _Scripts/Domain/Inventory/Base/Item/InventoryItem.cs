@@ -150,7 +150,7 @@ public class InventoryItem : MonoBehaviour
 
             parentGrid.RemoveItem(this);
 
-            InventorySound inventorySound = parentGrid.GetComponentInParent<InventorySound>();
+            InventorySound inventorySound = parentGrid.GetComponentInParent<InventorySound>(true);
 
             if (data.itemType == ItemType.Consumable)
             {

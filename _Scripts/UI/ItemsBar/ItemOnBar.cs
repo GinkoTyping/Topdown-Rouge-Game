@@ -9,7 +9,7 @@ public class ItemOnBar : MonoBehaviour
     [SerializeField] private Image rarityImage;
     [SerializeField] private Image itemImage;
 
-    private InventoryItem item;
+    public InventoryItem item { get; private set; }
     
     public void Set(InventoryItem item)
     {

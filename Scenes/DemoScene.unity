@@ -6376,8 +6376,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.022099972, y: 0.03609997, z: 0}
-    m_Extent: {x: 1.1271, y: 0.9679, z: 0}
+    m_Center: {x: -0.027050018, y: 0.03395003, z: 0}
+    m_Extent: {x: 1.12545, y: 0.97205, z: 0}
   m_PointLightInnerAngle: 360.00003
   m_PointLightOuterAngle: 360.00003
   m_PointLightInnerRadius: 0
@@ -25524,6 +25524,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: c3032286-728b-4d7d-aff7-a8daeeeb7ff7
     m_ActionName: Gameplay/MouseMove[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1986595663}
+        m_TargetAssemblyTypeName: PlayerInputEventHandler, Assembly-CSharp
+        m_MethodName: OnConsumePotion
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 65f27dd8-154f-4406-aab3-e318fc092413
+    m_ActionName: Gameplay/New action
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay

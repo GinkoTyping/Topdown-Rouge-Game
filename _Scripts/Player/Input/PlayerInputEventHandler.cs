@@ -23,6 +23,7 @@ public class PlayerInputEventHandler : MonoBehaviour
     public bool Dash { get; private set; }
     public bool Interact { get; private set; }
     public bool Switch { get; private set; }
+    public bool ConsumePotion { get; private set; }
 
 
     public void OnMovement(InputAction.CallbackContext context)
@@ -106,6 +107,30 @@ public class PlayerInputEventHandler : MonoBehaviour
         if (Switch)
         {
             Switch = false;
+        }
+    }
+
+    public void OnConsumePotion(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            ConsumePotion = true;
+        }
+        else if (context.performed)
+        {
+
+        }
+        else if (context.canceled)
+        {
+            ConsumePotion = false;
+        }
+    }
+
+    public void UseConsumePotionSignal()
+    {
+        if (ConsumePotion)
+        {
+            ConsumePotion = false;
         }
     }
 
