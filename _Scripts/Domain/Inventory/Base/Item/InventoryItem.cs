@@ -131,7 +131,7 @@ public class InventoryItem : MonoBehaviour
         if (data.buffPrefab != null && data.buffDataByRarities.Length > 0)
         {
             currentBuffData =  data.buffDataByRarities.Where(item => item.rarity == rarity).First().buffData;
-            buffDesc = data.buffPrefab.GetDesc(true);
+            buffDesc = data.buffPrefab.GetDesc(hasDurationText: true, specificData: currentBuffData);
         }
     }
 

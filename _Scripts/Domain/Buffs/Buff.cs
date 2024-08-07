@@ -1,8 +1,3 @@
-using Ginko.CoreSystem;
-using Ginko.PlayerSystem;
-using Ginko.StateMachineSystem;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Buff : MonoBehaviour
@@ -41,7 +36,13 @@ public abstract class Buff : MonoBehaviour
         attributeHelper = GameObject.Find("Helper").GetComponent<AttributeHelper>();
     }
 
-    public virtual string GetDesc(bool hasDurationText = false)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="hasDurationText">展示物品详情时，需要展示时间；展示Buff图标时，不需要展示时间</param>
+    /// <param name="specificData">用于在Buff对象实例化前，调用该方法的场景</param>
+    /// <returns></returns>
+    public virtual string GetDesc(bool hasDurationText = false, BaseBuffDataSO specificData = null)
     {
         if (attributeHelper == null)
         {

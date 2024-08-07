@@ -159,28 +159,34 @@ public abstract class ResourceBuff : Buff
         SwitchBuff_VFX(false);
     }
 
-    public override string GetDesc(bool hasDurationText = false)
+    public override string GetDesc(bool hasDurationText = false, BaseBuffDataSO specificData = null)
     {
         base.GetDesc(hasDurationText);
 
         string moduleDesc = data.desc;
+        StatusBuffDataSO dataToUse = statusBuffData;
+
+        if (specificData != null)
+        {
+            dataToUse = specificData as StatusBuffDataSO;
+        }
 
         string color;
         string statName;
-        if (statusBuffData.isAttribute)
+        if (dataToUse.isAttribute)
         {
-            color = attributeHelper.GetAttributeColor(statusBuffData.attributeType);
-            statName = attributeHelper.ShortenAttributeName(statusBuffData.attributeType);
+            color = attributeHelper.GetAttributeColor(dataToUse.attributeType);
+            statName = attributeHelper.ShortenAttributeName(dataToUse.attributeType);
         }
         else
         {
-            color = attributeHelper.GetAttributeColor(statusBuffData.resourceType);
-            statName = attributeHelper.ShortenAttributeName(statusBuffData.resourceType);
+            color = attributeHelper.GetAttributeColor(dataToUse.resourceType);
+            statName = attributeHelper.ShortenAttributeName(dataToUse.resourceType);
         }
 
-        float value = statusBuffData.isUpdateOverTime ? statusBuffData.perValue : statusBuffData.staticValue;
+        float value = dataToUse.isUpdateOverTime ? dataToUse.perValue : dataToUse.staticValue;
         string valueString;
-        if (statusBuffData.isAttribute && attributeHelper.IsFloat(statusBuffData.attributeType))
+        if (dataToUse.isAttribute && attributeHelper.IsFloat(dataToUse.attributeType))
         {
             valueString = $"{value * 100}%";
         } else
@@ -190,11 +196,11 @@ public abstract class ResourceBuff : Buff
 
         moduleDesc = moduleDesc.Replace("{$1}", GetSpecialText(valueString, color));
         moduleDesc = moduleDesc.Replace("{$2}", GetSpecialText(statName, color));
-        moduleDesc = moduleDesc.Replace("{$3}", GetSpecialText(statusBuffData.perTime));
+        moduleDesc = moduleDesc.Replace("{$3}", GetSpecialText(dataToUse.perTime));
 
         if (hasDurationText)
         {
-            moduleDesc += $" ,last {GetSpecialText(statusBuffData.totalTime)} seconds";
+            moduleDesc += $" ,last {GetSpecialText(dataToUse.totalTime)} seconds";
         }
 
         return moduleDesc;

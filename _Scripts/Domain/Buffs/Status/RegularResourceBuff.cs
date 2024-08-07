@@ -1,7 +1,6 @@
 using Ginko.CoreSystem;
 using UnityEngine;
 
-// TODO: 修改类的名称
 public class RegularResourceBuff : ResourceBuff
 {
     private bool hasUpdatedAtOneTime;

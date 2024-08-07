@@ -23,6 +23,8 @@ public class Grid : MonoBehaviour
     private Vector2 positionOnGrid = Vector2.zero;
     private Vector2Int tileGridPosition = new Vector2Int();
     private InventoryItem[,] inventoryItemSlot;
+
+    public event Action<bool, InventoryItem> OnItemChange;
     
 
     void Awake()
@@ -141,6 +143,8 @@ public class Grid : MonoBehaviour
             soundController.PlayPlaceItemAudio(item);
         }
 
+        OnItemChange?.Invoke(true, item);
+
         return true;
     }
 
@@ -197,6 +201,8 @@ public class Grid : MonoBehaviour
             droppedItemController.CreateDroppedItem(item);
             soundController.PlayRemoveItemAudio();
         }
+
+        OnItemChange?.Invoke(false, item);
 
         return item;
     }

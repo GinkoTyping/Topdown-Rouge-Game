@@ -137,7 +137,7 @@ public class ChargingBuff : Buff
         chargeBuffData = data as CharingBuffDataSO;
     }
 
-    public override string GetDesc(bool hasDurationText = false)
+    public override string GetDesc(bool hasDurationText = false, BaseBuffDataSO specificData = null)
     {
         base.GetDesc();
 

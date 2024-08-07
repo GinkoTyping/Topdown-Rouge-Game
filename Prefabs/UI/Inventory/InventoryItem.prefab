@@ -104,6 +104,7 @@ MonoBehaviour:
   - {fileID: 2332148289713708663}
   backgroundTransform: {fileID: 6496239958485907028}
   itemTransform: {fileID: 2332148289713708663}
+  currentBuffData: {fileID: 0}
 --- !u!114 &5244855824962210685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -400,7 +401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.627451}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

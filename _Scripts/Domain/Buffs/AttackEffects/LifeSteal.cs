@@ -44,7 +44,7 @@ public class LifeSteal : Buff
             health.Increase(health.MaxValue * lifeStealingBuffData.value);
         }
     }
-    public override string GetDesc(bool hasDurationText = false)
+    public override string GetDesc(bool hasDurationText = false, BaseBuffDataSO specificData = null)
     {
         base.GetDesc();
 
