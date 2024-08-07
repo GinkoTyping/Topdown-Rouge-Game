@@ -1,9 +1,5 @@
 using Ginko.PlayerSystem;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 
 public class InventoryInteraction : MonoBehaviour
@@ -113,7 +109,7 @@ public class InventoryInteraction : MonoBehaviour
 
             if (inventoryController.selectedInventory == pocketInventory)
             {
-                UseConsumable(itemToEquip);
+                itemToEquip.ApplyBuff(playerBuffManager, true);
             }
             else
             {
@@ -242,19 +238,6 @@ public class InventoryInteraction : MonoBehaviour
             {
                 inventoryController.selectedInventory.RemoveItem(item);
             }
-        }
-    }
-
-    private void UseConsumable(InventoryItem item)
-    {
-        if (item.currentBuffData != null)
-        {
-            playerBuffManager.Add(item.data.buffPrefab, item.currentBuffData);
-
-            pocketInventory.RemoveItem(item);
-            Destroy(item.gameObject);
-
-            soundController.PlayConsumePotionAudio();
         }
     }
 }

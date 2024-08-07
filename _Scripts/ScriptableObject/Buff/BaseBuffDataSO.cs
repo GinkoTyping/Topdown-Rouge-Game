@@ -16,4 +16,8 @@ public abstract class BaseBuffDataSO : ScriptableObject
     [SerializeField] public float vfx_activeTime;
     [SerializeField] public Vector3 vfx_offset;
     [SerializeField] public Vector3 vfx_scale = Vector3.one;
+
+    [Header("Audio")]
+    [SerializeField] public bool autoPlayAudio;
+    [SerializeField] public AudioClip audio;
 } 

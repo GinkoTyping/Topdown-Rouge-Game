@@ -28,6 +28,11 @@ public class ItemsBar : MonoBehaviour
 
     }
 
+    private void HandleUseItem()
+    {
+
+    }
+
     private void UpdateItemsOnBar(bool isAdd, InventoryItem item)
     {
         if (isAdd)

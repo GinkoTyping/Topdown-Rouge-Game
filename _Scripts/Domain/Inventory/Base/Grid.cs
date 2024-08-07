@@ -105,7 +105,7 @@ public class Grid : MonoBehaviour
 
         Vector2Int pos = (Vector2Int)position;
 
-        item.SetPivotPostion(pos);
+        item.SetPivotPostion(this, pos);
 
         if (!CheckItemAllowed(item))
         {

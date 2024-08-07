@@ -1,6 +1,5 @@
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class InventoryItem : MonoBehaviour
@@ -32,6 +31,7 @@ public class InventoryItem : MonoBehaviour
     }
 
     private RectTransform rectTransform;
+    private Grid parentGrid;
 
     private bool isRotated;
 
@@ -105,8 +105,9 @@ public class InventoryItem : MonoBehaviour
         }
     }
 
-    public void SetPivotPostion(Vector2Int pos)
+    public void SetPivotPostion(Grid grid, Vector2Int pos)
     {
+        parentGrid = grid;
         pivotPositionOnGrid = pos;
     }
 
@@ -139,6 +140,28 @@ public class InventoryItem : MonoBehaviour
     {
         isRotated = !isRotated;
         rectTransform.rotation = Quaternion.Euler(0, 0, isRotated ? 90f : 0f);
+    }
+
+    public virtual void ApplyBuff(BuffManager buffManager, bool destroyOnUse = false)
+    {
+        if (currentBuffData != null)
+        {
+            buffManager.Add(data.buffPrefab, currentBuffData);
+
+            parentGrid.RemoveItem(this);
+
+            InventorySound inventorySound = parentGrid.GetComponentInParent<InventorySound>();
+
+            if (data.itemType == ItemType.Consumable)
+            {
+                inventorySound.PlayConsumePotionAudio();
+            }
+
+            if (destroyOnUse)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 
     private void HandleSearchDone()
