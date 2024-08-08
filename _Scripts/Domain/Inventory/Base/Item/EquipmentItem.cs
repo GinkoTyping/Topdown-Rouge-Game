@@ -78,13 +78,13 @@ public class EquipmentItem : InventoryItem
         {
             output = new BonusAttribute[]
             {
-                new BonusAttribute(AttributeType.DamageReduction, values[0]),
+                new BonusAttribute(AttributeType.CriticalChance, values[0]),
             };
         } else
         {
             output = new BonusAttribute[] 
             {
-                new BonusAttribute(AttributeType.DamageReduction, values[0]),
+                new BonusAttribute(AttributeType.CriticalChance, values[0]),
                 new BonusAttribute(AttributeType.MoveSpeed, values[1]),
             };
         }

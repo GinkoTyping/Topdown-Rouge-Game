@@ -10,6 +10,7 @@ public abstract class Buff : MonoBehaviour
     protected BuffManager buffManager;
     protected BuffIcon currentBuffIcon;
     protected AttributeHelper attributeHelper;
+    protected float startTime;
 
     private void Awake()
     {
@@ -25,6 +26,13 @@ public abstract class Buff : MonoBehaviour
     protected virtual void OnEnable()
     {
         currentBuffIcon = null;
+
+        startTime = Time.time;
+    }
+
+    protected virtual void OnDisable()
+    {
+        SwitchBuffIcon(false);
     }
 
     public virtual void Init() 

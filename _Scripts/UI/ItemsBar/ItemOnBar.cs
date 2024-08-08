@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class ItemOnBar : MonoBehaviour
 {
@@ -11,12 +12,13 @@ public class ItemOnBar : MonoBehaviour
 
     public InventoryItem item { get; private set; }
     
-    public void Set(InventoryItem item)
+    public void Set(InventoryItem item, Color color)
     {
         if (item != null)
         {
             this.item = item;
 
+            rarityImage.color = color;
             itemImage.sprite = item.data.sprite;
             itemImage.color = new Color(255, 255, 255, 255);
         }
@@ -24,8 +26,9 @@ public class ItemOnBar : MonoBehaviour
 
     public void Clear()
     {
-        rarityImage.color = new Color(0 ,0, 0, 255);
+        item = null;
 
+        rarityImage.color = new Color(0 ,0, 0, 255);
         itemImage.sprite = null;
         itemImage.color = new Color(255, 255, 255, 0);
     }

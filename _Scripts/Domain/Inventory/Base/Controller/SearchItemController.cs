@@ -5,22 +5,22 @@ using UnityEngine;
 public class SearchItemController : MonoBehaviour
 {
     private Grid autoSearchInventory;
-    private SearchingItem currentItem;
+    private ItemToSearch currentItem;
 
     private bool isAutoSearch;
 
     public void SetSearchingItem(InventoryItem item)
     {
-        SearchingItem searchingItem = item.GetComponent<SearchingItem>();
+        ItemToSearch searchingItem = item.GetComponent<ItemToSearch>();
         searchingItem.Set(item);
     }
 
     public void SearchItems(Grid inventory, bool autoSearchNext = true)
     {
-        SearchingItem[] searchingItems = inventory.GetComponentsInChildren<SearchingItem>();
+        ItemToSearch[] searchingItems = inventory.GetComponentsInChildren<ItemToSearch>();
         isAutoSearch = autoSearchNext;
 
-        foreach (SearchingItem item in searchingItems)
+        foreach (ItemToSearch item in searchingItems)
         {
             if (item.needSearch)
             {

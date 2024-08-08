@@ -210,7 +210,7 @@ public class InventoryController : MonoBehaviour
             {
                 hoverController.Hide();
             }
-            else if (item != hoverController.currentItem && !item.GetComponent<SearchingItem>().needSearch)
+            else if (item != hoverController.currentItem && !item.GetComponent<ItemToSearch>().needSearch)
             {
                 RectTransform rect = item.GetComponent<RectTransform>();
                 hoverController.Set(item, rect);

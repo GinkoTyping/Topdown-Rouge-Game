@@ -18,29 +18,40 @@ MonoBehaviour:
   size: {x: 2, y: 2}
   defaultRarity: 2
   priceSetting: {fileID: 11400000, guid: 8f6592c64ce70514294b85906f7046aa, type: 2}
-  equipmentType: 2
+  buffPrefab: {fileID: 6699974674783221530, guid: 36b971860f925a3488c8b827c69d5657,
+    type: 3}
+  buffDataByRarities:
+  - rarity: 0
+    buffData: {fileID: 11400000, guid: 216678825ae4b3d49b21eec7a9aeaecc, type: 2}
+  - rarity: 1
+    buffData: {fileID: 11400000, guid: 97853c27928bd164aa21345c27cdd26b, type: 2}
+  - rarity: 2
+    buffData: {fileID: 11400000, guid: 0606d1580c6a5aa4e923a5e9415a0e64, type: 2}
+  - rarity: 3
+    buffData: {fileID: 11400000, guid: 382ddaee0c959e441a7c0351c1476e2b, type: 2}
   baseAttributeByRarities:
   - rarity: 0
     attributes:
-    - type: 7
+    - type: 8
       value: 0.05
     - type: 0
       value: 5
   - rarity: 1
     attributes:
-    - type: 7
+    - type: 8
       value: 0.1
     - type: 0
       value: 10
   - rarity: 2
     attributes:
-    - type: 7
+    - type: 8
       value: 0.15
     - type: 0
       value: 15
   - rarity: 3
     attributes:
-    - type: 7
+    - type: 8
       value: 0.3
     - type: 0
       value: 30
+  equipmentType: 2

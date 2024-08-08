@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -21,8 +22,6 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     private InventoryController inventoryController;
     private EquipmentInventory equipmentsPageController;
-    private PlayerStats stats;
-
 
     public InventoryItem currentEquipment { get; private set; }
 
@@ -33,11 +32,6 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
         backgroundImage = GetComponent<Image>();
         defaultBackgroundColor = backgroundImage.color;
-    }
-
-    private void Start()
-    {
-        stats = Player.Instance.Core.GetCoreComponent <PlayerStats>();
     }
     
     public void OnPointerEnter(PointerEventData eventData)
@@ -94,7 +88,8 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         rectTransform.SetAsFirstSibling();
         rectTransform.anchoredPosition = new Vector2(rectTransform.sizeDelta.x / 2, -rectTransform.sizeDelta.y / 2);
 
-        UpdateEquipmentStat(item);
+        currentEquipment = item;
+        item.Ability.Equip(true);
 
         InventoryItem[] output = { item, unequippedItem };
         return output;
@@ -115,57 +110,10 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
 
         EquipmentItem output = currentEquipment as EquipmentItem;
-        UpdateEquipmentStat(null);
+
+        currentEquipment.Ability.Equip(false);
+        currentEquipment = null;
 
         return output;
-    }
-
-    public void UpdateEquipmentStat(InventoryItem item)
-    {
-        if (item == null)
-        {
-            UpdatePlayerAttribute(false);
-            UpdateEquipmentBuff(false);
-            currentEquipment = null;
-        }
-        else
-        {
-            currentEquipment = item;
-            UpdatePlayerAttribute(true);
-            UpdateEquipmentBuff(true);
-        }
-    }
-    private void UpdateEquipmentBuff(bool isEquip)
-    {
-
-    }
-
-    private void UpdatePlayerAttribute(bool isEquip)
-    {
-        EquipmentItem equipmentItem = currentEquipment as EquipmentItem;
-        BonusAttribute[] attributes = equipmentItem.bonusAttributes.Concat(equipmentItem.baseAttributes).ToArray();
-
-        foreach (BonusAttribute attribute in attributes)
-        {
-            if(attribute.value != 0)
-            {
-                AttributeStat playerAttribute = stats.GetAttribute(attribute.type);
-                if (isEquip)
-                {
-                    playerAttribute.Increase(attribute.value);
-                    if (attribute.type == AttributeType.MaxHealth)
-                    {
-                        stats.GetAttribute(ResourceType.Health).ChangeMaxValue(attribute.value);
-                    }
-                } else
-                {
-                    playerAttribute.Decrease(attribute.value);
-                    if (attribute.type == AttributeType.MaxHealth)
-                    {
-                        stats.GetAttribute(ResourceType.Health).ChangeMaxValue(-attribute.value);
-                    }
-                }
-            }
-        }
     }
 }

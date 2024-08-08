@@ -19,11 +19,6 @@ public class LifeSteal : Buff
         SwitchBuffIcon(true);
     }
 
-    private void OnDisable()
-    {
-        SwitchBuffIcon(false);
-    }
-
     public override void LogicUpdate()
     {
         

@@ -8,9 +8,15 @@ using UnityEngine;
 
 public class BuffManager : CoreComponent
 {
-    public float continousAttackTime = 0;
-    public float continousStayingTime = 0;
-    public float continousMovingTime = 0;
+    public float continousAttackTime;
+    public float startAttackTime;
+
+    public float continousStillnessTime;
+    public float startStillnessTime;
+
+    public float continousMovingTime;
+    public float startMovingTime;
+
     private bool isStaying = true;
 
     [SerializeField] public PoolManager buffsPool;
@@ -139,6 +145,11 @@ public class BuffManager : CoreComponent
     {
         if (player != null && player.IsAttackInput)
         {
+            if (continousAttackTime == 0)
+            {
+                startAttackTime = Time.time;
+            }
+
             continousAttackTime += Time.deltaTime;
         }
         else if (continousAttackTime != 0)
@@ -165,18 +176,62 @@ public class BuffManager : CoreComponent
 
         if (isStaying)
         {
-            continousStayingTime += Time.deltaTime;
+            if (continousStillnessTime == 0)
+            {
+                startStillnessTime = Time.time;
+            }
+            continousStillnessTime += Time.deltaTime;
             continousMovingTime = 0;
         } 
         else
         {
+            if (continousMovingTime == 0)
+            {
+                startMovingTime = Time.time;
+            }
             continousMovingTime += Time.deltaTime;
-            continousStayingTime = 0;
+            continousStillnessTime = 0;
         }
     }
 
     private void HandleEffectiveTimerDone()
     {
         isStaying = movement.CurrentVelocity.sqrMagnitude == 0;
+    }
+
+    public float GetContinousAttackTime(float startTime)
+    {
+        if (startTime > startAttackTime)
+        {
+            return continousAttackTime - (startTime - startAttackTime);
+        }
+        return continousAttackTime;
+    }
+
+    public float GetContinousTime(ChargingBaseType type, float validStart)
+    {
+        float time;
+        float startTime;
+        if (type == ChargingBaseType.ContinousAttack)
+        {
+            time = continousAttackTime;
+            startTime = startAttackTime;
+        } else if (type == ChargingBaseType.Stillness)
+        {
+            time = continousStillnessTime;
+            startTime = startStillnessTime;
+        }
+        else
+        {
+            time = continousMovingTime;
+            startTime = startMovingTime;
+        }
+
+        if (validStart > startTime)
+        {
+            return time - (validStart - startTime);
+        }
+
+        return time;
     }
 }

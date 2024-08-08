@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class SearchingItem : MonoBehaviour
+[RequireComponent(typeof(InventoryItem))]
+public class ItemToSearch : MonoBehaviour
 {
     [SerializeField] private AudioClip searchAudio;
 

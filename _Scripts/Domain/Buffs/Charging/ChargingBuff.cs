@@ -13,6 +13,13 @@ public class ChargingBuff : Buff
         base.Start();
     }
 
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        ApplyBuffEffect(0);
+    }
+
     public override void LogicUpdate()
     {
         float stack = GetBuffStackCount();
@@ -36,30 +43,7 @@ public class ChargingBuff : Buff
 
     private float GetBuffStackCount()
     {
-        float time = 0;
-        switch (chargeBuffData.chargingBaseType)
-        {
-            case ChargingBaseType.ContinousAttack:
-                {
-                    time = buffManager.continousAttackTime;
-                    break;
-                }
-            case ChargingBaseType.Moving:
-                {
-                    time = buffManager.continousMovingTime;
-                    break;
-                }
-            case ChargingBaseType.Stillness:
-                {
-                    time = buffManager.continousStayingTime;
-                    break;
-                }
-            default:
-                {
-                    Debug.LogError($"ChargingBaseType '{chargeBuffData.chargingBaseType}' Not Matched");
-                    break;
-                }
-        }
+        float time = buffManager.GetContinousTime(chargeBuffData.chargingBaseType, startTime);
 
         return Mathf.Floor(time / chargeBuffData.timePerStack);
     }
@@ -141,13 +125,20 @@ public class ChargingBuff : Buff
     {
         base.GetDesc();
 
-        string moduleDesc = data.desc;
+        CharingBuffDataSO dataToUse = chargeBuffData;
+        if (specificData != null)
+        {
+            dataToUse = specificData as CharingBuffDataSO;
+        }
 
-        moduleDesc = moduleDesc.Replace("{$1}", GetSpecialText(chargeBuffData.timePerStack));
-        moduleDesc = moduleDesc.Replace("{$2}", GetSpecialText(chargeBuffData.chargingBaseType));
-        moduleDesc = moduleDesc.Replace("{$3}", GetSpecialText(attributeHelper.ShortenAttributeName(chargeBuffData.chargingTargetAttribute), attributeHelper.GetAttributeColor(chargeBuffData.chargingTargetAttribute)));
-        moduleDesc = moduleDesc.Replace("{$4}", GetSpecialText($"{Mathf.Abs(chargeBuffData.modifier) * 100}%"));
-        moduleDesc = moduleDesc.Replace("{$5}", GetSpecialText(chargeBuffData.maxStack, underline: true));
+        string moduleDesc = dataToUse.desc;
+
+
+        moduleDesc = moduleDesc.Replace("{$1}", GetSpecialText(dataToUse.timePerStack));
+        moduleDesc = moduleDesc.Replace("{$2}", GetSpecialText(dataToUse.chargingBaseType));
+        moduleDesc = moduleDesc.Replace("{$3}", GetSpecialText(attributeHelper.ShortenAttributeName(dataToUse.chargingTargetAttribute), attributeHelper.GetAttributeColor(dataToUse.chargingTargetAttribute)));
+        moduleDesc = moduleDesc.Replace("{$4}", GetSpecialText($"{Mathf.Abs(dataToUse.modifier) * 100}%"));
+        moduleDesc = moduleDesc.Replace("{$5}", GetSpecialText(dataToUse.maxStack, underline: true));
 
         return moduleDesc;
     }

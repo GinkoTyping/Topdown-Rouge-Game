@@ -1,3 +1,4 @@
+using Ginko.PlayerSystem;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,9 +13,12 @@ public class InventoryItem : MonoBehaviour
     private RectTransform backgroundTransform;
     [SerializeField]
     private RectTransform itemTransform;
+    
+    public ItemAbility Ability { get; private set; }
 
     public InventoryItemSO data {  get; private set; }
     public Vector2Int pivotPositionOnGrid { get; private set; }
+    public Grid parentGrid { get; private set; }
     public Rarity rarity { get; private set; }
     public BonusAttribute[] baseAttributes { get; private set; }
     public string buffDesc { get; private set; }
@@ -31,17 +35,18 @@ public class InventoryItem : MonoBehaviour
     }
 
     private RectTransform rectTransform;
-    private Grid parentGrid;
+    
 
     private bool isRotated;
 
     private AttributeHelper attributeHelper;
-    private SearchingItem searchingItem;
+    private ItemToSearch searchingItem;
 
     protected virtual void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         attributeHelper = GameObject.Find("Helper").GetComponent<AttributeHelper>();
+        Ability = GetComponent<ItemAbility>();
     }
 
     private void OnEnable()
@@ -95,7 +100,7 @@ public class InventoryItem : MonoBehaviour
     {
         if (!isVisible && searchingItem == null)
         {
-            searchingItem = GetComponent<SearchingItem>();
+            searchingItem = GetComponent<ItemToSearch>();
             searchingItem.OnSearchingDone += HandleSearchDone;
         }
 
@@ -142,28 +147,6 @@ public class InventoryItem : MonoBehaviour
         rectTransform.rotation = Quaternion.Euler(0, 0, isRotated ? 90f : 0f);
     }
 
-    public virtual void ApplyBuff(BuffManager buffManager, bool destroyOnUse = false)
-    {
-        if (currentBuffData != null)
-        {
-            buffManager.Add(data.buffPrefab, currentBuffData);
-
-            parentGrid.RemoveItem(this);
-
-            InventorySound inventorySound = parentGrid.GetComponentInParent<InventorySound>(true);
-
-            if (data.itemType == ItemType.Consumable)
-            {
-                inventorySound.PlayConsumePotionAudio();
-            }
-
-            if (destroyOnUse)
-            {
-                Destroy(gameObject);
-            }
-        }
-    }
-
     private void HandleSearchDone()
     {
         SwitchItemVisible(true);
@@ -190,7 +173,7 @@ public class BaseLootData
             bonusAttributes = equipment.bonusAttributes;
         }
 
-        SearchingItem searchingItem = item.GetComponent<SearchingItem>();
+        ItemToSearch searchingItem = item.GetComponent<ItemToSearch>();
         needSearch = searchingItem.needSearch;
     }
 }

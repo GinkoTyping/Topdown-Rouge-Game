@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78d3dbab1424b6d47b4e530d87cbf1a2, type: 3}
+  m_Name: Buff_StoneBuddha_Rare
+  m_EditorClassIdentifier: 
+  iconSprite: {fileID: 21300000, guid: c445c331e809c394f8fdc29530d029f7, type: 3}
+  desc: Every {$1} seconds of {$2}, the {$3} increases by {$4}, can stack {$5} times
+  hasTimer: 0
+  stackable: 1
+  chargingBaseType: 1
+  chargingTargetAttribute: 7
+  maxStack: 5
+  timePerStack: 3
+  modifier: 0.02

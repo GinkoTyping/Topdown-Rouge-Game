@@ -87,7 +87,7 @@ public class InventoryInteraction : MonoBehaviour
             playerInputEventHandler.useSelectSignal();
 
             inventoryController.SetPickUpItemFrom(equipmentInventory.selectedEquipmentSlot.GetComponent<RectTransform>());
-            equipmentInventory.selectedEquipmentSlot.UnequipItem(backpackInventory);
+            EquipmentItem unequippedItem =  equipmentInventory.selectedEquipmentSlot.UnequipItem(backpackInventory);
         }
     }
     
@@ -109,7 +109,7 @@ public class InventoryInteraction : MonoBehaviour
 
             if (inventoryController.selectedInventory == pocketInventory)
             {
-                itemToEquip.ApplyBuff(playerBuffManager, true);
+                itemToEquip.Ability.Use(true);
             }
             else
             {
@@ -151,7 +151,7 @@ public class InventoryInteraction : MonoBehaviour
     #endregion
     private void FastUnequipEquipment()
     {
-        Vector2Int? position = backpackInventory.GetSpaceToPlaceItem(equipmentInventory.selectedEquipmentSlot.currentEquipment);
+        Vector2Int? position = backpackInventory.GetSpaceToPlaceItem(equipmentInventory.selectedEquipmentSlot.currentEquipment, autoPlace: false);
         equipmentInventory.selectedEquipmentSlot.UnequipItem(backpackInventory, (Vector2Int)position);
     }
 
@@ -172,7 +172,8 @@ public class InventoryInteraction : MonoBehaviour
             {
                 inventoryController.selectedInventory.RemoveItem(item);
             }
-        } else
+        } 
+        else
         {
             inventoryController.SetSelectedItem(item);
             inventoryController.selectedInventory.RemoveItem(item);

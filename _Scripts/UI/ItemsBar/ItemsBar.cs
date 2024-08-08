@@ -1,17 +1,23 @@
 using Ginko.PlayerSystem;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ItemsBar : MonoBehaviour
 {
     [SerializeField] private Grid pockectInventory;
+    [SerializeField] private RarityToColor[] raritiesToColor;
 
     private ItemOnBar[] items;
     private PlayerInputEventHandler playerInputEventHandler;
     private BuffManager playerBuffManager;
+
+    [Serializable]
+    private class RarityToColor
+    {
+        public Rarity rarity;
+        public Color color;
+    }
 
     private void Awake()
     {
@@ -45,16 +51,25 @@ public class ItemsBar : MonoBehaviour
         {
             playerInputEventHandler.UseConsumePotionSignal();
 
-            items[0].item.ApplyBuff(playerBuffManager, true);
+            items[0].item.Ability.Use(true);
         }
+    }
+
+    private Color GetColorByRaity(InventoryItem item)
+    {
+        return raritiesToColor.Where(i => i.rarity == item.rarity).First().color;
     }
 
     private void UpdateItemsOnBar(bool isAdd, InventoryItem item)
     {
         if (isAdd)
         {
-            items[0].Set(item);
-        } else
+            if (items[0].item == null)
+            {
+                items[0].Set(item, GetColorByRaity(item));
+            }
+        } 
+        else
         {
             InventoryItem[] leftItems = pockectInventory.GetComponentsInChildren<InventoryItem>().Where(i => i != item).ToArray();
 
@@ -63,7 +78,7 @@ public class ItemsBar : MonoBehaviour
                 items[0].Clear();
             } else
             {
-                items[0].Set(leftItems[0]);
+                items[0].Set(leftItems[0], GetColorByRaity(leftItems[0]));
             }
         }
     }

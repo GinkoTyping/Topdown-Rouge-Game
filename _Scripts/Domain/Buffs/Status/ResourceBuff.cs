@@ -43,8 +43,10 @@ public abstract class ResourceBuff : Buff
         }
     }
 
-    protected virtual void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
+
         passedTime = 0;
 
         if (vfx_timer != null)
@@ -96,7 +98,6 @@ public abstract class ResourceBuff : Buff
         calculateTime = 0;
 
         SwitchBuff_VFX(false);
-        SwitchBuffIcon(false);
 
         // OnDisabled 需要 buffData 数据，所以先Disabled再重置 buffData
         gameObject.SetActive(false);
