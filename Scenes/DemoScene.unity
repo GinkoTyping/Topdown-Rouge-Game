@@ -2296,6 +2296,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pockectInventory: {fileID: 1318541009}
+  raritiesToColor:
+  - rarity: 0
+    color: {r: 0.48218638, g: 1, b: 0.3915094, a: 1}
+  - rarity: 1
+    color: {r: 0.2756764, g: 0.5532218, b: 0.990566, a: 1}
+  - rarity: 2
+    color: {r: 0.72217757, g: 0.3066038, b: 1, a: 1}
+  - rarity: 3
+    color: {r: 1, g: 0.5562523, b: 0.24056602, a: 1}
 --- !u!4 &190434235 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3112375125460322631, guid: 424ccba55881d2743a04e1f1a4947e4c,
@@ -4719,7 +4728,7 @@ MonoBehaviour:
   equipmentInventory: {fileID: 1568012424}
   inventoryItemsData:
   - {fileID: 11400000, guid: 85c5e076ca22ccf4b8fc234d308c3609, type: 2}
-  - {fileID: 11400000, guid: f114fe17ea6945f47b7649ac338e4343, type: 2}
+  - {fileID: 11400000, guid: 83bce6a07ca2b054f9a21e54652f0297, type: 2}
 --- !u!114 &465227737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6376,8 +6385,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.027050018, y: 0.03395003, z: 0}
-    m_Extent: {x: 1.12545, y: 0.97205, z: 0}
+    m_Center: {x: -0.028299987, y: 0.03760001, z: 0}
+    m_Extent: {x: 1.1247001, y: 0.972, z: 0}
   m_PointLightInnerAngle: 360.00003
   m_PointLightOuterAngle: 360.00003
   m_PointLightInnerRadius: 0

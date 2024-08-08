@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 5305882843076600157}
   - component: {fileID: 8217571948451112335}
   - component: {fileID: 546928619846338327}
-  - component: {fileID: 5244855824962210685}
+  - component: {fileID: 3847749021253615126}
+  - component: {fileID: 5617191528603725900}
   m_Layer: 5
   m_Name: InventoryItem
   m_TagString: Untagged
@@ -105,7 +106,7 @@ MonoBehaviour:
   backgroundTransform: {fileID: 6496239958485907028}
   itemTransform: {fileID: 2332148289713708663}
   currentBuffData: {fileID: 0}
---- !u!114 &5244855824962210685
+--- !u!114 &3847749021253615126
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -114,10 +115,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 335937374205450573}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37f9dcc87890b6249b95289405d99861, type: 3}
+  m_Script: {fileID: 11500000, guid: c6cd14c0ee4875c41843508a3204c1da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   searchAudio: {fileID: 8300000, guid: a0d89ec22c0f43949ab0b69072c5b71a, type: 3}
+--- !u!114 &5617191528603725900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335937374205450573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cee12ca9c39b7c44980bf5af75b04cbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2665599018606936581
 GameObject:
   m_ObjectHideFlags: 0
