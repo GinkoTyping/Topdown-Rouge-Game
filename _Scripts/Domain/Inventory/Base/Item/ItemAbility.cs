@@ -19,6 +19,7 @@ public class ItemAbility : MonoBehaviour
 
     public virtual void Use(bool destroyOnUse = false)
     {
+        RemoveItemOnGrid();
         UpdateBuff(true, destroyOnUse);
     }
 
@@ -26,6 +27,11 @@ public class ItemAbility : MonoBehaviour
     {
         if (item.data.itemType == ItemType.Equipment)
         {
+            if (isEquip)
+            {
+                RemoveItemOnGrid();
+            }
+
             UpdateBuff(isEquip, false);
             UpdatePlayerAttribute(isEquip);
         } else
@@ -48,8 +54,6 @@ public class ItemAbility : MonoBehaviour
             {
                 playerBuffManager.Add(item.data.buffPrefab, item.currentBuffData);
 
-                item.parentGrid.RemoveItem(item);
-
                 InventorySound inventorySound = item.parentGrid.GetComponentInParent<InventorySound>(true);
 
                 if (item.data.itemType == ItemType.Consumable)
@@ -71,6 +75,11 @@ public class ItemAbility : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void RemoveItemOnGrid()
+    {
+        item.parentGrid.RemoveItem(item);
     }
 
     private void UpdatePlayerAttribute(bool isEquip)

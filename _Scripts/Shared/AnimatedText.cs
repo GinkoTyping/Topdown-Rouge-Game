@@ -9,6 +9,7 @@ public class AnimatedText : MonoBehaviour
     [SerializeField] private bool loop;
     [SerializeField] private float aliveTime;
     [SerializeField] private Vector3 endPositionOffset;
+
     [Header("Realse")]
     [SerializeField] private float fadeTimeTotal;
     [SerializeField] private Vector3 fadeOffset;

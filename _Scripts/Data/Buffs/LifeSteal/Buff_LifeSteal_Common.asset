@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a9f4e67afc52bd489c4b6b1fc28fb0f, type: 3}
+  m_Name: Buff_LifeSteal_Common
+  m_EditorClassIdentifier: 
+  iconSprite: {fileID: 21300000, guid: 1652e754bb5b28c4886c9e7f183a8ad0, type: 3}
+  desc: Heal {$1} on every hit to enemy
+  hasTimer: 0
+  stackable: 0
+  buff_vfx: {fileID: 0}
+  vfx_actvieType: 0
+  vfx_activeTime: 0
+  vfx_offset: {x: 0, y: 0, z: 0}
+  vfx_scale: {x: 1, y: 1, z: 1}
+  autoPlayAudio: 0
+  audio: {fileID: 0}
+  type: 0
+  value: 2

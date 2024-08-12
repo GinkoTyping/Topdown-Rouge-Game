@@ -66,14 +66,14 @@ public class BuffIcon : MonoBehaviour
 
     private void UpdateStackableBuff()
     {
-        if (currentBuff.currenrStack == 0)
+        if (currentBuff.currentStack == 0)
         {
             poolManager.Pool.Release(gameObject);
         } 
-        else if (stackText.text != currentBuff.currenrStack.ToString())
+        else if (stackText.text != currentBuff.currentStack.ToString())
         {
             stackGO.SetActive(true);
-            stackText.text = currentBuff.currenrStack.ToString();
+            stackText.text = currentBuff.currentStack.ToString();
         }
     }
 

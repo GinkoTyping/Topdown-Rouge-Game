@@ -4727,8 +4727,9 @@ MonoBehaviour:
   backpackInventory: {fileID: 469230693}
   equipmentInventory: {fileID: 1568012424}
   inventoryItemsData:
+  - {fileID: 11400000, guid: c3739f6b84d48ba48b0ae53bbf921ef8, type: 2}
+  - {fileID: 11400000, guid: 8d62b6f87406bdb45af0e0d102f78618, type: 2}
   - {fileID: 11400000, guid: 85c5e076ca22ccf4b8fc234d308c3609, type: 2}
-  - {fileID: 11400000, guid: 83bce6a07ca2b054f9a21e54652f0297, type: 2}
 --- !u!114 &465227737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5617,10 +5618,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   continousAttackTime: 0
-  continousStayingTime: 0
+  startAttackTime: 0
+  continousStillnessTime: 0
+  startStillnessTime: 0
   continousMovingTime: 0
+  startMovingTime: 0
   buffsPool: {fileID: 433745532}
-  defaultBuffList: []
+  defaultBuffList:
+  - {fileID: 8904998653341339744, guid: 4e0e2581154836e4e8b0f528067b6fe7, type: 3}
   effectiveTime: 0.05
   buffList: []
 --- !u!1001 &578946173
@@ -6385,8 +6390,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.028299987, y: 0.03760001, z: 0}
-    m_Extent: {x: 1.1247001, y: 0.972, z: 0}
+    m_Center: {x: -0.026499987, y: 0.037800014, z: 0}
+    m_Extent: {x: 1.1242, y: 0.9667, z: 0}
   m_PointLightInnerAngle: 360.00003
   m_PointLightOuterAngle: 360.00003
   m_PointLightInnerRadius: 0

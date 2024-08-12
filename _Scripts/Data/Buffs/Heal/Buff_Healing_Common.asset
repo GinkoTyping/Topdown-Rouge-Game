@@ -22,11 +22,13 @@ MonoBehaviour:
   vfx_activeTime: 0
   vfx_offset: {x: 0, y: -0.5, z: 0}
   vfx_scale: {x: 0.6, y: 0.6, z: 0.6}
+  autoPlayAudio: 0
+  audio: {fileID: 0}
   isAttribute: 0
   resourceType: 0
   attributeType: 0
   isUpdateOverTime: 1
   staticValue: 0
-  perValue: 6
+  perValue: 5
   perTime: 2
   totalTime: 10

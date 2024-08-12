@@ -99,6 +99,7 @@ public class BuffManager : CoreComponent
                     buffData == null 
                     ? buff.data 
                     : buffData);
+                exsitBuff.Init();
             }
         }
         else

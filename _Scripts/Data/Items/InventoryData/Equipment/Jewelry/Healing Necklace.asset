@@ -10,24 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70a5deff46a80494d8de5c7a54e22158, type: 3}
-  m_Name: Necklace
+  m_Name: Healing Necklace
   m_EditorClassIdentifier: 
-  itemName: Normal Necklace
-  sprite: {fileID: 21300000, guid: fedb36a8ba672a540a4ef57e09049a75, type: 3}
+  itemName: Healing Necklace
+  sprite: {fileID: 21300000, guid: 48dc16735313cb046831c21446749b67, type: 3}
   itemType: 0
   size: {x: 1, y: 1}
-  defaultRarity: 0
+  defaultRarity: 1
   priceSetting: {fileID: 11400000, guid: 8f6592c64ce70514294b85906f7046aa, type: 2}
-  buff: {fileID: 8904998653341339744, guid: 4e0e2581154836e4e8b0f528067b6fe7, type: 3}
+  buffPrefab: {fileID: 1254266152556896670, guid: 689411360fbd6d34d95072574d4c632a,
+    type: 3}
   buffDataByRarities:
   - rarity: 0
-    buffData: {fileID: 11400000, guid: 80294aaf3bcacba40aefea7ae10a84d4, type: 2}
+    buffData: {fileID: 11400000, guid: 7e6ae5ab521a05d42a3908bae0b1665e, type: 2}
   - rarity: 1
-    buffData: {fileID: 11400000, guid: 7c84b76aeb5708b4b9dd585c9513cc4e, type: 2}
+    buffData: {fileID: 11400000, guid: 2d152f6d4aa6cb04d9f84b730aa8d595, type: 2}
   - rarity: 2
-    buffData: {fileID: 11400000, guid: 08ed431debd17454a83cb67b15f89936, type: 2}
+    buffData: {fileID: 11400000, guid: 604fe255da6afe64d882db338639da72, type: 2}
   - rarity: 3
-    buffData: {fileID: 11400000, guid: ad4760614b32c4b498e3b4fc058184e5, type: 2}
+    buffData: {fileID: 11400000, guid: 8f8b04e07e6eda64d911ab955182c4ec, type: 2}
   baseAttributeByRarities:
   - rarity: 0
     attributes:

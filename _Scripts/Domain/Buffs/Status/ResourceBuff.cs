@@ -10,10 +10,7 @@ public abstract class ResourceBuff : Buff
     protected float passedTime;
     protected float calculateTime;
 
-    protected GameObject buffVFX;
     protected DamageReceiver damageReceiverComp;
-
-    protected Timer vfx_timer;
 
     protected override void Start()
     {
@@ -57,7 +54,7 @@ public abstract class ResourceBuff : Buff
 
     public override void LogicUpdate()
     {
-        UpdateVFX_Timer();
+        base.LogicUpdate();
 
         if (statusBuffData != null)
         {
@@ -78,14 +75,6 @@ public abstract class ResourceBuff : Buff
     }
 
     protected abstract void ApplyBuffEffect();
-
-    private void UpdateVFX_Timer()
-    {
-        if (vfx_timer != null)
-        {
-            vfx_timer.Tick();
-        }
-    }
 
     private void UpdateTimeConfig()
     {
@@ -129,29 +118,6 @@ public abstract class ResourceBuff : Buff
 
             calculateTime = 0;
             buffTimer = statusBuffData.totalTime;
-        }
-    }
-
-    private void SwitchBuff_VFX(bool isShow)
-    {
-        if (isShow)
-        {
-            if (buffVFX == null)
-            {
-                buffVFX = Instantiate(statusBuffData.buff_vfx, transform);
-                buffVFX.transform.localPosition = statusBuffData.vfx_offset;
-                buffVFX.transform.localScale = statusBuffData.vfx_scale;
-            }
-            else
-            {
-                buffVFX.SetActive(true);
-            }
-
-            vfx_timer?.StartTimer();
-        }
-        else if (buffVFX != null && buffVFX.activeSelf)
-        {
-            buffVFX.SetActive(false);
         }
     }
 

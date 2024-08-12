@@ -151,5 +151,9 @@ MonoBehaviour:
   loop: 0
   aliveTime: 0.5
   endPositionOffset: {x: 0, y: 0.4, z: 0}
+  startDirection: {x: 1, y: 3, z: 0}
+  endDirection: {x: 0, y: 3, z: 0}
+  velocity: 0.1
+  gravity: 1
   fadeTimeTotal: 0.3
   fadeOffset: {x: 0, y: 0.5, z: 0}

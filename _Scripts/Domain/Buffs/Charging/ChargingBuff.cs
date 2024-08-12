@@ -23,19 +23,37 @@ public class ChargingBuff : Buff
     public override void LogicUpdate()
     {
         float stack = GetBuffStackCount();
-        if (stack <= chargeBuffData.maxStack && stack != currenrStack)
+        if (stack <= chargeBuffData.maxStack && stack != currentStack)
         {
             ApplyBuffEffect(stack);
 
-            currenrStack = stack;
+            currentStack = stack;
         }
 
-        if (currenrStack == 0 && currentBuffIcon != null)
+
+        CheckBuffIcon();
+        CheckBuff_VFX();
+    }
+
+    private void CheckBuff_VFX()
+    {
+        if (currentStack > 0)
+        {
+            SwitchBuff_VFX(true);
+        } else
+        {
+            SwitchBuff_VFX(false);
+        }
+    }
+
+    private void CheckBuffIcon()
+    {
+        if (currentStack == 0 && currentBuffIcon != null)
         {
             currentBuffIcon = null;
         }
 
-        if (currenrStack > 0 && currentBuffIcon == null)
+        if (currentStack > 0 && currentBuffIcon == null)
         {
             SwitchBuffIcon(true);
         }
@@ -83,9 +101,9 @@ public class ChargingBuff : Buff
             stat = buffManager.stats.GetAttribute(chargeBuffData.chargingTargetAttribute);
         }
 
-        if (currenrStack != 0 && stack == 0f)
+        if (currentStack != 0 && stack == 0f)
         {
-            stat.Decrease(currenrStack * chargeBuffData.modifier);
+            stat.Decrease(currentStack * chargeBuffData.modifier);
         } else
         {
             stat.Increase(chargeBuffData.modifier);
@@ -99,7 +117,7 @@ public class ChargingBuff : Buff
             abilityManager = buffManager.normalAttack.GetComponent<AbilityManager>();
         }
 
-        if (currenrStack != 0 && stack == 0f)
+        if (currentStack != 0 && stack == 0f)
         {
             currentBuffIcon = null;
             ResetBaseAttackInterval();

@@ -39,14 +39,21 @@ public class LifeSteal : Buff
             health.Increase(health.MaxValue * lifeStealingBuffData.value);
         }
     }
+
     public override string GetDesc(bool hasDurationText = false, BaseBuffDataSO specificData = null)
     {
         base.GetDesc();
 
-        string moduleDesc = data.desc;
+        LifeStealingBuffDataSO dataToUse = lifeStealingBuffData;
+        if (specificData != null)
+        {
+            dataToUse = specificData as LifeStealingBuffDataSO ;
+        }
+
+        string moduleDesc = dataToUse.desc;
         string color = attributeHelper.GetAttributeColor(ResourceType.Health);
 
-        moduleDesc = moduleDesc.Replace("{$1}", GetSpecialText($"{lifeStealingBuffData.value} HP", color));
+        moduleDesc = moduleDesc.Replace("{$1}", GetSpecialText($"{dataToUse.value} HP", color));
 
         return moduleDesc;
     }

@@ -77,6 +77,8 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             return null;
         }
 
+        item.Ability.Equip(true);
+
         if (currentEquipment != null)
         {
             unequippedItem = UnequipItem(item.GetComponentInParent<Grid>(), item.pivotPositionOnGrid);
@@ -89,7 +91,6 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         rectTransform.anchoredPosition = new Vector2(rectTransform.sizeDelta.x / 2, -rectTransform.sizeDelta.y / 2);
 
         currentEquipment = item;
-        item.Ability.Equip(true);
 
         InventoryItem[] output = { item, unequippedItem };
         return output;
