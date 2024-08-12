@@ -1,12 +1,6 @@
-using Ginko.CoreSystem;
-using Ginko.PlayerSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -20,14 +14,12 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     private Image backgroundImage;
     private Color defaultBackgroundColor;
 
-    private InventoryController inventoryController;
     private EquipmentInventory equipmentsPageController;
 
     public InventoryItem currentEquipment { get; private set; }
 
     private void Awake()
     {
-        inventoryController = GetComponentInParent<InventoryController>();
         equipmentsPageController = GetComponentInParent<EquipmentInventory>();
 
         backgroundImage = GetComponent<Image>();
@@ -77,7 +69,7 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             return null;
         }
 
-        item.Ability.Equip(true);
+        item.Ability.Equip();
 
         if (currentEquipment != null)
         {
@@ -96,23 +88,11 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         return output;
     }
 
-    public EquipmentItem UnequipItem(Grid inventory, Vector2Int? postion = null)
+    public EquipmentItem UnequipItem(Grid inventoryToUnequip, Vector2Int? postion = null)
     {
-        currentEquipment.SetSize(inventory.tileSize);
-
-        if (postion == null)
-        {
-            currentEquipment.GetComponent<RectTransform>().SetParent(inventory.transform);
-            inventoryController.SetSelectedItem(currentEquipment);
-        } else
-        {
-            inventory.PlaceItem(currentEquipment, (Vector2Int)postion);
-            inventoryController.SetSelectedItem(null);
-        }
+        currentEquipment.Ability.Unequip(inventoryToUnequip, postion);
 
         EquipmentItem output = currentEquipment as EquipmentItem;
-
-        currentEquipment.Ability.Equip(false);
         currentEquipment = null;
 
         return output;

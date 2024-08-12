@@ -17,7 +17,6 @@ public class InventoryInteraction : MonoBehaviour
     private InventoryController inventoryController;
     private InventorySound soundController;
     private PlayerInputEventHandler playerInputEventHandler;
-    private BuffManager playerBuffManager;
 
 
     private void Start()
@@ -25,7 +24,6 @@ public class InventoryInteraction : MonoBehaviour
         playerInputEventHandler = Player.Instance.InputHandler;
         inventoryController = GetComponent<InventoryController>();
         soundController = GetComponent<InventorySound>();
-        playerBuffManager = Player.Instance.Core.GetCoreComponent<BuffManager>();
     }
 
     private void Update()

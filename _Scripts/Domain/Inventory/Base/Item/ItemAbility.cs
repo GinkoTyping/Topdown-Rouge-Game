@@ -1,7 +1,5 @@
 using Ginko.CoreSystem;
 using Ginko.PlayerSystem;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -11,6 +9,7 @@ public class ItemAbility : MonoBehaviour
     private InventoryItem item;
     private BuffManager playerBuffManager;
     private Stats playerStats;
+    private InventoryController inventoryController;
 
     private void Awake()
     {
@@ -23,21 +22,20 @@ public class ItemAbility : MonoBehaviour
         UpdateBuff(true, destroyOnUse);
     }
 
-    public virtual void Equip(bool isEquip)
+    public virtual void Equip()
     {
-        if (item.data.itemType == ItemType.Equipment)
-        {
-            if (isEquip)
-            {
-                RemoveItemOnGrid();
-            }
+        RemoveItemOnGrid();
 
-            UpdateBuff(isEquip, false);
-            UpdatePlayerAttribute(isEquip);
-        } else
-        {
-            Debug.LogError($"This itemtype('{item.data.itemType}') can't be equipped.");
-        }
+        UpdateBuff(true, false);
+        UpdatePlayerAttribute(true);
+    }
+
+    public virtual void Unequip(Grid inventoryToUnequip, Vector2Int? position = null)
+    {
+        UnequipEquipmentOnGrid(inventoryToUnequip, position);
+
+        UpdateBuff(false, false);
+        UpdatePlayerAttribute(false);
     }
 
     public virtual void UpdateBuff(bool isEquip, bool destroyOnUse = false)
@@ -80,6 +78,27 @@ public class ItemAbility : MonoBehaviour
     private void RemoveItemOnGrid()
     {
         item.parentGrid.RemoveItem(item);
+    }
+
+    private void UnequipEquipmentOnGrid(Grid inventoryToUnequip, Vector2Int? position = null)
+    {
+        item.SetSize(inventoryToUnequip.tileSize);
+
+        if (inventoryController == null)
+        {
+            inventoryController = GameObject.Find("UI").transform.Find("InventoryCanvas").GetComponentInChildren<InventoryController>();
+        }
+        
+        if (position == null)
+        {
+            item.GetComponent<RectTransform>().SetParent(inventoryToUnequip.transform);
+            inventoryController.SetSelectedItem(item);
+        }
+        else
+        {
+            inventoryToUnequip.PlaceItem(item, (Vector2Int)position);
+            inventoryController.SetSelectedItem(null);
+        }
     }
 
     private void UpdatePlayerAttribute(bool isEquip)
